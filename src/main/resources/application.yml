@@ -11,7 +11,7 @@ spring:
           min-idle: 0
       host: 121.43.158.136
       prot: 6379
-      password: redis85444  
+      password: redis854441 
       timeout: 1000
       database: 0
     datasource: 
