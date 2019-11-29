@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		List<User> list = userMapper.findAll();
-		PageInfo<User> pagelist = new PageInfo<>(list);
+		PageInfo<User> pagelist = PageInfo.of(list);
 		return pagelist;
 	}
 

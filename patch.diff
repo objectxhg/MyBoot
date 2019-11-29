@@ -1,0 +1,574 @@
+From 4cd98883c5f621bd91a3bce10245802ed2c01760 Mon Sep 17 00:00:00 2001
+From: vzone <857414521@qq.com>
+Date: Fri, 29 Nov 2019 16:36:30 +0800
+Subject: [PATCH] =?UTF-8?q?Revert=20"=E6=B7=BB=E5=8A=A0shiro=20=E6=9C=AA?=
+ =?UTF-8?q?=E5=AE=8C=E6=88=90=20=E5=8A=A0=E5=85=A5=E5=AE=9E=E5=8A=A1?=
+ =?UTF-8?q?=E6=B3=A8=E8=A7=A3"?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This reverts commit 91107fc9b8b774fa79e65c7a87e0d001c8ecb9e4.
+---
+ pom.xml                                       |  7 +-
+ .../com/xhg/config/shiro/CustomRealm.java     | 64 --------------
+ .../com/xhg/config/shiro/ShiroConfig.java     | 85 -------------------
+ .../xhg/controller/HomeIndexController.java   | 57 -------------
+ .../com/xhg/controller/userController.java    |  2 -
+ .../com/xhg/excepetion/GlobalException.java   |  2 +-
+ src/main/java/com/xhg/mapper/UserMapper.java  |  2 -
+ src/main/java/com/xhg/pojo/Role.java          | 38 ---------
+ src/main/java/com/xhg/pojo/User.java          | 61 ++++---------
+ .../com/xhg/service/Impl/UserServiceImpl.java | 11 +--
+ .../java/com/xhg/service/UserService.java     |  2 -
+ src/main/resources/application.yml            |  4 +-
+ src/main/resources/mapper/UserMapper.xml      | 39 ++-------
+ 13 files changed, 27 insertions(+), 347 deletions(-)
+ delete mode 100644 src/main/java/com/xhg/config/shiro/CustomRealm.java
+ delete mode 100644 src/main/java/com/xhg/config/shiro/ShiroConfig.java
+ delete mode 100644 src/main/java/com/xhg/controller/HomeIndexController.java
+ delete mode 100644 src/main/java/com/xhg/pojo/Role.java
+
+diff --git a/pom.xml b/pom.xml
+index 095fac3..0388271 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -63,12 +63,7 @@
+             <artifactId>commons-pool2</artifactId>
+             <version>2.4.2</version>
+         </dependency>
+-        <!-- shiro -->
+-        <dependency>
+-            <groupId>org.apache.shiro</groupId>
+-            <artifactId>shiro-spring</artifactId>
+-            <version>1.3.2</version>
+-        </dependency>
++        
+ 	</dependencies>
+ 	<!--  -->
+ 	<build>
+diff --git a/src/main/java/com/xhg/config/shiro/CustomRealm.java b/src/main/java/com/xhg/config/shiro/CustomRealm.java
+deleted file mode 100644
+index 3806e0b..0000000
+--- a/src/main/java/com/xhg/config/shiro/CustomRealm.java
++++ /dev/null
+@@ -1,64 +0,0 @@
+-package com.xhg.config.shiro;
+-
+-import java.util.Date;
+-
+-import org.apache.shiro.authc.*;
+-import org.apache.shiro.authz.AuthorizationInfo;
+-import org.apache.shiro.authz.SimpleAuthorizationInfo;
+-import org.apache.shiro.realm.AuthorizingRealm;
+-import org.apache.shiro.subject.PrincipalCollection;
+-import org.apache.shiro.util.ByteSource;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.beans.factory.annotation.Value;
+-
+-import com.xhg.pojo.Role;
+-import com.xhg.pojo.User;
+-import com.xhg.service.UserService;
+-
+-	
+-public class CustomRealm extends AuthorizingRealm {
+-	
+-	
+-	@Value("${salt}")
+-	private String salt;
+-	
+-	@Autowired
+-	private UserService userService;
+-	
+-	@Override
+-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+-		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+-        User user = (User) principals.getPrimaryPrincipal();
+-        for (Role role : user.getRoleList()) {
+-            authorizationInfo.addRole(role.getRoleName());
+-        }
+-        return authorizationInfo;
+-	}
+-
+-	@Override
+-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+-
+-        UsernamePasswordToken authenticationToken = (UsernamePasswordToken) token;
+-
+-        String username = authenticationToken.getUsername();
+-        
+-        User user = userService.slelectUserByName(username);
+-
+-        if (user == null) {
+-            throw new UnknownAccountException("用户不存在!");
+-        }
+-
+-        String pwd = user.getPwd();
+-        user.setPwd("");
+-
+-        return new SimpleAuthenticationInfo(
+-                user, //用户名
+-                pwd, //密码
+-                ByteSource.Util.bytes(user.getMobile() + salt),//salt=username+salt
+-                getName()  //realm name
+-        );
+-    
+-		
+-	}
+-
+-}
+diff --git a/src/main/java/com/xhg/config/shiro/ShiroConfig.java b/src/main/java/com/xhg/config/shiro/ShiroConfig.java
+deleted file mode 100644
+index 421a51f..0000000
+--- a/src/main/java/com/xhg/config/shiro/ShiroConfig.java
++++ /dev/null
+@@ -1,85 +0,0 @@
+-package com.xhg.config.shiro;
+-
+-
+-import java.util.LinkedHashMap;
+-import java.util.Map;
+-
+-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+-import org.apache.shiro.mgt.DefaultSecurityManager;
+-import org.apache.shiro.mgt.SecurityManager;
+-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-import org.springframework.context.annotation.DependsOn;
+-
+-@Configuration
+-public class ShiroConfig {
+-	
+-	@Bean(name = "shiroFilter")
+-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+-        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+-        shiroFilterFactoryBean.setSecurityManager(securityManager);
+-        shiroFilterFactoryBean.setLoginUrl("/login");
+-        shiroFilterFactoryBean.setUnauthorizedUrl("/notRole");
+-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+-        // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
+-        filterChainDefinitionMap.put("/webjars/**", "anon");
+-        filterChainDefinitionMap.put("/login", "anon");
+-        filterChainDefinitionMap.put("/", "anon");
+-        filterChainDefinitionMap.put("/front/**", "anon");
+-        filterChainDefinitionMap.put("/api/**", "anon");
+-
+-        filterChainDefinitionMap.put("/admin/**", "authc");
+-        filterChainDefinitionMap.put("/user/**", "anon");
+-        //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截 剩余的都需要认证
+-        filterChainDefinitionMap.put("/**", "authc");
+-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+-        return shiroFilterFactoryBean;
+-
+-    }
+-
+-    @Bean
+-    public SecurityManager securityManager() {
+-        DefaultWebSecurityManager defaultSecurityManager = new DefaultWebSecurityManager();
+-        defaultSecurityManager.setRealm(customRealm());
+-        return defaultSecurityManager;
+-    }
+-
+-    @Bean
+-    public CustomRealm customRealm() {
+-        CustomRealm customRealm = new CustomRealm();
+-        return customRealm;
+-    }
+-    @Bean
+-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+-        return new LifecycleBeanPostProcessor();
+-    }
+-    
+- /**
+-     * *
+-     * 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
+-     * *
+-     * 配置以下两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能
+-     * * @return
+-     */
+-    @Bean
+-    @DependsOn({"lifecycleBeanPostProcessor"})
+-    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+-        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+-        advisorAutoProxyCreator.setProxyTargetClass(true);
+-        return advisorAutoProxyCreator;
+-    }
+-    
+-    @Bean
+-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
+-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
+-        return authorizationAttributeSourceAdvisor;
+-    }
+-    
+-}
+diff --git a/src/main/java/com/xhg/controller/HomeIndexController.java b/src/main/java/com/xhg/controller/HomeIndexController.java
+deleted file mode 100644
+index 9966a2a..0000000
+--- a/src/main/java/com/xhg/controller/HomeIndexController.java
++++ /dev/null
+@@ -1,57 +0,0 @@
+-package com.xhg.controller;
+-
+-import org.apache.shiro.SecurityUtils;
+-import org.apache.shiro.authc.AuthenticationException;
+-import org.apache.shiro.authc.ExcessiveAttemptsException;
+-import org.apache.shiro.authc.IncorrectCredentialsException;
+-import org.apache.shiro.authc.LockedAccountException;
+-import org.apache.shiro.authc.UnknownAccountException;
+-import org.apache.shiro.authc.UsernamePasswordToken;
+-import org.apache.shiro.subject.Subject;
+-import org.springframework.stereotype.Controller;
+-import org.springframework.web.bind.annotation.GetMapping;
+-import org.springframework.web.bind.annotation.PostMapping;
+-import org.springframework.web.bind.annotation.RequestMapping;
+-import org.springframework.web.bind.annotation.RequestMethod;
+-import org.springframework.web.bind.annotation.RequestParam;
+-import org.springframework.web.bind.annotation.ResponseBody;
+-
+-@Controller
+-public class HomeIndexController {
+-
+-	@GetMapping("/login")
+-	@ResponseBody
+-	public String defaultLogin() {
+-		return "首页";
+-	}
+-
+-	@PostMapping("/login")
+-	@ResponseBody
+-	public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
+-		// 从SecurityUtils里边创建一个 subject
+-		Subject subject = SecurityUtils.getSubject();
+-		// 在认证提交前准备 token（令牌）
+-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+-		// 执行认证登陆
+-		try {
+-			subject.login(token);
+-		} catch (UnknownAccountException uae) {
+-			return "未知账户";
+-		} catch (IncorrectCredentialsException ice) {
+-			return "密码不正确";
+-		} catch (LockedAccountException lae) {
+-			return "账户已锁定";
+-		} catch (ExcessiveAttemptsException eae) {
+-			return "用户名或密码错误次数过多";
+-		} catch (AuthenticationException ae) {
+-			return "用户名或密码不正确！";
+-		}
+-		if (subject.isAuthenticated()) {
+-			return "登录成功";
+-		} else {
+-			token.clear();
+-			return "登录失败";
+-		}
+-	}
+-
+-}
+diff --git a/src/main/java/com/xhg/controller/userController.java b/src/main/java/com/xhg/controller/userController.java
+index 8d5ed2a..d93a3a4 100644
+--- a/src/main/java/com/xhg/controller/userController.java
++++ b/src/main/java/com/xhg/controller/userController.java
+@@ -1,7 +1,6 @@
+ package com.xhg.controller;
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.transaction.annotation.Transactional;
+ import org.springframework.web.bind.annotation.PathVariable;
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
+@@ -13,7 +12,6 @@ import com.xhg.service.UserService;
+ 
+ 
+ @RestController
+-@Transactional
+ @RequestMapping("/user")
+ public class userController {
+ 	
+diff --git a/src/main/java/com/xhg/excepetion/GlobalException.java b/src/main/java/com/xhg/excepetion/GlobalException.java
+index 91bf85b..afd0658 100644
+--- a/src/main/java/com/xhg/excepetion/GlobalException.java
++++ b/src/main/java/com/xhg/excepetion/GlobalException.java
+@@ -16,7 +16,7 @@ public class GlobalException {
+ 											  //配合@ControllerAdvice 便可以处理全局异常
+ 	@ResponseBody
+ 	public JsonResult resultException(Exception e){
+-		e.printStackTrace();
++		//e.printStackTrace();
+ 		return new JsonResult(e);
+ 		
+ 	}
+diff --git a/src/main/java/com/xhg/mapper/UserMapper.java b/src/main/java/com/xhg/mapper/UserMapper.java
+index b86678b..14000cc 100644
+--- a/src/main/java/com/xhg/mapper/UserMapper.java
++++ b/src/main/java/com/xhg/mapper/UserMapper.java
+@@ -13,8 +13,6 @@ import com.xhg.pojo.User;
+ 
+ public interface UserMapper {
+ 	
+-	public User selectUserByName(String username);
+-	
+ 	public List<User> findAll();
+ 	
+ 	@Select("select * from user where id=#{id}")
+diff --git a/src/main/java/com/xhg/pojo/Role.java b/src/main/java/com/xhg/pojo/Role.java
+deleted file mode 100644
+index 7b033c6..0000000
+--- a/src/main/java/com/xhg/pojo/Role.java
++++ /dev/null
+@@ -1,38 +0,0 @@
+-package com.xhg.pojo;
+-
+-import java.io.Serializable;
+-
+-public class Role implements Serializable{
+-	
+-	/**
+-	 * 
+-	 */
+-	private static final long serialVersionUID = 1L;
+-
+-	private Integer id;
+-	
+-	private String roleName;
+-
+-	public Integer getId() {
+-		return id;
+-	}
+-
+-	public String getRoleName() {
+-		return roleName;
+-	}
+-
+-	public void setId(Integer id) {
+-		this.id = id;
+-	}
+-
+-	public void setRoleName(String roleName) {
+-		this.roleName = roleName;
+-	}
+-
+-	@Override
+-	public String toString() {
+-		return "Role [id=" + id + ", roleName=" + roleName + "]";
+-	}
+-	
+-	
+-}
+diff --git a/src/main/java/com/xhg/pojo/User.java b/src/main/java/com/xhg/pojo/User.java
+index d686bb2..de7d01a 100644
+--- a/src/main/java/com/xhg/pojo/User.java
++++ b/src/main/java/com/xhg/pojo/User.java
+@@ -1,63 +1,34 @@
+ package com.xhg.pojo;
+ 
+-import java.io.Serializable;
+-import java.util.ArrayList;
+-import java.util.List;
++import java.util.Date;
+ 
++import org.springframework.format.annotation.DateTimeFormat;
+ 
+-public class User implements Serializable{
++public class User {
+ 	
+-		/**
+-		 * 
+-		 */
+-		private static final long serialVersionUID = 1L;
+-		
+ 		private Integer id;
+-		private String username;
+-		private String pwd;
+-		private String mobile;
+-		private String birthday;
+-		private String address;
+-		
+-		private List<Role> roleList = new ArrayList<Role>();
+-		
+-		
+-		public List<Role> getRoleList() {
+-			return roleList;
+-		}
+-		public void setRoleList(List<Role> roleList) {
+-			this.roleList = roleList;
+-		}
++		private String name;
+ 		
+-		public String getMobile() {
+-			return mobile;
+-		}
+-		public void setMobile(String mobile) {
+-			this.mobile = mobile;
+-		}
+-		public String getPwd() {
+-			return pwd;
+-		}
+-		public void setPwd(String pwd) {
+-			this.pwd = pwd;
+-		}
++		//标识格式
++		@DateTimeFormat(pattern="yyyy-MM-dd")
++		private Date birthday;
++		private String address;
+ 		public Integer getId() {
+ 			return id;
+ 		}
+ 		public void setId(Integer id) {
+ 			this.id = id;
+ 		}
+-		
+-		public String getUsername() {
+-			return username;
++		public String getName() {
++			return name;
+ 		}
+-		public void setUsername(String username) {
+-			this.username = username;
++		public void setName(String name) {
++			this.name = name;
+ 		}
+-		public String getBirthday() {
++		public Date getBirthday() {
+ 			return birthday;
+ 		}
+-		public void setBirthday(String birthday) {
++		public void setBirthday(Date birthday) {
+ 			this.birthday = birthday;
+ 		}
+ 		public String getAddress() {
+@@ -66,6 +37,10 @@ public class User implements Serializable{
+ 		public void setAddress(String address) {
+ 			this.address = address;
+ 		}
++		@Override
++		public String toString() {
++			return "User [id=" + id + ", name=" + name + ", birthday=" + birthday + ", address=" + address + "]";
++		}
+ 		
+ 		
+ }
+diff --git a/src/main/java/com/xhg/service/Impl/UserServiceImpl.java b/src/main/java/com/xhg/service/Impl/UserServiceImpl.java
+index 531ccc1..db547cf 100644
+--- a/src/main/java/com/xhg/service/Impl/UserServiceImpl.java
++++ b/src/main/java/com/xhg/service/Impl/UserServiceImpl.java
+@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService{
+ 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
+ 		PageHelper.startPage(pageNum, pageSize);
+ 		List<User> list = userMapper.findAll();
+-		
+-		PageInfo<User> pagelist = PageInfo.of(list);
++		PageInfo<User> pagelist = new PageInfo<>(list);
+ 		return pagelist;
+ 	}
+ 
+@@ -70,12 +69,4 @@ public class UserServiceImpl implements UserService{
+ 	public void delete(Integer id) {
+ 		userMapper.delete(id);
+ 	}
+-
+-	@Override
+-	public User slelectUserByName(String userName) {
+-		
+-		
+-		
+-		return null;
+-	}
+ }
+diff --git a/src/main/java/com/xhg/service/UserService.java b/src/main/java/com/xhg/service/UserService.java
+index 7fa0fc6..e19c194 100644
+--- a/src/main/java/com/xhg/service/UserService.java
++++ b/src/main/java/com/xhg/service/UserService.java
+@@ -7,8 +7,6 @@ import com.xhg.pojo.User;
+ public interface UserService {
+ 	
+ public PageInfo findAll(Integer pageNum, Integer pageSize);
+-
+-	public User slelectUserByName(String username);
+ 	
+ 	public User get(Integer id);
+ 	
+diff --git a/src/main/resources/application.yml b/src/main/resources/application.yml
+index c91639e..376a057 100644
+--- a/src/main/resources/application.yml
++++ b/src/main/resources/application.yml
+@@ -11,7 +11,7 @@ spring:
+           min-idle: 0
+       host: 121.43.158.136
+       prot: 6379
+-      password: redis85444 
++      password: redis854441 
+       timeout: 1000
+       database: 0
+     datasource: 
+@@ -37,5 +37,3 @@ pagehelper:
+   reasonable: true
+   supportMethodsArguments: true
+   params: count=countSql
+-  
+-salt: haha
+diff --git a/src/main/resources/mapper/UserMapper.xml b/src/main/resources/mapper/UserMapper.xml
+index ebf534e..7cd6c8e 100644
+--- a/src/main/resources/mapper/UserMapper.xml
++++ b/src/main/resources/mapper/UserMapper.xml
+@@ -2,45 +2,16 @@
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="com.xhg.mapper.UserMapper" >
+    	
+-   	<resultMap type="com.xhg.pojo.User" id="UserResultMap">
+-	   <!-- property对应实体类的属性名称，column为数据库结果集的列的名称 -->
+-	   <id property="id" column="id" />
+-	   <result property="username" column="username"/>
+-	   <result property="pwd" column="pwd"/>
+-	   <result property="mobile" column="mobile"/>
+-	   <result property="birthday" column="birthday"/>
+-	   <result property="address" column="address"/>
+-	   <collection property="roleList" ofType="com.xhg.pojo.Role" select="selectUserRole" column="{userId = id}"> 
+-	   		
+-	   </collection>
+-	   
+-	</resultMap>
+-	
+-	<select id="selectUserRole" resultType="com.xhg.pojo.Role">
+-		select role.id,role.roleName 
+-		
+-			from sys_role role 
+-				 join 
+-				 sys_user_role userRole on role.id = userRole.roleId 
+-				 
+-			where userRole.userId = #{userId}
+-			
+-	</select>
+-   	
+-   	<select id="selectUserByName" parameterType="String"  resultMap="UserResultMap">
+-   		select * from sys_user where username = #{username}
+-   	</select>
+-   	
+-   	<select id="findAll" resultMap="UserResultMap">
+-   		select * from sys_user
++   	<select id="findAll" resultType="com.xhg.pojo.User">
++   		select * from user
+    	</select>
+    	
+    	<insert id="addUser" parameterType="com.xhg.pojo.User">
+-   			insert into sys_user (
+-   			username,pwd,mobile,birthday,address
++   			insert into user (
++   			name,birthday,address
+    			)
+    			 values
+-   			 (#{username},#{pwd},#{mobile},#{birthday}#{address})
++   			 (#{name},#{birthday}#{address})
+    	</insert>
+    	
+ </mapper>
+\ No newline at end of file
+-- 
+2.20.1.windows.1
+
