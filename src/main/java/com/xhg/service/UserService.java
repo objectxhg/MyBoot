@@ -7,8 +7,6 @@ import com.xhg.pojo.User;
 public interface UserService {
 	
 public PageInfo findAll(Integer pageNum, Integer pageSize);
-
-	public User slelectUserByName(String username);
 	
 	public User get(Integer id);
 	

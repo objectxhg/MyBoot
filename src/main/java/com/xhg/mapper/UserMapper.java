@@ -13,8 +13,6 @@ import com.xhg.pojo.User;
 
 public interface UserMapper {
 	
-	public User selectUserByName(String username);
-	
 	public List<User> findAll();
 	
 	@Select("select * from user where id=#{id}")
