@@ -16,7 +16,7 @@ public class GlobalException {
 											  //配合@ControllerAdvice 便可以处理全局异常
 	@ResponseBody
 	public JsonResult resultException(Exception e){
-		//e.printStackTrace();
+		e.printStackTrace();
 		return new JsonResult(e);
 		
 	}
