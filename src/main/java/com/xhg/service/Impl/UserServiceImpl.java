@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 				user = objectMapper.readValue(redisJson, User.class);
 			}
 			
-		} catch (JsonProcessingException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
