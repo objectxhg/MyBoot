@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 		try {
 			
 			if(StringUtils.isEmpty(redisJson)) {
-				user = userMapper.get(id);
+				user = userMapper.selectUserById(id);
 				redisUtil.set("id"+id, objectMapper.writeValueAsString(user), 30l);
 			}else {
 				user = objectMapper.readValue(redisJson, User.class);

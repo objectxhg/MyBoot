@@ -25,6 +25,10 @@
    			userRole.userId = #{userId}
    	</select>
    	
+   	<select id="selectUserById"  resultMap="UserResultMap">
+   		select * from sys_user where id = #{id}
+   	</select>
+   	
    	<select id="findAll"  resultMap="UserResultMap">
    		select * from sys_user
    	</select>

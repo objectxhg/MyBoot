@@ -13,6 +13,8 @@ import com.xhg.pojo.User;
 
 public interface UserMapper {
 	
+	public User selectUserById(Integer id);
+	
 	public List<User> findAll();
 	
 	@Select("select * from sys_user where id=#{id}")
