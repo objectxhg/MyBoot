@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xhg.mapper.UserMapper" >
+
+	<resultMap id="UserResultMap" type="com.xhg.pojo.User">
+                <id column="id" property="id"/>                 
+                <result column="username" property="username"/>    
+                <result column="pwd" property="pwd"/>    
+                <result column="mobile" property="mobile"/>
+                <result column="birthday" property="birthday"/>
+                <result column="address" property="address"/>    
+                
+        <collection property="roleList"  ofType="com.xhg.pojo.Role" 
+        	select="selectUserRole" column="{userId=id}">
+        	
+        </collection>
+        
+   	</resultMap>
    	
-   	<select id="findAll" resultType="com.xhg.pojo.User">
-   		select * from user
+   	<select id="selectUserRole" resultType="com.xhg.pojo.Role">
+   		select role.* from 
+   			sys_user_role userRole join sys_role role 
+   			on  userRole.roleId = role.id
+   		where 
+   			userRole.userId = #{userId}
+   	</select>
+   	
+   	<select id="findAll"  resultMap="UserResultMap">
+   		select * from sys_user
    	</select>
    	
    	<insert id="addUser" parameterType="com.xhg.pojo.User">
-   			insert into user (
+   			insert into sys_user (
    			name,birthday,address
    			)
    			 values

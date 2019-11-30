@@ -17,7 +17,7 @@ spring:
     datasource: 
         tomcat-jdbc: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://121.43.158.136:3306/boot?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+        url: jdbc:mysql://121.43.158.136:3306/boot?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false
         username: root
         password: aaa85444
     devtools:

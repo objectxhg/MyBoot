@@ -15,18 +15,18 @@ public interface UserMapper {
 	
 	public List<User> findAll();
 	
-	@Select("select * from user where id=#{id}")
+	@Select("select * from sys_user where id=#{id}")
 	public User get(@Param("id") Integer id);
 	
-	@Insert("insert into user (name,birthday,address)"
+	@Insert("insert into sys_user (name,birthday,address)"
 			+ " values (#{name},#{birthday},#{address})")
 	public void insert(User user);
 	
-	@Update("update user "
+	@Update("update sys_user "
 			+ " set name=#{name},birthday=#{birthday},address=#{address}"
 			+ " where id=#{id}")
 	public void update(User user);
 	
-	@Delete("delete from user where id=#{id}")
+	@Delete("delete from sys_user where id=#{id}")
 	public void delete(@Param("id") Integer id);
 }
