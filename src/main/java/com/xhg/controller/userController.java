@@ -21,7 +21,8 @@ public class userController {
 	private UserService userService;
 	
 	@RequestMapping("/index")
-	public String index(){
+	public String index() throws Exception {
+		
 		return "index";
 	}
 	
@@ -38,11 +39,6 @@ public class userController {
 		return userService.get(id);
 	}
 	
-//	@RequestMapping("/get") //以前的形式
-//	public User findAll(HttpServletRequest req){
-//		Integer id = Integer.parseInt(req.getParameter("id"));
-//		return userService.get(id);
-//	}
 	
 	@PostMapping("/insert")
 	public String insert(User user){
@@ -62,16 +58,6 @@ public class userController {
 		}catch(Exception e){
 			return "update error";
 		}
-	}
-	@RequestMapping("delete/{id}")
-	public String delete(@PathVariable("id") Integer id){
-		try{
-			userService.delete(id);
-			return "delete success";
-		}catch(Exception e){
-			return "delete error";
-		}
-		
 	}
 }
 

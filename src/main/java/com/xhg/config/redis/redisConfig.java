@@ -1,4 +1,4 @@
-package com.xhg.config;
+package com.xhg.config.redis;
 
 
 import org.springframework.context.annotation.Bean;
