@@ -18,11 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 /**
- * @Package: com.jsqing.community.aop
  * @Description： aop日志打印类
- * @Author: liping404
  * @Date: Created in 2019/9/2 18:22
- * @Copyright: Copyright (c) 2019
  * @Modified By:
  */
 @Aspect

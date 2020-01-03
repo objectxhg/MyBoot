@@ -1,22 +1,37 @@
 package com.xhg;
 
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import javax.annotation.Resource;
 
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.xhg.config.rabbitMQ.Sender;
+import com.xhg.pojo.Message;
 import com.xhg.pojo.User;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = {MyBootApplication.class})
 class MyBootApplicationTests {
 	
+	@Autowired
+	private Sender sender;
 	
-	public static void main(String[] args) {
+	@Test
+	public void test2() {
 		
-		test1();
-		
+		User user = new User();
+		user.setAddress("长沙");
+		sender.send(user);
 	}
-	public static void test1() {
+	
+	
+	
+	@Test
+	public void test1() {
 		
 		User user = new User();
 		user.setId(1);
