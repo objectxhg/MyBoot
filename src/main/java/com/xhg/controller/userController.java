@@ -2,6 +2,7 @@ package com.xhg.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class userController {
 		@ApiImplicitParam(value = "页数", name = "pageNum", required = false, dataType = "int", defaultValue = "10")
 	})
 	
-	@RequestMapping("/showAll")
+	@PostMapping("/showAll")
 	public PageInfo findAll(@RequestParam(defaultValue = "0") Integer pageNum,
 							@RequestParam(defaultValue = "10") Integer pageSize){
 		
@@ -49,33 +50,13 @@ public class userController {
 		return userService.findAll(pageNum,pageSize);
 	}
 	
-	@RequestMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
+	@GetMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
 	public User findAll( Integer id){
 		System.out.println("111111111");
 		
 		return userService.get(id);
 	}
 	
-	
-	@PostMapping("/insert")
-	public String insert(User user){
-		try{
-			userService.insert(user);
-			return "insert success";
-		}catch(Exception e){
-			return "insert error";
-		}
-	}
-	
-	@RequestMapping("/update")
-	public String update(User user){
-		try{
-			userService.update(user);
-			return "update success";
-		}catch(Exception e){
-			return "update error";
-		}
-	}
 }
 
 
