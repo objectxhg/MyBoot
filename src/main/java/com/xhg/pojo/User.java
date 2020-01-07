@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel("用户实体")
+@ApiModel("用户")
 public class User implements Serializable{
 	
 	/**

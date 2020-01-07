@@ -29,17 +29,10 @@ public class userController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/index")
-	public String index() throws Exception {
-		
-		return "index";
-	}
-	
-	
 	@ApiOperation(value = "用户列表", notes = "分页查询用户列表")
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "页数", name = "pageNum", required = false, dataType = "int", defaultValue = "0"),
-		@ApiImplicitParam(value = "页数", name = "pageNum", required = false, dataType = "int", defaultValue = "10")
+		@ApiImplicitParam(value = "条数", name = "pageSize", required = false, dataType = "int", defaultValue = "10")
 	})
 	
 	@PostMapping("/showAll")
@@ -50,9 +43,12 @@ public class userController {
 		return userService.findAll(pageNum,pageSize);
 	}
 	
+	@ApiOperation(value = "获取用户信息", notes = "根据id获取单条用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "页数", name = "id", required = true, dataType = "int"),
+	})
 	@GetMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
 	public User findAll( Integer id){
-		System.out.println("111111111");
 		
 		return userService.get(id);
 	}
