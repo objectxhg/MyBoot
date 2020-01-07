@@ -7,17 +7,27 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel("用户实体")
 public class User implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	@ApiModelProperty("用户id")
 	private Integer id;
+	@ApiModelProperty(value = "用户姓名")
 	private String username;
+	@ApiModelProperty(value = "密码")
 	private String pwd;
+	@ApiModelProperty(value = "手机号")
 	private String mobile;
+	@ApiModelProperty(value = "生日")
 	private String birthday;
+	@ApiModelProperty(value = "地址")
 	private String address;
 	
 	private List<Role> roleList = new ArrayList<Role>();

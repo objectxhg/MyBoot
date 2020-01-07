@@ -10,11 +10,9 @@ import com.xhg.pojo.User;
 public class Receiver {
 	
 	
-	// queues是指要监听的队列的名字
     @RabbitListener(queues = RabbitConfig.FANOUT_QUEUE1)
     public void receiveTopic1(User user) {
         System.out.println("【receiveFanout1监听到消息】" + user);
     }
- 
-	
+    
 }

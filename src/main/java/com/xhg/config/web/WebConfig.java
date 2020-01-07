@@ -18,6 +18,6 @@ public class WebConfig extends WebMvcConfigurationSupport {
         //拦截所有upload/picture开头的请求 映射为本地路径
         registry.addResourceHandler("/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
         registry.addResourceHandler("/upload/video/**").addResourceLocations("file:///" + localUrl + "video");
-
+        
     }
 }
