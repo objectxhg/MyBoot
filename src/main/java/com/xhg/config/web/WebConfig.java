@@ -3,29 +3,42 @@ package com.xhg.config.web;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
-public class WebConfig extends WebMvcConfigurationSupport {
+@Configuration					//避免和其他组件冲突(例如：swagger2) 所以优先使用 实现 WebMvcConfigurer
+public class WebConfig implements WebMvcConfigurer { // 单独使用 继承 WebMvcConfigurationSupport没问题
 
     @Value("${upload.localUrl}")
     private String localUrl;
-
+    
     @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        super.addResourceHandlers(registry);
-        //拦截所有upload/picture开头的请求 映射为本地路径
-        registry.addResourceHandler("/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
-        registry.addResourceHandler("/upload/video/**").addResourceLocations("file:///" + localUrl + "video");
-        
-        /**
-         * 只有使用swagger原生的UI 才需要如下配置
-         */
-        // 解决 swagger-ui.html 404报错
-        //registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        // 解决 doc.html 404 报错
-        //registry.addResourceHandler("/docs.html").addResourceLocations("classpath:/META-INF/resources/");
-        
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	     
+	      registry.addResourceHandler("/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
+	      registry.addResourceHandler("/upload/video/**").addResourceLocations("file:///" + localUrl + "video");
+	      
+	      /**
+	       * 只有使用swagger2原生的UI 才需要如下配置
+	       */
+	      //registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+	      //registry.addResourceHandler("/docs.html").addResourceLocations("classpath:/META-INF/resources/");
+    	
     }
+    
+//	  @Override
+//  protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+//      super.addResourceHandlers(registry);
+//      //拦截所有upload/picture开头的请求 映射为本地路径
+//      registry.addResourceHandler("/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
+//      registry.addResourceHandler("/upload/video/**").addResourceLocations("file:///" + localUrl + "video");
+//      
+//      /**
+//       * 只有使用swagger原生的UI 才需要如下配置
+//       */
+//      registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+//      registry.addResourceHandler("/docs.html").addResourceLocations("classpath:/META-INF/resources/");
+//      
+//  }
+    
 }

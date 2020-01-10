@@ -30,9 +30,9 @@ public class userController {
 	private UserService userService;
 	
 	@ApiOperation(value = "用户列表", notes = "分页查询用户列表")
-	@ApiImplicitParams({
-		@ApiImplicitParam(value = "页数", name = "pageNum", required = false, dataType = "int", defaultValue = "0"),
-		@ApiImplicitParam(value = "条数", name = "pageSize", required = false, dataType = "int", defaultValue = "10")
+	@ApiImplicitParams({																		//paramType：表示参数放在哪个地方		
+		@ApiImplicitParam(value = "页数", name = "pageNum", required = false,  dataType = "int", paramType = "query", defaultValue = "0"),
+		@ApiImplicitParam(value = "条数", name = "pageSize", required = false, dataType = "int", paramType = "query", defaultValue = "10")
 	})
 	
 	@PostMapping("/showAll")

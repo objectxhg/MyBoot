@@ -1,5 +1,10 @@
 package com.xhg;
 
+import java.io.BufferedInputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -13,12 +18,31 @@ import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Message;
 import com.xhg.pojo.User;
 
+import javazoom.jl.decoder.Bitstream;
+import javazoom.jl.decoder.Header;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MyBootApplication.class})
 class MyBootApplicationTests {
 	
 	@Autowired
 	private Sender sender;
+	
+	
+	@Test
+	public void test3() throws Exception {
+		
+		URL urlfile = new URL("http://jsqing.cn/MarriageLawServiceDocument/Upload/Contract/File/044_20190509155939.mp3");
+		//File file = new File("C:\\music\\test2.mp3");
+		//URL urlfile = file.toURI().toURL();
+		URLConnection con = urlfile.openConnection();
+		int b = con.getContentLength();// 得到音乐文件的总长度
+		BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+		Bitstream bt = new Bitstream(bis);
+		Header h = bt.readFrame();
+		int time = (int) h.total_ms(b);
+		System.out.println(time / 1000);
+	}
 	
 	@Test
 	public void test2() {
