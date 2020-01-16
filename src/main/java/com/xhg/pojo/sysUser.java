@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("用户")
-public class User implements Serializable{
+public class sysUser implements Serializable{
 	
 	/**
 	 * 

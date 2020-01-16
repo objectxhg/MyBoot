@@ -16,10 +16,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Message;
-import com.xhg.pojo.User;
+import com.xhg.pojo.sysUser;
 
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.Header;
+import junit.framework.Assert;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MyBootApplication.class})
@@ -31,7 +32,6 @@ class MyBootApplicationTests {
 	
 	@Test
 	public void test3() throws Exception {
-		
 		URL urlfile = new URL("http://jsqing.cn/MarriageLawServiceDocument/Upload/Contract/File/044_20190509155939.mp3");
 		//File file = new File("C:\\music\\test2.mp3");
 		//URL urlfile = file.toURI().toURL();
@@ -47,7 +47,7 @@ class MyBootApplicationTests {
 	@Test
 	public void test2() {
 		
-		User user = new User();
+		sysUser user = new sysUser();
 		user.setAddress("长沙");
 		sender.send(user);
 	}
@@ -57,7 +57,7 @@ class MyBootApplicationTests {
 	@Test
 	public void test1() {
 		
-		User user = new User();
+		sysUser user = new sysUser();
 		user.setId(1);
 		user.setMobile("15573679072");
 		user.setPwd("123456");
@@ -76,7 +76,7 @@ class MyBootApplicationTests {
 		String jsonString = "{\"birthday\":"
 				+ "\"2018-08-17 14:38:38\",\"id\":11,\"address\":\"湖南常德\"}";
 	
-		User userJson = JSON.parseObject(jsonString, User.class);
+		sysUser userJson = JSON.parseObject(jsonString, sysUser.class);
 		
 		System.out.println(userJson);
 	}

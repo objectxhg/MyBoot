@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
-import com.xhg.pojo.User;
+import com.xhg.pojo.sysUser;
 import com.xhg.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -48,7 +48,7 @@ public class userController {
 		@ApiImplicitParam(value = "页数", name = "id", required = true, dataType = "int"),
 	})
 	@GetMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
-	public User findAll( Integer id){
+	public sysUser findAll( Integer id){
 		
 		return userService.get(id);
 	}
