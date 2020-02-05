@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)  // 属性为 空（“”） 或者为 NULL 都不序列化 
 //@JsonInclude(JsonInclude.Include.NON_NULL) // 属性为NULL 不序列化
+@SuppressWarnings("all")
 public class JsonResult<T> {
 	
 	private static final Boolean ERROR = Boolean.FALSE; 
@@ -43,6 +44,21 @@ public class JsonResult<T> {
     }
     
     
+	public static JsonResult success(Object data) {
+		
+    	return new JsonResult(SUCCESS, data);
+    }
+	
+	public static JsonResult success(String message) {
+		
+    	return new JsonResult(SUCCESS, message);
+    }
+	
+	public static JsonResult fail(String message) {
+		
+    	return new JsonResult(ERROR, message);
+    }
+	
     
 	public Boolean getState() {
 		return state;
