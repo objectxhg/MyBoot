@@ -8,26 +8,26 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.xhg.pojo.User;
+import com.xhg.pojo.sysUser;
 
 
-public interface UserMapper {
+public interface SysUserMapper {
 	
-	public User selectUserById(Integer id);
+	public sysUser selectUserById(Integer id);
 	
-	public List<User> findAll();
+	public List<sysUser> findAll();
 	
 	@Select("select * from sys_user where id=#{id}")
-	public User get(@Param("id") Integer id);
+	public sysUser get(@Param("id") Integer id);
 	
 	@Insert("insert into sys_user (name,birthday,address)"
 			+ " values (#{name},#{birthday},#{address})")
-	public void insert(User user);
+	public void insert(sysUser user);
 	
 	@Update("update sys_user "
 			+ " set name=#{name},birthday=#{birthday},address=#{address}"
 			+ " where id=#{id}")
-	public void update(User user);
+	public void update(sysUser user);
 	
 	@Delete("delete from sys_user where id=#{id}")
 	public void delete(@Param("id") Integer id);
