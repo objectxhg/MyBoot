@@ -4,10 +4,14 @@ import java.io.BufferedInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,18 +21,32 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Message;
 import com.xhg.pojo.sysUser;
+import com.xhg.threadPool.service.AsyncTaskService;
 
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.Header;
-import junit.framework.Assert;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MyBootApplication.class})
-class MyBootApplicationTests {
+public class MyBootApplicationTests {
 	
 	@Autowired
 	private Sender sender;
 	
+	@Autowired
+    private AsyncTaskService asyncTaskService;
+	
+	
+	@Test
+    public void contextLoads() {
+    }
+	 
+	@Test
+    public void threadTest() {
+        for (int i = 0; i < 20; i++) {
+            asyncTaskService.executeAsyncTask(i);
+        }
+    }
 	
 	@Test
 	public void test3() throws Exception {
@@ -44,16 +62,29 @@ class MyBootApplicationTests {
 		System.out.println(time / 1000);
 	}
 	
+	// Java8 stream测试demo
+	@Test
+	public void test4() {
+		
+		String[] arrStr = {"1","2","3","4","5"};
+							 //Arrays.stream(arrStr);
+		List<Integer> list = Stream.of(arrStr).map(Integer::parseInt).collect(Collectors.toList());
+		System.out.println(list);
+		
+	}
+	
+	//RabbitMQ测试demo
 	@Test
 	public void test2() {
 		
 		sysUser user = new sysUser();
 		user.setAddress("长沙");
+		user.setUsername("蜘蛛侠");
 		sender.send(user);
 	}
 	
 	
-	
+	// fastjson测试demo
 	@Test
 	public void test1() {
 		

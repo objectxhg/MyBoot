@@ -20,8 +20,10 @@ public class RabbitConfig {
     public static final String TOPIC_EXCHANGE = "topic.exchange";
  
     //fanout
-    public static final String FANOUT_QUEUE1 = "queues_demo";
+    //Queue 1和2
+    public static final String FANOUT_QUEUE1 = "ququDemo";
     public static final String FANOUT_QUEUE2 = "fanout.queue2";
+    //Exchange
     public static final String FANOUT_EXCHANGE = "F-exchange";
  
     //redirect模式

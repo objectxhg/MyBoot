@@ -15,6 +15,6 @@ public class Sender {
     private AmqpTemplate rabbitTemplate;
  
     public void send(sysUser user) {
-        this.rabbitTemplate.convertAndSend("F-exchange", "Routingkey_demo", user);
+        this.rabbitTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
     }
 }

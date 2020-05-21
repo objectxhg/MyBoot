@@ -17,7 +17,7 @@ public class GlobalException {
 	@ResponseBody
 	public JsonResult resultException(Exception e){
 		//e.printStackTrace();
-		return new JsonResult(e);
+		return JsonResult.fail(e.getMessage());
 		
 	}
 }
