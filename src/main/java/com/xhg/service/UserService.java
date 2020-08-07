@@ -8,12 +8,12 @@ public interface UserService {
 	
 public PageInfo findAll(Integer pageNum, Integer pageSize);
 	
-	public sysUser get(Integer id);
+	 sysUser get(Integer id);
 	
-	public void insert(sysUser user);
+	 void insert(sysUser user);
 	
-	public void update(sysUser user);
+	 void update(sysUser user);
 	
-	public void delete(Integer id);
+	 void delete(Integer id);
 	
 }

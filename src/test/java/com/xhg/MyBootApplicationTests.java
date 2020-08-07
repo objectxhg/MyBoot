@@ -1,16 +1,13 @@
 package com.xhg;
 
 import java.io.BufferedInputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Resource;
-
+import com.xhg.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xhg.config.rabbitMQ.Sender;
-import com.xhg.pojo.Message;
 import com.xhg.pojo.sysUser;
 import com.xhg.threadPool.service.AsyncTaskService;
 
@@ -35,8 +31,11 @@ public class MyBootApplicationTests {
 	
 	@Autowired
     private AsyncTaskService asyncTaskService;
-	
-	
+
+	@Autowired
+	private RedisUtil redisUtil;
+
+
 	@Test
     public void contextLoads() {
     }
@@ -65,7 +64,7 @@ public class MyBootApplicationTests {
 	// Java8 stream测试demo
 	@Test
 	public void test4() {
-		
+
 		String[] arrStr = {"1","2","3","4","5"};
 							 //Arrays.stream(arrStr);
 		List<Integer> list = Stream.of(arrStr).map(Integer::parseInt).collect(Collectors.toList());
@@ -104,12 +103,18 @@ public class MyBootApplicationTests {
 		
 		System.out.println(userStr);
 		
-		String jsonString = "{\"birthday\":"
-				+ "\"2018-08-17 14:38:38\",\"id\":11,\"address\":\"湖南常德\"}";
+		String jsonString = "{\"birthday\":\"2018-08-17 14:38:38\",\"id\":11,\"address\":\"湖南常德\"}";
 	
 		sysUser userJson = JSON.parseObject(jsonString, sysUser.class);
 		
 		System.out.println(userJson);
 	}
 
+	@Test
+    public void  redisTest(){
+
+		String number = JSON.toJSONString(redisUtil.get("number"));
+		System.out.println("-------> number:" + number);
+		System.out.println("-------> incrbyKey:" + redisUtil.incrbyKey("number"));
+    }
 }

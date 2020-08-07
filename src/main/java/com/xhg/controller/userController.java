@@ -3,7 +3,6 @@ package com.xhg.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +47,7 @@ public class userController {
 		@ApiImplicitParam(value = "页数", name = "id", required = true, dataType = "int"),
 	})
 	@GetMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
-	public sysUser findAll( Integer id){
+	public sysUser findAll(Integer id){
 		
 		return userService.get(id);
 	}

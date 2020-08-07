@@ -2,11 +2,7 @@ package com.xhg.pojo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
