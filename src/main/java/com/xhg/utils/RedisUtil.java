@@ -22,13 +22,24 @@ public class RedisUtil {
 	 * @param key decr -1
 	 * @return
 	 */
-	public long decrbyKey(String key){
-		System.out.println(key);
-		Long decrement = redisTemplate.opsForValue().decrement(key);
-		if (null == decrement){
-			System.out.println("报错了？" + decrement);
+	public boolean decrbyKey(String key){
+		boolean flag = false;
+		try {
+			Long decrement = redisTemplate.opsForValue().decrement(key);
+
+			Thread.sleep(5000);
+
+			flag = true;
+
+			return flag;
+		}catch (Exception e){
+			e.printStackTrace();
+		}finally {
+			System.out.println("报错了，执行finally");
+			return  flag;
 		}
-		return decrement;
+
+
 	}
 
 	/**

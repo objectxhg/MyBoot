@@ -33,7 +33,7 @@ spring:
       host: 121.43.158.136
       prot: 6379
       password: redis85444 
-      timeout: 1000
+      timeout: 4000
       database: 0
     datasource: 
         tomcat-jdbc: com.alibaba.druid.pool.DruidDataSource

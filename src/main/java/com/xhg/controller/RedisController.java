@@ -27,9 +27,9 @@ public class RedisController {
     private RedisServiceImpl redisServiceImpl;
 
     @RequestMapping("/redis/setNum/{key}/{num}")
-    public String redisSet(@PathVariable("num") String keyStr, @PathVariable("num") String num){
-
-        if(redisUtil.set(keyStr, num)){
+    public String redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
+        System.out.println(keyStr);
+        if(redisUtil.set(keyStr, Integer.parseInt(num))){
             return "进货成功";
         }
         return "进货失败";
@@ -39,17 +39,11 @@ public class RedisController {
     @RequestMapping("/redis/shoping/{key}")
     public String redisSeckill(@PathVariable("key") String keyStr){
 
-        try {
-            Long stockNum = redisServiceImpl.redisIncrBy(keyStr);
-            if(stockNum > 0L){
-                return "购买成功";
-            }
-            return "库存不足";
-        }catch (Exception e){
-            return "当前下单人数过多，请稍后重试";
+        if(redisServiceImpl.redisIncrBy(keyStr)){
+            return "购买成功";
         }
 
-
+        return "当前下单人数过多，请稍后重试";
     }
 
 }
