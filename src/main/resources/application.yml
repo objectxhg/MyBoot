@@ -23,8 +23,9 @@ spring:
       cache: 
         connection: 
           mode: channel
-    redis: 
-      jedis: 
+    redis:
+      lettuce:
+        shutdown-timeout: 100
         pool: 
           max-active: 10
           max-wait: -1

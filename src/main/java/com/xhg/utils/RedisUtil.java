@@ -1,5 +1,6 @@
 package com.xhg.utils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Component
-@Transactional
+//@Transactional
 public class RedisUtil {
 	
 	
@@ -23,20 +24,20 @@ public class RedisUtil {
 	 * @return
 	 */
 	public boolean decrbyKey(String key){
-		boolean flag = false;
+		boolean flag = true;
+		redisTemplate.watch(key);
+		redisTemplate.multi();
 		try {
 			Long decrement = redisTemplate.opsForValue().decrement(key);
-
 			Thread.sleep(5000);
-
-			flag = true;
-
-			return flag;
 		}catch (Exception e){
 			e.printStackTrace();
 		}finally {
-			System.out.println("报错了，执行finally");
-			return  flag;
+			List<Object> execList = redisTemplate.exec();
+			if(execList.size() <= 0){
+				flag = false;
+			}
+			return flag;
 		}
 
 
