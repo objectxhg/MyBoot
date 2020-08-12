@@ -115,6 +115,6 @@ public class MyBootApplicationTests {
 
 		String number = JSON.toJSONString(redisUtil.get("number"));
 		System.out.println("-------> number:" + number);
-		System.out.println("-------> incrbyKey:" + redisUtil.incrbyKey("number"));
+		System.out.println("-------> incrbyKey:" + redisUtil.incr("number"));
     }
 }

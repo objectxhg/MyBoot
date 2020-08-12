@@ -11,27 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Component
-//@Transactional
 public class RedisUtil {
 	
 	
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	/**
-	 *
-	 * @param key decr -1
-	 * @return
-	 */
-	public boolean decrbyKey(String key){
+	public boolean decr(String key){
 		boolean flag = true;
-		redisTemplate.watch(key);
-		redisTemplate.multi();
 		try {
+			redisTemplate.watch(key);
+			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().decrement(key);
+			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
 			Thread.sleep(5000);
 		}catch (Exception e){
-			e.printStackTrace();
+			throw new Exception("redis-watch-fail");
 		}finally {
 			List<Object> execList = redisTemplate.exec();
 			if(execList.size() <= 0){
@@ -40,36 +35,65 @@ public class RedisUtil {
 			return flag;
 		}
 
+	}
+
+	public boolean decr(String key, long number){
+		boolean flag = true;
+		try {
+			redisTemplate.watch(key);
+			redisTemplate.multi();
+			Long decrement = redisTemplate.opsForValue().decrement(key, number);
+			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
+			Thread.sleep(5000);
+		}catch (Exception e){
+			throw new Exception("redis-watch-fail");
+		}finally {
+			List<Object> execList = redisTemplate.exec();
+			if(execList.size() <= 0) {
+				flag = false;
+			}
+			return flag;
+		}
+	}
+
+	public boolean incr(String key){
+		boolean flag = true;
+		try {
+			redisTemplate.watch(key);
+			redisTemplate.multi();
+			Long decrement = redisTemplate.opsForValue().increment(key);
+			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
+			Thread.sleep(5000);
+		}catch (Exception e){
+			throw new Exception("redis-watch-fail");
+		}finally {
+			List<Object> execList = redisTemplate.exec();
+			if(execList.size() <= 0) {
+				flag = false;
+			}
+			return flag;
+		}
 
 	}
 
-	/**
-	 *
-	 * @param key
-	 * @param number decr - number
-	 * @return
-	 */
-	public long decrbyKey(String key, long number){
+	public boolean incr(String key, long number){
+		boolean flag = true;
+		try {
+			redisTemplate.watch(key);
+			redisTemplate.multi();
+			Long decrement = redisTemplate.opsForValue().increment(key, number);
+			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
+			Thread.sleep(5000);
+		}catch (Exception e){
+			throw new Exception("redis-watch-fail");
+		}finally {
+			List<Object> execList = redisTemplate.exec();
+			if(execList.size() <= 0) {
+				flag = false;
+			}
+			return flag;
+		}
 
-		return redisTemplate.opsForValue().decrement(key, number);
-	}
-	/**
-	 * @param key  incr +1
-	 * @return
-	 */
-	public long incrbyKey(String key){
-
-		return redisTemplate.opsForValue().increment(key);
-	}
-
-	/**
-	 * @param key
-	 * @param number  incr +number
-	 * @return
-	 */
-	public long incrbyKey(String key, long number){
-
-		return redisTemplate.opsForValue().increment(key, number);
 	}
 	
 	public boolean expire(String key, long time) {
