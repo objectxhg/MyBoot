@@ -1,5 +1,6 @@
 package com.xhg.controller;
 
+import com.xhg.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 @SuppressWarnings("all")
 @RequestMapping("/user")
 @Api(value = "用户模块", tags = "用户模块")
-public class userController {
+public class UserController {
 	
 	@Autowired
 	private UserService userService;
@@ -51,7 +52,16 @@ public class userController {
 		
 		return userService.get(id);
 	}
-	
+
+	@RequestMapping("/addUserIntegral")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
+	public JsonResult addUserIntegral(Integer id){
+		Integer state = userService.addUserIntegral(id);
+		if(state != 1){
+			return JsonResult.fail("增加失败");
+		}
+		return JsonResult.success("增加成功");
+	}
+
 }
 
 

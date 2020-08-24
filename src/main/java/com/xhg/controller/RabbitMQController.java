@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class rabbitMQController {
+@RequestMapping("/mp")
+public class RabbitMQController {
 
     @Autowired Sender sender;
 
-    @RequestMapping("/test/mq/{hello}")
+    @RequestMapping("/addOrder/{userId}/{hello}")
     public String mqTest(@PathVariable("hello") String hello){
 
         sysUser user = new sysUser();
         user.setId(1);
         user.setUsername(hello);
         sender.send(user);
-        return "发送成功";
+        return "已发送等待消费.....";
     }
 }

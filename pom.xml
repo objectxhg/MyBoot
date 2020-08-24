@@ -22,6 +22,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- BouncyCastleProvider 解密微信用户手机号信息密文 解密 -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.59</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

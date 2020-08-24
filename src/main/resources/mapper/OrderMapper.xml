@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhg.mapper.OrderMapper" >
+
+	<resultMap id="OrderResultMap" type="com.xhg.pojo.Order">
+		<id column="order_id" property="orderId"/>
+		<result column="user_id" property="userId"/>
+		<result column="order_describe" property="orderDescribe"/>
+	</resultMap>
+
+	<sql id="orderColumn">
+    	(order_id, user_id, order_describe)
+	</sql>
+
+	<insert id="createOrder" parameterType="com.xhg.pojo.Order">
+   			insert into userOrder (
+   			user_id,order_describe
+   			)
+   			 values
+   			 (#{userId},#{orderDescribe})
+   	</insert>
+
+	<select id="selectOrder" resultType="com.xhg.pojo.Order">
+		select <include refid="orderColumn"/> from userOrder
+	</select>
+
+
+
+</mapper>

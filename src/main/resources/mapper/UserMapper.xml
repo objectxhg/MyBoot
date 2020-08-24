@@ -3,36 +3,38 @@
 <mapper namespace="com.xhg.mapper.SysUserMapper" >
 
 	<resultMap id="UserResultMap" type="com.xhg.pojo.sysUser">
-                <id column="id" property="id"/>                 
-                <result column="username" property="username"/>    
-                <result column="pwd" property="pwd"/>    
+                <id column="id" property="id"/>
+                <result column="username" property="username"/>
+                <result column="pwd" property="pwd"/>
                 <result column="mobile" property="mobile"/>
                 <result column="birthday" property="birthday"/>
-                <result column="address" property="address"/>    
-                
-        <collection property="roleList"  ofType="com.xhg.pojo.Role" 
+                <result column="address" property="address"/>
+				<result column="integral" property="integral"/>
+
+
+        <collection property="roleList"  ofType="com.xhg.pojo.Role"
         	select="selectUserRole" column="{userId=id}">
-        	
+
         </collection>
-        
+
    	</resultMap>
    	
    	<select id="selectUserRole" resultType="com.xhg.pojo.Role">
-   		select role.* from 
-   			sys_user_role userRole join sys_role role 
+   		select role.* from
+   			sys_user_role userRole join sys_role role
    			on  userRole.roleId = role.id
-   		where 
+   		where
    			userRole.userId = #{userId}
    	</select>
-   	
+
    	<select id="selectUserById"  resultMap="UserResultMap">
    		select * from sys_user where id = #{id}
    	</select>
-   	
+
    	<select id="findAll"  resultMap="UserResultMap">
    		select * from sys_user
    	</select>
-   	
+
    	<insert id="addUser" parameterType="com.xhg.pojo.sysUser">
    			insert into sys_user (
    			name,birthday,address
@@ -40,5 +42,8 @@
    			 values
    			 (#{name},#{birthday}#{address})
    	</insert>
-   	
+
+	<update id="incrUserIntegral" parameterType="integer">
+		update sys_user set integral = integral + 1  where id = #{userId}
+	</update>
 </mapper>

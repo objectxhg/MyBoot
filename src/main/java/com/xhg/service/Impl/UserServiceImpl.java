@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService{
 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
 		List<sysUser> list = sysUserMapper.findAll();
+		System.out.println(list);
 		PageInfo<sysUser> pagelist = PageInfo.of(list);
 		return pagelist;
 	}
@@ -67,5 +68,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void delete(Integer id) {
 		sysUserMapper.delete(id);
+	}
+
+	@Override
+	public Integer addUserIntegral(Integer userId) {
+
+		return sysUserMapper.incrUserIntegral(userId);
 	}
 }

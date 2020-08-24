@@ -31,4 +31,6 @@ public interface SysUserMapper {
 	
 	@Delete("delete from sys_user where id=#{id}")
 	public void delete(@Param("id") Integer id);
+
+	Integer incrUserIntegral (Integer userId);
 }
