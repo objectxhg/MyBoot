@@ -6,21 +6,22 @@
 		<id column="order_id" property="orderId"/>
 		<result column="user_id" property="userId"/>
 		<result column="order_describe" property="orderDescribe"/>
+		<result column="order_updateTime" property="orderUpdateTime"/>
 	</resultMap>
 
 	<sql id="orderColumn">
-    	(order_id, user_id, order_describe)
+    	order_id, user_id, order_describe,order_updateTime
 	</sql>
 
 	<insert id="createOrder" parameterType="com.xhg.pojo.Order">
    			insert into userOrder (
-   			user_id,order_describe
+   			user_id, order_describe, order_updateTime
    			)
    			 values
-   			 (#{userId},#{orderDescribe})
+   			 (#{userId},#{orderDescribe},#{orderUpdateTime})
    	</insert>
 
-	<select id="selectOrder" resultType="com.xhg.pojo.Order">
+	<select id="selectOrder" resultMap="OrderResultMap">
 		select <include refid="orderColumn"/> from userOrder
 	</select>
 

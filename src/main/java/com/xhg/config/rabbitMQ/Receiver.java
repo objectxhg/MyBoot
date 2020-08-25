@@ -1,5 +1,6 @@
 package com.xhg.config.rabbitMQ;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
 
@@ -14,6 +15,8 @@ import com.xhg.pojo.sysUser;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 
 @Component
@@ -29,19 +32,45 @@ public class Receiver {
 
 
     @RabbitHandler
-    @RabbitListener(queues = RabbitConfig.FANOUT_QUEUE1)
-    public void receiveTopic1(sysUser user, Channel channel, Message message) throws IOException {
-        System.out.println("【receiveFanout1监听到消息,开始消费......】-----> " + user);
+    @RabbitListener(queues = "ququDemo")
+    public void receiveTopic1(sysUser user, Channel channel, Message message) throws Exception {
+        System.out.println("【ququDemo正常队列 监听到消息,开始消费......】-----> " + user);
 
+        // 获取消息Id，用消息ID做业务判断
+        String messageId = message.getMessageProperties().getMessageId();
+        String content = new String(message.getBody(), "UTF-8");
         try {
+
+            //模拟处理消息产生异常
+            int i = 1/0;
             Integer state = userService.addUserIntegral(user.getId());
             if(state == 1){
-                System.out.println("---------->消费成功 购物积分已增加");
+                System.out.println("【ququDemo正常队列】-----> 消费成功 购物积分已增加");
             }
+
         }catch (Exception e){
-            channel.basicAck(message.getMessageProperties().getDelay(), false);
-            System.out.println("---------->消费失败");
+            System.out.println("【ququDemo正常队列】-----> 消费失败：拒收消息");
+
+            //拒收消息
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(),false, false);
+            // 手动签收消息已消费
+            //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
+
     }
-    
+
+
+    public long getRetryCount(AMQP.BasicProperties properties){
+        long retryCount = 0L;
+        Map<String,Object> header = properties.getHeaders();
+        if(header != null && header.containsKey("x-death")){
+            List<Map<String,Object>> deaths = (List<Map<String,Object>>)header.get("x-death");
+            if(deaths.size()>0){
+                Map<String,Object> death = deaths.get(0);
+                retryCount = (Long)death.get("count");
+            }
+        }
+        return retryCount;
+    }
+
 }

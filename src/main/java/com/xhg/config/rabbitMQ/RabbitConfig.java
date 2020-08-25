@@ -8,8 +8,12 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RabbitConfig {
@@ -24,7 +28,7 @@ public class RabbitConfig {
     public static final String FANOUT_QUEUE1 = "ququDemo";
     public static final String FANOUT_QUEUE2 = "fanout.queue2";
     //Exchange
-    public static final String FANOUT_EXCHANGE = "F-exchange";
+    public static final String FANOUT_EXCHANGE = "exchangeDemo";
  
     //redirect模式
     public static final String DIRECT_QUEUE1 = "direct.queue1";
@@ -69,13 +73,18 @@ public class RabbitConfig {
      */
     @Bean
     public Queue fanoutQueue1() {
-        return new Queue(FANOUT_QUEUE1);
+        Map<String, Object> args = new HashMap<>(2);
+        //交换机标识符
+        args.put("x-dead-letter-exchange", "DeadExchange");
+        //绑定键标识符
+        args.put("x-dead-letter-routing-key", "DirectRouting");
+        Queue queue = new Queue(FANOUT_QUEUE1, true, false, false, args);
+        return queue;
+        //return new Queue(FANOUT_QUEUE1);
     }
- 
+
     @Bean
-    public Queue fanoutQueue2() {
-        return new Queue(FANOUT_QUEUE2);
-    }
+    public Queue fanoutQueue2() { return new Queue(FANOUT_QUEUE2); }
  
     @Bean
     public FanoutExchange fanoutExchange() {
@@ -83,15 +92,13 @@ public class RabbitConfig {
     }
  
     @Bean
-    public Binding fanoutBinding1() {
-        return BindingBuilder.bind(fanoutQueue1()).to(fanoutExchange());
-    }
- 
+    public Binding fanoutBinding1() { return BindingBuilder.bind(fanoutQueue1()).to(fanoutExchange()); }
+
     @Bean
-    public Binding fanoutBinding2() {
-        return BindingBuilder.bind(fanoutQueue2()).to(fanoutExchange());
-    }
- 
+    public Binding fanoutBinding2() { return BindingBuilder.bind(fanoutQueue2()).to(fanoutExchange()); }
+
+
+
     /**
      * direct模式
      * 消息中的路由键（routing key）如果和 Binding 中的 binding key 一致， 交换器就将消息发到对应的队列中。路由键与队列名完全匹配
@@ -108,8 +115,31 @@ public class RabbitConfig {
     }
  
     @Bean
-    public Binding directBinding1() {
-        return BindingBuilder.bind(directQueue1()).to(directExchange()).with("direct.pwl");
+    public Binding directBinding1() { return BindingBuilder.bind(directQueue1()).to(directExchange()).with("direct.pwl"); }
+
+    /**
+     * 死信队列
+     *
+     * @return
+     */
+    @Bean
+    public Queue DeadQueue() {
+
+        return new Queue("DeadQueue", true);
     }
 
+    @Bean
+    public DirectExchange DeadExchange() { return new DirectExchange("DeadExchange"); }
+
+    @Bean
+    public Binding bindingDead() { return BindingBuilder.bind(DeadQueue()).to(DeadExchange()).with("DirectRouting"); }
+
+//    @Bean
+//    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+//        // 消息发送失败返回到队列中, 配置文件需要配置 publisher-returns: true
+//        rabbitTemplate.setMandatory(true);
+//
+//        return rabbitTemplate;
+//    }
 }

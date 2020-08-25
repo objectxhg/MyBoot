@@ -2,8 +2,11 @@ package com.xhg.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)  // 属性为 空（“”） 或者为 NULL 都不序列化 
-//@JsonInclude(JsonInclude.Include.NON_NULL) // 属性为NULL 不序列化
+/**
+ * @JsonInclude(JsonInclude.Include.NON_NULL) // 属性为NULL 不序列化
+ * @param <T>
+ */
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)  // 属性为 空（“”） 或者为 NULL 都不序列化
 @SuppressWarnings("all")
 public class JsonResult<T> {
 	

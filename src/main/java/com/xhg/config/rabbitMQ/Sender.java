@@ -16,4 +16,6 @@ public class Sender {
     public void send(sysUser user) {
         this.rabbitTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
     }
+
+
 }

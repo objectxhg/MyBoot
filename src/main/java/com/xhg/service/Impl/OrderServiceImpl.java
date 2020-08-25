@@ -6,6 +6,9 @@ import com.xhg.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer addOrder(Order order) {
+        order.setOrderUpdateTime(new Date());
         return orderMapper.createOrder(order);
     }
 
