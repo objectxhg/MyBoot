@@ -35,5 +35,7 @@ SpringBoot2.0 + redis5.0 + rabbitMQ
    
    原文链接：https://paogg.cn
    一个初坑的小白程序员希望能帮到大家
+   有错误的地方欢迎大家来指导0.0 
+   微信号：wxid_8rpo91orc80k22
 
   
