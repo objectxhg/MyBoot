@@ -50,12 +50,12 @@ public class MyBootApplicationTests {
     public void contextLoads() {
     }
 	 
-	@Test
-    public void threadTest() {
-        for (int i = 0; i < 20; i++) {
-            asyncTaskService.executeAsyncTask(i);
-        }
-    }
+//	@Test
+//    public void threadTest() {
+//        for (int i = 0; i < 20; i++) {
+//            asyncTaskService.executeAsyncTask(i);
+//        }
+//    }
 	
 	@Test
 	public void test3() throws Exception {

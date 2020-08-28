@@ -59,18 +59,4 @@ public class Receiver {
 
     }
 
-
-    public long getRetryCount(AMQP.BasicProperties properties){
-        long retryCount = 0L;
-        Map<String,Object> header = properties.getHeaders();
-        if(header != null && header.containsKey("x-death")){
-            List<Map<String,Object>> deaths = (List<Map<String,Object>>)header.get("x-death");
-            if(deaths.size()>0){
-                Map<String,Object> death = deaths.get(0);
-                retryCount = (Long)death.get("count");
-            }
-        }
-        return retryCount;
-    }
-
 }

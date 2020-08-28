@@ -77,7 +77,7 @@ public class RabbitConfig {
         //交换机标识符
         args.put("x-dead-letter-exchange", "DeadExchange");
         //绑定键标识符
-        args.put("x-dead-letter-routing-key", "DirectRouting");
+            args.put("x-dead-letter-routing-key", "DirectRouting");
         Queue queue = new Queue(FANOUT_QUEUE1, true, false, false, args);
         return queue;
         //return new Queue(FANOUT_QUEUE1);

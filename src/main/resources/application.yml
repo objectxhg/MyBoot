@@ -25,7 +25,7 @@ spring:
           mode: channel
     redis:
       prot: 6379
-
+      #host: localhost
       host: localhost
       password: redis85444
       timeout: 10000
@@ -56,10 +56,12 @@ mybatis:
     ##\u5B9E\u4F53\u7C7B\u8DEF\u5F84
     typeAliasesPackage: com.xhg.pojo
     mapperLocations: classpath:mapper/*.xml
-    
-logging: 
+
+logging:
+
     level:
       com.xhg.mapper: debug
+    config: classpath:logging-log4j2.yml
         
 pagehelper:
   helperDialect: mysql
