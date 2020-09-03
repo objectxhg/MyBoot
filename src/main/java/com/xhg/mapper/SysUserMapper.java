@@ -33,4 +33,6 @@ public interface SysUserMapper {
 	public void delete(@Param("id") Integer id);
 
 	Integer incrUserIntegral (Integer userId);
+
+	Integer updateName(@Param("name") String name, @Param("id") Integer id);
 }

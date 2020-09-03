@@ -1,10 +1,9 @@
 package com.xhg.aop;
 
+import com.xhg.pojo.Order;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.VoiceStatus;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Description： aop日志打印类
@@ -24,42 +25,47 @@ import java.util.Arrays;
  */
 @Aspect
 @Component
+@SuppressWarnings("all")
 public class MethodParamsAop {
-	
-	//@Autowired SessionToken token;
-	
-    private static final Logger LOG = LoggerFactory.getLogger(MethodParamsAop.class);
 
-    @Pointcut("execution(public * com.jsqing.community.controller..*(..))")
-    public void webLog() {
+
+    @Pointcut(value = "execution(* com.xhg.service.Impl.OrderServiceImpl.orderList(..))")
+    public void BrokerAspect() {
     }
 
-    @Before("webLog()")
-    public void before(JoinPoint joinPoint) {
-        // 接收到请求，记录请求内容
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        assert attributes != null;
-        HttpServletRequest request = attributes.getRequest();
-        
-        LOG.info("请求开始 : request:{ url: " + request.getRequestURL().toString() + ", ip: " + request.getRemoteAddr() + ", method: " + joinPoint.getSignature().getName() + ", params: " + Arrays.toString(joinPoint.getArgs()) + " }");
-        
-        String url = "ajaxLogin|code|regUser|loginUser|getToken";
-        String str = request.getRequestURI();
-        
-        str = str.substring(str.lastIndexOf("/")+1,str.length());
-        System.out.println("-----------------> " + url.indexOf(str));
-		/*
-		 * if(url.indexOf(str) == -1) {
-		 * token.getUserBySessionToken(request.getParameter("sessionToken")); }else {
-		 * 
-		 * }
-		 */
+
+    @Before("BrokerAspect()")
+    public void doBeforeGame(){
+        System.out.println("-----> Before");
     }
-    
-    @AfterReturning(returning = "ret", pointcut = "webLog()")
-    public void doAfterReturning(Object ret) {
-        // 处理完请求，返回内容
-        LOG.error("请求结束 : response:" + ret);
+
+    @Around("BrokerAspect()")
+    public List<Order> AroundGame(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("-----> Around1");
+        List<Order> list = (List<Order>) joinPoint.proceed();
+
+        System.out.println("-----> Around2");
+
+        return list;
     }
+
+
+    @After("BrokerAspect()")
+    public void doAfterGame(){
+        System.out.println("-----> After");
+    }
+
+
+    @AfterReturning("BrokerAspect()")
+    public void doAfterReturningGame(){
+        System.out.println("-----> AfterReturning");
+    }
+
+    @AfterThrowing("BrokerAspect()")
+    public void doAfterThrowingGame(){
+        System.out.println("-----> AfterThrowing");
+    }
+
+
 
 }

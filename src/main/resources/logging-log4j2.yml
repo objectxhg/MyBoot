@@ -8,7 +8,7 @@ Configuration:
       - name: log.level.lee
         value: debug
       - name: log.path
-        value: ../logs/Myboot.log
+        value: ./logs/
       - name: project.name
         value: Myboot
 

@@ -7,24 +7,33 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.Security;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import com.xhg.mapper.SysUserMapper;
+import com.xhg.vo.AccessToken;
 import com.xhg.utils.RedisUtil;
+import com.xhg.vo.TemplateDataVo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.sysUser;
 import com.xhg.threadPool.service.AsyncTaskService;
+import org.springframework.web.client.RestTemplate;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -38,7 +47,10 @@ public class MyBootApplicationTests {
 	
 	@Autowired
 	private Sender sender;
-	
+
+	@Autowired
+	private SysUserMapper sysUserMapper;
+
 	@Autowired
     private AsyncTaskService asyncTaskService;
 
@@ -49,13 +61,7 @@ public class MyBootApplicationTests {
 	@Test
     public void contextLoads() {
     }
-	 
-//	@Test
-//    public void threadTest() {
-//        for (int i = 0; i < 20; i++) {
-//            asyncTaskService.executeAsyncTask(i);
-//        }
-//    }
+
 	
 	@Test
 	public void test3() throws Exception {
@@ -92,8 +98,7 @@ public class MyBootApplicationTests {
 		user.setUsername("钢铁侠");
 		sender.send(user);
 	}
-	
-	
+
 	// fastjson测试demo
 	@Test
 	public void test1() {
@@ -130,12 +135,13 @@ public class MyBootApplicationTests {
     }
 
     @Test
+	@SuppressWarnings("all")
 	public void getWeiXinInfo() throws Exception {
-		String appid = "wx43cf326b2797ca99";
 
-		String secret = "05d6b6a8bcf0baf1e97dc51b424e6986";
+		String appid = "wx82f903cd9b8967c6";
+		String secret = "5f14bdd482966d1bd0ae6292abda9133";
 
-		String js_code = "043RLoml2KWqp54oaSnl28D3g83RLoml";
+		String js_code = "053Fay0w3uiCTU2oTe1w387kko1Fay0B";
 
 
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + js_code + "&grant_type=authorization_code";
@@ -209,4 +215,91 @@ public class MyBootApplicationTests {
 		}
 
 	}
+
+	/**
+	 * 小程序订阅 获取 Access_token 第一步
+	 * parame :{
+	 * 	appid 小程序id
+	 * 	appsecret 小程序密钥
+	 * 	}
+	 */
+	@Test
+	public void getAccess_token(){
+		RestTemplate restTemplate = new RestTemplate();
+		//获取access_token
+		String appid = "wx82f903cd9b8967c6";
+		String appsecret = "5f14bdd482966d1bd0ae6292abda9133";
+
+		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + appsecret;
+		String json = restTemplate.getForObject(url, String.class);
+		//System.out.println("【微信返回的JSON】:------------" + json);
+		AccessToken accessToken = new Gson().fromJson(json, AccessToken.class);
+		System.out.println("【Access_token】:" + accessToken.getAccess_token());
+
+
+	}
+
+	/**
+	 * 小程序订阅 获取 Access_token 第二步
+	 * parame :{
+	 * 	appid 小程序id
+	 * 	appsecret 小程序密钥
+	 * 	}
+	 */
+	@Test
+	public void sendMessage(){
+		RestTemplate restTemplate = new RestTemplate();
+		//获取access_token
+		String appid = "wx82f903cd9b8967c6";
+		String appsecret = "5f14bdd482966d1bd0ae6292abda9133";
+
+		String access_token = "36_oZRNUELhqyR5dmLP4Cq28_6wwL-Wlk2ZZS-JscBl2lOfKrthscG5DDF5bKaWkmq1P0Dfp8E_pdIyxR_-o9qc5qAT0hC_y7vd9QbpWbD6cJnQQKvlVILf9MKdKOSihAzIFa3o9iWPqFYJ0xFOCUWdADAHZB";
+		String openid = "oPuv_47TCRS-5852kQtp7fn4ZTaA";
+		String template_id = "-6ygd_TqTHQcS1hxGA4R_ezzzWqor4k6xHkmYEId9_Y";
+		String page = "/pages/manage/detailsManage/detailsManage?workid=43";
+		/**
+		 * 跳转小程序类型：developer为开发版；trial为体验版；formal为正式版；默认为正式版
+		 */
+		String miniprogram_state = "trial";
+
+
+		Map<String, TemplateDataVo> dataVo = new HashMap<>();
+
+		TemplateDataVo templateDataVo1 = new TemplateDataVo();
+		templateDataVo1.setValue("钢铁侠项目");
+		dataVo.put("thing1", templateDataVo1);
+
+		TemplateDataVo templateDataVo2 = new TemplateDataVo();
+		templateDataVo2.setValue("吴伶");
+		dataVo.put("name4", templateDataVo2);
+
+		TemplateDataVo templateDataVo3 = new TemplateDataVo();
+		templateDataVo3.setValue("15573679072");
+		dataVo.put("phone_number5", templateDataVo3);
+
+
+		JSONObject postData = new JSONObject();
+		//postData.put("access_token", access_token);
+		postData.put("touser", openid);
+		postData.put("template_id", template_id);
+		postData.put("page", page);
+		postData.put("data", dataVo);
+		postData.put("miniprogram_state",miniprogram_state);
+
+		System.out.println("【postData】：" + postData);
+		String sendUrl = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" + access_token;
+		ResponseEntity<String> resultData = restTemplate.postForEntity(sendUrl, postData, String.class);
+		System.out.println("【resultData】：" + resultData.getBody());
+
+		Map maps = (Map)JSON.parse(resultData.getBody());
+		if(maps.get("errmsg").equals("ok")){
+			System.out.println("发送成功");
+		}else{
+			System.out.println("发送失败");
+		}
+
+	}
+
+
 }
+

@@ -46,4 +46,8 @@
 	<update id="incrUserIntegral" parameterType="integer">
 		update sys_user set integral = integral + 1  where id = #{userId}
 	</update>
+
+	<update id="updateName" parameterType="map">
+		update sys_user set username = CONCAT(#{name}, username)  where id = #{id}
+	</update>
 </mapper>
