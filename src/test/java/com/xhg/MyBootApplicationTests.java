@@ -7,15 +7,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.Security;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
 import com.xhg.vo.AccessToken;
 import com.xhg.utils.RedisUtil;
@@ -39,7 +38,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.AlgorithmParameters;
-import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MyBootApplication.class})
@@ -53,6 +51,9 @@ public class MyBootApplicationTests {
 
 	@Autowired
     private AsyncTaskService asyncTaskService;
+
+	@Autowired
+	private OrderMapper orderMapper;
 
 	@Autowired
 	private RedisUtil redisUtil;
@@ -236,7 +237,6 @@ public class MyBootApplicationTests {
 		AccessToken accessToken = new Gson().fromJson(json, AccessToken.class);
 		System.out.println("【Access_token】:" + accessToken.getAccess_token());
 
-
 	}
 
 	/**
@@ -300,6 +300,9 @@ public class MyBootApplicationTests {
 
 	}
 
-
+	@Test
+	public void addCallsql(){
+		System.out.println(orderMapper.addlog("肖华刚","123466","15573679072"));
+	}
 }
 

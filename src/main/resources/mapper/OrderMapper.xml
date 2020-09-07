@@ -25,6 +25,10 @@
 		select <include refid="orderColumn"/> from userOrder
 	</select>
 
+	<insert id="addlog" parameterType="map" statementType="CALLABLE">
 
+		{call adduserFun(#{username,mode=IN}, #{pwd,mode=IN}, #{mobile,mode=IN})}
+
+	</insert>
 
 </mapper>
