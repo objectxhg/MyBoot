@@ -23,7 +23,7 @@ import java.util.List;
  * @Date: Created in 2019/9/2 18:22
  * @Modified By:
  */
-@Aspect
+//@Aspect
 @Component
 @SuppressWarnings("all")
 public class MethodParamsAop {

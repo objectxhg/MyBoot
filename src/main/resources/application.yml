@@ -20,11 +20,15 @@ spring:
       password: mq85444
       virtual-host: hostDemo #虚拟主机名称
       connection-timeout: 15000   #超时时间
-      publisher-confirm-type: correlated    #消息发送到交换机确认机制,是否确认回调
+      #打开发送到mq的回调 确认是否成功发送到mq
+      publisher-confirm-type: correlated
+      # 打开消息返回
       publisher-returns: true
+      template:
+        mandatory: true
       dynamic: true
-      cache: 
-        connection: 
+      cache:
+        connection:
           mode: channel
     redis:
       prot: 6379
