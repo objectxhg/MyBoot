@@ -19,12 +19,12 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void send(sysUser user, CorrelationData correlationData) {
-        amqpTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
+    public void send(sysUser user) {
+        this.amqpTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
         /**
          * 回调监听
          */
-        rabbitTemplate.setConfirmCallback(this);
+        this.rabbitTemplate.setConfirmCallback(this);
     }
 
     /**

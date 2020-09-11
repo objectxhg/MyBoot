@@ -55,7 +55,7 @@ public class UserController {
 
 	@RequestMapping("/addUserIntegral")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
 	public JsonResult addUserIntegral(Integer id){
-		Integer state = userService.addUserIntegral(id);
+		Integer state = userService.incrUserIntegral(id);
 		if(state != 1){
 			return JsonResult.fail("增加失败");
 		}

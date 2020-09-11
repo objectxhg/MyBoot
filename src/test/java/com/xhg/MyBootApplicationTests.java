@@ -97,7 +97,7 @@ public class MyBootApplicationTests {
 		user.setId(1);
 		user.setAddress("长沙");
 		user.setUsername("钢铁侠");
-		sender.send(user);
+//		sender.send(user);
 	}
 
 	// fastjson测试demo

@@ -30,6 +30,12 @@ spring:
       cache:
         connection:
           mode: channel
+      listener：
+        simple：
+          acknowledge-mode: manual
+          prefetch: 2
+
+
     redis:
       prot: 6379
       #host: 121.43.158.136

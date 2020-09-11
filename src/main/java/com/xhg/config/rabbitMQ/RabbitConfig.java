@@ -26,7 +26,7 @@ public class RabbitConfig {
     //fanout
     //Queue 1和2
     public static final String FANOUT_QUEUE1 = "ququDemo";
-    public static final String FANOUT_QUEUE2 = "fanout.queue2";
+//    public static final String FANOUT_QUEUE2 = "fanout.queue2";
     //Exchange
     public static final String FANOUT_EXCHANGE = "exchangeDemo";
  
@@ -83,8 +83,8 @@ public class RabbitConfig {
         //return new Queue(FANOUT_QUEUE1);
     }
 
-    @Bean
-    public Queue fanoutQueue2() { return new Queue(FANOUT_QUEUE2); }
+//    @Bean
+//    public Queue fanoutQueue2() { return new Queue(FANOUT_QUEUE2); }
  
     @Bean
     public FanoutExchange fanoutExchange() {
@@ -94,8 +94,8 @@ public class RabbitConfig {
     @Bean
     public Binding fanoutBinding1() { return BindingBuilder.bind(fanoutQueue1()).to(fanoutExchange()); }
 
-    @Bean
-    public Binding fanoutBinding2() { return BindingBuilder.bind(fanoutQueue2()).to(fanoutExchange()); }
+//    @Bean
+//    public Binding fanoutBinding2() { return BindingBuilder.bind(fanoutQueue2()).to(fanoutExchange()); }
 
 
 

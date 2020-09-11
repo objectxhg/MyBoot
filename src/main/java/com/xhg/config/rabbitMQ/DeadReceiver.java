@@ -24,10 +24,10 @@ public class DeadReceiver {
     @RabbitListener(queues = "DeadQueue")
     public void receiveTopic1(sysUser user, Channel channel, Message message) throws Exception {
 
-        System.out.println("【DeadQueue死信队列 监听到消息】-----> 开始消费....");
-        Integer state = userService.addUserIntegral(user.getId());
+        System.out.println("【DeadQueue死信队列 监听到消息】-----> 开始重新消费....");
+        Integer state = userService.incrUserIntegral(user.getId());
         if(state == 1){
-            System.out.println("【DeadQueue死信队列】-----> 消费成功 购物积分已增加");
+            System.out.println("【DeadQueue死信队列】-----> 重新消费成功 购物积分已增加");
         }
 
     }

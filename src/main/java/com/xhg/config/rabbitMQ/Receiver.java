@@ -43,18 +43,18 @@ public class Receiver {
 
             //模拟处理消息产生异常
             int i = 1/0;
-            Integer state = userService.addUserIntegral(user.getId());
-            if(state == 1){
-                System.out.println("【ququDemo正常队列】-----> 消费成功 购物积分已增加");
-            }
+            Integer state = userService.incrUserIntegral(user.getId());
+//            if(state == 1){
+//                System.out.println("【ququDemo正常队列】-----> 消费成功 购物积分已增加");
+//                // 手动签收消息已消费
+//                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//            }
 
         }catch (Exception e){
             System.out.println("【ququDemo正常队列】-----> 消费失败：拒收消息");
-
             //拒收消息
             channel.basicNack(message.getMessageProperties().getDeliveryTag(),false, false);
-            // 手动签收消息已消费
-            //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+
         }
 
     }
