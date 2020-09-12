@@ -10,7 +10,6 @@ import lombok.Data;
 @ApiModel("用户")
 @Data
 public class sysUser implements Serializable{
-	
 
 	private static final long serialVersionUID = 1L;
 	@ApiModelProperty("用户id")
@@ -31,6 +30,5 @@ public class sysUser implements Serializable{
 	@ApiModelProperty(value = "角色")
 	private List<Role> roleList = new ArrayList<Role>();
 
-	
-	
+
 }

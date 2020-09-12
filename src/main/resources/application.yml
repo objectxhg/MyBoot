@@ -30,9 +30,11 @@ spring:
       cache:
         connection:
           mode: channel
-      listener：
-        simple：
+      # 手动确认消息已被消费
+      listener:
+        simple:
           acknowledge-mode: manual
+          #队列中有 prefetch 条以上未签收的消息，则不进行新的消息消费。
           prefetch: 2
 
 

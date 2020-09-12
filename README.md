@@ -6,18 +6,21 @@ SpringBoot2.0 + redis5.0 + rabbitMQ
 以及开启reids事务
 
 #rabbitMQ
-使用SpringBoot 集成rabbitMQ 的一个小的demo 还不是很完整 模拟用户下单后 添加完订单 直接返回成功后 给队列发送一条消息 （使用的是fanout广播模式）然后监听队列进行消费信息 
-这里有个问题 如果监听失败了 如果你没有try catch 那么那条消息没有被正常消费 会被重新放入队列头部 
+使用SpringBoot 集成rabbitMQ 的一个小的demo 还不是很完整。目前包含消息回调判断消息被mq成功接收防止数据还没到mq就丢失、 死信队列、保证消息的消费
+
+模拟用户下单后 添加完订单 直接返回成功后 给队列发送一条消息 （使用的是fanout广播模式）然后监听队列进行消费信息 
+这里有个问题 如果监听失败了 如果你没有处理这条报错的消息 也就是没有被正常消费 mq会把它重新放入队列头部下一次在取出来 
 由于一直在监听队列 所以又重新读到了上一次消费失败的消息 可能会出现死循环 一直在重复消费上一条消息 然后一直失败 一直重复消费
 
-解决方法1：手动确认这条消息 告诉mq这条消息我已经消费了
-  加上try catch 
+解决方法1：加上try catch mq开启手动确认消费消息  在catch里面告诉mq这条消息我已经消费了
+
+  channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
   因为消费的时候报错了 我并不想重新消费这条消息
   所以在catch里面手动去确认这条消息 假装告诉mq我已经成功消费了不需要管了 手动确认消息会照成消息数据的丢失 所以我们这里不采用这个方案 当然也可能又有一些场景能用到
   channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
   
 解决方法2：失败的消息加入死信队列（使用的是direct模式） 让死信队列去消费这条消息，达到异步的效果 一边业务队列消费正常的消息，另一边死信队列同时在消费业务队列失败的消息
-  加上try catch 在catch里面 手动去拒收这条消息 
+  同样的加上try catch 然后在catch里面手动去拒收这条消息, 拒收消息后mq会自动将这条消息发送到你配置好的死信队列进行再次消费 
   channel.basicNack(message.getMessageProperties().getDeliveryTag(),false, false);
   
 死信队列介绍：
