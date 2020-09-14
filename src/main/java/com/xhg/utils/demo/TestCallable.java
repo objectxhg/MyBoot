@@ -1,6 +1,7 @@
-package com.xhg.utils;
+package com.xhg.utils.demo;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -14,6 +15,16 @@ public class TestCallable {
         CallableDemo callableDemo = new CallableDemo();
         FutureTask<Integer> futureTask = new FutureTask<>(callableDemo);
         Thread thread = new Thread(futureTask);
+        System.out.println("--------- 线程启动执行中。。。。。");
+        thread.start();
+
+        try {
+            System.out.println("------- 返回值：" + futureTask.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }
 
@@ -25,6 +36,7 @@ class CallableDemo implements Callable<Integer> {
         for (int i = 0;i<=100;i++){
             sum += i;
         }
+        Thread.sleep(3000);
         return sum;
     }
 }

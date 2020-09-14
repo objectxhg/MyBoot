@@ -1,10 +1,7 @@
-package com.xhg.utils;
+package com.xhg.utils.demo;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -13,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class TestVolatile {
+
     public static void main(String[] args){
         ThreadDemo threadDemo = new ThreadDemo();
         Thread thread = new Thread(threadDemo);
