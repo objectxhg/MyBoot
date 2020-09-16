@@ -1,14 +1,14 @@
 package com.xhg.config.rabbitMQ;
 
+import io.swagger.annotations.SwaggerDefinition;
+import org.aspectj.lang.annotation.SuppressAjWarnings;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@SuppressWarnings("all")
 public class RabbitConfig {
 	
 	//topic
