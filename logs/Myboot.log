@@ -40,3 +40,76 @@
 2020-09-13 00:14:28,589:DEBUG http-nio-9000-exec-4 (BaseJdbcLogger.java:159) - ==>  Preparing: insert into userOrder ( user_id, order_describe, order_updateTime ) values (?,?,?) 
 2020-09-13 00:14:28,592:DEBUG http-nio-9000-exec-4 (BaseJdbcLogger.java:159) - ==> Parameters: 5(Integer), 生活用品订单4(String), 2020-09-13 00:14:28.559(Timestamp)
 2020-09-13 00:14:28,651:DEBUG http-nio-9000-exec-4 (BaseJdbcLogger.java:159) - <==    Updates: 1
+2020-09-17 17:36:33,275:INFO main (StartupInfoLogger.java:55) - Starting MyBootApplication on DESKTOP-N2UAHBH with PID 9480 (D:\idea-work\MyBoot\target\classes started by xiaoh in D:\idea-work\MyBoot)
+2020-09-17 17:36:33,335:INFO main (SpringApplication.java:651) - No active profile set, falling back to default profiles: default
+2020-09-17 17:36:40,020:INFO main (RepositoryConfigurationDelegate.java:249) - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-17 17:36:40,037:INFO main (RepositoryConfigurationDelegate.java:127) - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-17 17:36:40,149:INFO main (RepositoryConfigurationDelegate.java:187) - Finished Spring Data repository scanning in 73ms. Found 0 Redis repository interfaces.
+2020-09-17 17:36:41,243:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'asyncTaskConfig' of type [com.xhg.threadPool.AsyncTaskConfig$$EnhancerBySpringCGLIB$$6a980ec] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-09-17 17:36:41,633:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-09-17 17:36:43,783:INFO main (TomcatWebServer.java:92) - Tomcat initialized with port(s): 9000 (http)
+2020-09-17 17:36:43,887:INFO main (DirectJDKLog.java:173) - Initializing ProtocolHandler ["http-nio-9000"]
+2020-09-17 17:36:43,887:INFO main (DirectJDKLog.java:173) - Starting service [Tomcat]
+2020-09-17 17:36:43,888:INFO main (DirectJDKLog.java:173) - Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-09-17 17:36:44,103:INFO main (DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext
+2020-09-17 17:36:44,103:INFO main (ServletWebServerApplicationContext.java:284) - Root WebApplicationContext: initialization completed in 10451 ms
+2020-09-17 17:36:46,193:INFO main (PropertySourcedRequestMappingHandlerMapping.java:69) - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-09-17 17:36:46,203:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService
+2020-09-17 17:36:46,204:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'getAsyncExecutor'
+2020-09-17 17:36:46,763:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskScheduler'
+2020-09-17 17:36:46,888:INFO main (DocumentationPluginsBootstrapper.java:160) - Context refreshed
+2020-09-17 17:36:47,076:INFO main (DocumentationPluginsBootstrapper.java:163) - Found 1 custom documentation plugin(s)
+2020-09-17 17:36:47,169:INFO main (ApiListingReferenceScanner.java:41) - Scanning for api listing references
+2020-09-17 17:36:47,460:INFO main (AbstractConnectionFactory.java:524) - Attempting to connect to: [121.43.158.136:5672]
+2020-09-17 17:36:47,620:INFO main (AbstractConnectionFactory.java:497) - Created new connection: rabbitConnectionFactory#469a7575:0/SimpleConnection@44fb6ebd [delegate=amqp://userMQ@121.43.158.136:5672/hostDemo, localPort= 49684]
+2020-09-17 17:36:48,221:INFO main (DirectJDKLog.java:173) - Starting ProtocolHandler ["http-nio-9000"]
+2020-09-17 17:36:48,253:INFO main (TomcatWebServer.java:204) - Tomcat started on port(s): 9000 (http) with context path '/boot'
+2020-09-17 17:36:48,254:INFO main (StartupInfoLogger.java:61) - Started MyBootApplication in 20.108 seconds (JVM running for 22.694)
+2020-09-17 17:40:14,123:INFO http-nio-9000-exec-2 (DirectJDKLog.java:173) - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-17 17:40:14,123:INFO http-nio-9000-exec-2 (FrameworkServlet.java:525) - Initializing Servlet 'dispatcherServlet'
+2020-09-17 17:40:14,129:INFO http-nio-9000-exec-2 (FrameworkServlet.java:547) - Completed initialization in 6 ms
+2020-09-17 17:40:14,327:INFO http-nio-9000-exec-2 (EpollProvider.java:68) - Starting without optional epoll library
+2020-09-17 17:40:14,329:INFO http-nio-9000-exec-2 (KqueueProvider.java:70) - Starting without optional kqueue library
+2020-09-17 17:40:20,135:INFO http-nio-9000-exec-2 (HikariDataSource.java:110) - HikariPool-1 - Starting...
+2020-09-17 17:40:20,696:INFO http-nio-9000-exec-2 (HikariDataSource.java:123) - HikariPool-1 - Start completed.
+2020-09-17 17:40:20,701:DEBUG http-nio-9000-exec-2 (BaseJdbcLogger.java:159) - ==>  Preparing: insert into userOrder ( user_id, order_describe, order_updateTime ) values (?,?,?) 
+2020-09-17 17:40:20,728:DEBUG http-nio-9000-exec-2 (BaseJdbcLogger.java:159) - ==> Parameters: 3(Integer), 键盘订单限量(String), 2020-09-17 17:40:20.081(Timestamp)
+2020-09-17 17:40:20,774:DEBUG http-nio-9000-exec-2 (BaseJdbcLogger.java:159) - <==    Updates: 1
+2020-09-17 17:48:07,973:INFO main (StartupInfoLogger.java:55) - Starting MyBootApplication on DESKTOP-N2UAHBH with PID 12280 (D:\idea-work\MyBoot\target\classes started by xiaoh in D:\idea-work\MyBoot)
+2020-09-17 17:48:07,978:INFO main (SpringApplication.java:651) - No active profile set, falling back to default profiles: default
+2020-09-17 17:48:08,561:INFO main (RepositoryConfigurationDelegate.java:249) - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-09-17 17:48:08,563:INFO main (RepositoryConfigurationDelegate.java:127) - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-09-17 17:48:08,589:INFO main (RepositoryConfigurationDelegate.java:187) - Finished Spring Data repository scanning in 14ms. Found 0 Redis repository interfaces.
+2020-09-17 17:48:08,773:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'asyncTaskConfig' of type [com.xhg.threadPool.AsyncTaskConfig$$EnhancerBySpringCGLIB$$78264d00] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-09-17 17:48:08,815:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-09-17 17:48:08,973:INFO main (TomcatWebServer.java:92) - Tomcat initialized with port(s): 9000 (http)
+2020-09-17 17:48:08,979:INFO main (DirectJDKLog.java:173) - Initializing ProtocolHandler ["http-nio-9000"]
+2020-09-17 17:48:08,980:INFO main (DirectJDKLog.java:173) - Starting service [Tomcat]
+2020-09-17 17:48:08,980:INFO main (DirectJDKLog.java:173) - Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-09-17 17:48:09,092:INFO main (DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext
+2020-09-17 17:48:09,092:INFO main (ServletWebServerApplicationContext.java:284) - Root WebApplicationContext: initialization completed in 1088 ms
+2020-09-17 17:48:09,714:INFO main (PropertySourcedRequestMappingHandlerMapping.java:69) - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-09-17 17:48:09,725:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService
+2020-09-17 17:48:09,726:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'getAsyncExecutor'
+2020-09-17 17:48:09,979:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskScheduler'
+2020-09-17 17:48:10,011:INFO main (DocumentationPluginsBootstrapper.java:160) - Context refreshed
+2020-09-17 17:48:10,023:INFO main (DocumentationPluginsBootstrapper.java:163) - Found 1 custom documentation plugin(s)
+2020-09-17 17:48:10,054:INFO main (ApiListingReferenceScanner.java:41) - Scanning for api listing references
+2020-09-17 17:48:10,201:INFO main (AbstractConnectionFactory.java:524) - Attempting to connect to: [121.43.158.136:5672]
+2020-09-17 17:48:10,309:INFO main (AbstractConnectionFactory.java:497) - Created new connection: rabbitConnectionFactory#f238e4f:0/SimpleConnection@4522d793 [delegate=amqp://userMQ@121.43.158.136:5672/hostDemo, localPort= 49805]
+2020-09-17 17:48:10,941:INFO main (DirectJDKLog.java:173) - Starting ProtocolHandler ["http-nio-9000"]
+2020-09-17 17:48:10,955:INFO main (TomcatWebServer.java:204) - Tomcat started on port(s): 9000 (http) with context path '/boot'
+2020-09-17 17:48:10,957:INFO main (StartupInfoLogger.java:61) - Started MyBootApplication in 3.371 seconds (JVM running for 4.08)
+2020-09-17 17:48:33,457:INFO http-nio-9000-exec-1 (DirectJDKLog.java:173) - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-09-17 17:48:33,457:INFO http-nio-9000-exec-1 (FrameworkServlet.java:525) - Initializing Servlet 'dispatcherServlet'
+2020-09-17 17:48:33,461:INFO http-nio-9000-exec-1 (FrameworkServlet.java:547) - Completed initialization in 4 ms
+2020-09-17 17:48:33,548:INFO http-nio-9000-exec-1 (EpollProvider.java:68) - Starting without optional epoll library
+2020-09-17 17:48:33,550:INFO http-nio-9000-exec-1 (KqueueProvider.java:70) - Starting without optional kqueue library
+2020-09-17 17:48:36,200:INFO http-nio-9000-exec-1 (HikariDataSource.java:110) - HikariPool-1 - Starting...
+2020-09-17 17:48:36,654:INFO http-nio-9000-exec-1 (HikariDataSource.java:123) - HikariPool-1 - Start completed.
+2020-09-17 17:48:36,669:DEBUG http-nio-9000-exec-1 (BaseJdbcLogger.java:159) - ==>  Preparing: insert into userOrder ( user_id, order_describe, order_updateTime ) values (?,?,?) 
+2020-09-17 17:48:36,686:DEBUG http-nio-9000-exec-1 (BaseJdbcLogger.java:159) - ==> Parameters: 2(Integer), 键盘订单限量(String), 2020-09-17 17:48:36.189(Timestamp)
+2020-09-17 17:48:36,731:DEBUG http-nio-9000-exec-1 (BaseJdbcLogger.java:159) - <==    Updates: 1
+2020-09-17 17:49:04,733:DEBUG http-nio-9000-exec-5 (BaseJdbcLogger.java:159) - ==>  Preparing: insert into userOrder ( user_id, order_describe, order_updateTime ) values (?,?,?) 
+2020-09-17 17:49:04,734:DEBUG http-nio-9000-exec-5 (BaseJdbcLogger.java:159) - ==> Parameters: 3(Integer), 键盘订单限量(String), 2020-09-17 17:49:04.711(Timestamp)
+2020-09-17 17:49:04,779:DEBUG http-nio-9000-exec-5 (BaseJdbcLogger.java:159) - <==    Updates: 1

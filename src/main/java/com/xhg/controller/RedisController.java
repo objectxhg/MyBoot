@@ -37,9 +37,10 @@ public class RedisController {
 
 
     @RequestMapping("/redis/shoping/{key}")
-    public String redisSeckill(@PathVariable("key") String keyStr){
+    public String redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
-        if(redisServiceImpl.redisIncrBy(keyStr)){
+        if(redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime) == 1){
+
             return "购买成功";
         }
 

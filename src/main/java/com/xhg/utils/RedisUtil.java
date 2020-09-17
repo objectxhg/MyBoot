@@ -11,20 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Component
+@SuppressWarnings("all")
 public class RedisUtil {
 	
 	
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	public boolean decr(String key){
+	public boolean decr(String key, Integer testTime){
 		boolean flag = true;
 		try {
 			redisTemplate.watch(key);
 			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().decrement(key);
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
-			Thread.sleep(5000);
+			//保证数据的准确性
+			Thread.sleep((long)testTime);
 		}catch (Exception e){
 			throw new Exception("redis-watch-fail");
 		}finally {
@@ -44,7 +46,7 @@ public class RedisUtil {
 			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().decrement(key, number);
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
-			Thread.sleep(5000);
+//			Thread.sleep(5000);
 		}catch (Exception e){
 			throw new Exception("redis-watch-fail");
 		}finally {
@@ -63,7 +65,7 @@ public class RedisUtil {
 			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().increment(key);
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
-			Thread.sleep(5000);
+//			Thread.sleep(5000);
 		}catch (Exception e){
 			throw new Exception("redis-watch-fail");
 		}finally {
@@ -83,7 +85,7 @@ public class RedisUtil {
 			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().increment(key, number);
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
-			Thread.sleep(5000);
+//			Thread.sleep(5000);
 		}catch (Exception e){
 			throw new Exception("redis-watch-fail");
 		}finally {
