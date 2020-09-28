@@ -51,7 +51,6 @@ public class OrderController {
         */
         asyncTaskService.sendMQAsyncTask(user);
 
-        System.out.println("--- 添加成功 ---");
 
         return JsonResult.success("添加成功");
     }

@@ -14,12 +14,14 @@ public class AsyncTaskService {
     @Resource
     private Sender sender;
 
+    /**
+     * mq线程任务：给mq发送消息
+     * @param user
+     */
 	@Async
     public void sendMQAsyncTask(sysUser user) {
         System.out.println("线程" + Thread.currentThread().getName() + " 执行异步任务：" + user.getId());
-
         sender.send(user);
-
     }
 
 }
