@@ -20,6 +20,9 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     private RabbitTemplate rabbitTemplate;
 
     public void send(sysUser user) {
+        /**
+         * 发送
+         */
         this.amqpTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
         /**
          * 回调监听

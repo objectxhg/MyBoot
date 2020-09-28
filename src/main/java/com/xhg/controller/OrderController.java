@@ -4,6 +4,7 @@ import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.OrderService;
+import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.vo.JsonResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class OrderController {
 
 
     @Resource
-    private Sender sender;
+    private AsyncTaskService asyncTaskService;
 
     @RequestMapping("/addOrder")
     public JsonResult addOrder(Integer userId, String orderDescribe){
@@ -45,7 +46,13 @@ public class OrderController {
          */
         sysUser user = new sysUser();
         user.setId(userId);
-        sender.send(user);
+        /**
+         * 线程任务：给mq发送消息
+        */
+        asyncTaskService.sendMQAsyncTask(user);
+
+        System.out.println("--- 添加成功 ---");
+
         return JsonResult.success("添加成功");
     }
 

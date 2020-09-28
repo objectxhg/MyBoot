@@ -254,9 +254,9 @@ public class MyBootApplicationTests {
 		String appid = "wx82f903cd9b8967c6";
 		String appsecret = "5f14bdd482966d1bd0ae6292abda9133";
 
-		String access_token = "36_oZRNUELhqyR5dmLP4Cq28_6wwL-Wlk2ZZS-JscBl2lOfKrthscG5DDF5bKaWkmq1P0Dfp8E_pdIyxR_-o9qc5qAT0hC_y7vd9QbpWbD6cJnQQKvlVILf9MKdKOSihAzIFa3o9iWPqFYJ0xFOCUWdADAHZB";
+		String access_token = "37_sYifrzGNdiQt9XvjPNkqHPmBsNvNy3xlZMD8ZlE8IivLUKps5F-Wph81wrY0R2WKqH0_WCKQzsOQtwax33kmjcH4qi2c0VVmir_kxe0tpbDtwNAdCIKl-nc4SVwHZRkfoMmjD3tHpDY3j1rWFKXgAEAUZM";
 		String openid = "oPuv_47TCRS-5852kQtp7fn4ZTaA";
-		String template_id = "-6ygd_TqTHQcS1hxGA4R_ezzzWqor4k6xHkmYEId9_Y";
+		String template_id = "NMR1iGcEIWYFBKrjnbg5w_4Yg5Y4DTJnULRAF9WZrms";
 		String page = "/pages/manage/detailsManage/detailsManage?workid=43";
 		/**
 		 * 跳转小程序类型：developer为开发版；trial为体验版；formal为正式版；默认为正式版
@@ -267,16 +267,13 @@ public class MyBootApplicationTests {
 		Map<String, TemplateDataVo> dataVo = new HashMap<>();
 
 		TemplateDataVo templateDataVo1 = new TemplateDataVo();
-		templateDataVo1.setValue("钢铁侠项目");
+		templateDataVo1.setValue("吴伶");
 		dataVo.put("thing1", templateDataVo1);
 
 		TemplateDataVo templateDataVo2 = new TemplateDataVo();
-		templateDataVo2.setValue("吴伶");
-		dataVo.put("name4", templateDataVo2);
+		templateDataVo2.setValue("今天吃了吗");
+		dataVo.put("thing2", templateDataVo2);
 
-		TemplateDataVo templateDataVo3 = new TemplateDataVo();
-		templateDataVo3.setValue("15573679072");
-		dataVo.put("phone_number5", templateDataVo3);
 
 
 		JSONObject postData = new JSONObject();
