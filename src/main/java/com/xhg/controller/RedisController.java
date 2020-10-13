@@ -1,7 +1,9 @@
 package com.xhg.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.xhg.pojo.sysUser;
 import com.xhg.service.Impl.RedisServiceImpl;
+import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.utils.RedisUtil;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,9 @@ public class RedisController {
     @Resource
     private RedisServiceImpl redisServiceImpl;
 
+    @Resource
+    private AsyncTaskService asyncTaskService;
+
     @RequestMapping("/redis/setNum/{key}/{num}")
     public String redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
         System.out.println(keyStr);
@@ -41,6 +46,9 @@ public class RedisController {
 
         if(redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime) == 1){
 
+            sysUser user = new sysUser();
+            user.setId(userId);
+            asyncTaskService.sendMQAsyncTask(user);
             return "购买成功";
         }
 
