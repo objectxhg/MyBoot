@@ -16,6 +16,8 @@ public PageInfo findAll(Integer pageNum, Integer pageSize);
 	
 	 void delete(Integer id);
 
+	 Integer addUser (sysUser user);
+
 	 Integer incrUserIntegral(Integer userId);
 	
 }

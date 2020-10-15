@@ -7,6 +7,7 @@ import com.xhg.service.OrderService;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.vo.JsonResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class OrderController {
     @Resource
     private AsyncTaskService asyncTaskService;
 
-    @RequestMapping("/addOrder")
+    @PostMapping("/addOrder")
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
         if(null == userId){
@@ -55,9 +56,8 @@ public class OrderController {
         return JsonResult.success("添加成功");
     }
 
-    @RequestMapping("/orderList")
-    public JsonResult selectOrderList(Order order){
-
+    @PostMapping("/orderList")
+    public JsonResult selectOrderList(){
 
         List<Order> orderList = orderService.orderList();
 

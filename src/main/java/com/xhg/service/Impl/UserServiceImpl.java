@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public Integer addUser(sysUser user) {
+		return sysUserMapper.addUser(user);
+	}
+
+	@Override
 	public Integer incrUserIntegral(Integer userId) {
 
 		return sysUserMapper.incrUserIntegral(userId);

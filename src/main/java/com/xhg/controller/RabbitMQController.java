@@ -4,6 +4,7 @@ import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.sysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,7 @@ public class RabbitMQController {
 
     @Autowired Sender sender;
 
-    @RequestMapping("/addOrder/{userId}/{hello}")
+    @PostMapping("/addOrder/{userId}/{hello}")
     public String mqTest(@PathVariable("hello") String hello){
 
         sysUser user = new sysUser();

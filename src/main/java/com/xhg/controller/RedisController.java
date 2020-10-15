@@ -7,6 +7,7 @@ import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.utils.RedisUtil;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class RedisController {
     @Resource
     private AsyncTaskService asyncTaskService;
 
-    @RequestMapping("/redis/setNum/{key}/{num}")
+    @PostMapping("/redis/setNum/{key}/{num}")
     public String redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
         System.out.println(keyStr);
         if(redisUtil.set(keyStr, Integer.parseInt(num))){
@@ -41,7 +42,7 @@ public class RedisController {
     }
 
 
-    @RequestMapping("/redis/shoping/{key}")
+    @PostMapping("/redis/shoping/{key}")
     public String redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         if(redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime) == 1){

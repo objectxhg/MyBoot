@@ -10,22 +10,14 @@
                 <result column="birthday" property="birthday"/>
                 <result column="address" property="address"/>
 				<result column="integral" property="integral"/>
-
-
-        <collection property="roleList"  ofType="com.xhg.pojo.Role"
-        	select="selectUserRole" column="{userId=id}">
-
-        </collection>
-
    	</resultMap>
-   	
-   	<select id="selectUserRole" resultType="com.xhg.pojo.Role">
-   		select role.* from
-   			sys_user_role userRole join sys_role role
-   			on  userRole.roleId = role.id
-   		where
-   			userRole.userId = #{userId}
-   	</select>
+
+	<resultMap id="UserRole" type="com.xhg.pojo.sysUser" extends="UserResultMap">
+		<collection property="roleList"  ofType="com.xhg.pojo.Role"
+					select="selectUserRole" column="{userId=id}">
+
+		</collection>
+	</resultMap>
 
    	<select id="selectUserById"  resultMap="UserResultMap">
    		select * from sys_user where id = #{id}
@@ -37,10 +29,10 @@
 
    	<insert id="addUser" parameterType="com.xhg.pojo.sysUser">
    			insert into sys_user (
-   			name,birthday,address
+   			username,pwd,mobile,birthday,address
    			)
    			 values
-   			 (#{name},#{birthday}#{address})
+   			 (#{username},#{pwd},#{mobile},#{birthday},#{address})
    	</insert>
 
 	<update id="incrUserIntegral" parameterType="integer">

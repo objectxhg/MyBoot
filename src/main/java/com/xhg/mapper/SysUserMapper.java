@@ -13,24 +13,26 @@ import com.xhg.pojo.sysUser;
 
 public interface SysUserMapper {
 	
-	public sysUser selectUserById(Integer id);
-	
-	public List<sysUser> findAll();
-	
 	@Select("select * from sys_user where id=#{id}")
-	public sysUser get(@Param("id") Integer id);
-	
+	sysUser get(@Param("id") Integer id);
+
 	@Insert("insert into sys_user (name,birthday,address)"
 			+ " values (#{name},#{birthday},#{address})")
-	public void insert(sysUser user);
+	void insert(sysUser user);
 	
 	@Update("update sys_user "
 			+ " set name=#{name},birthday=#{birthday},address=#{address}"
 			+ " where id=#{id}")
-	public void update(sysUser user);
+	void update(sysUser user);
 	
 	@Delete("delete from sys_user where id=#{id}")
-	public void delete(@Param("id") Integer id);
+	void delete(@Param("id") Integer id);
+
+	Integer addUser (sysUser user);
+
+	sysUser selectUserById(Integer id);
+
+	List<sysUser> findAll();
 
 	Integer incrUserIntegral (Integer userId);
 

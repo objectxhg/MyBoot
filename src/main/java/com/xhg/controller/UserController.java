@@ -3,11 +3,7 @@ package com.xhg.controller;
 import com.xhg.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.pagehelper.PageInfo;
 import com.xhg.pojo.sysUser;
@@ -17,6 +13,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+
+import javax.validation.Valid;
 
 
 @RestController
@@ -34,12 +32,9 @@ public class UserController {
 		@ApiImplicitParam(value = "页数", name = "pageNum", required = false,  dataType = "int", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(value = "条数", name = "pageSize", required = false, dataType = "int", paramType = "query", defaultValue = "10")
 	})
-	
 	@PostMapping("/showAll")
 	public PageInfo findAll(@RequestParam(defaultValue = "0") Integer pageNum,
 							@RequestParam(defaultValue = "10") Integer pageSize){
-		
-		
 		return userService.findAll(pageNum,pageSize);
 	}
 	
@@ -53,7 +48,19 @@ public class UserController {
 		return userService.get(id);
 	}
 
-	@RequestMapping("/addUserIntegral")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
+	@ApiOperation(value = "用户注册", notes = "新增用户信息")
+	@ApiImplicitParam(name = "user", value = "用户注册", required = true, dataType = "sysUser")
+	@PostMapping("/addUserInfo")
+	public JsonResult addUserInfo(@ModelAttribute @Valid @RequestBody sysUser user){
+		System.out.println(user);
+		Integer state = userService.addUser(user);
+		if(state != 1){
+			return JsonResult.fail("添加失败");
+		}
+		return JsonResult.success("添加成功");
+	}
+
+	@PostMapping("/addUserIntegral")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
 	public JsonResult addUserIntegral(Integer id){
 		Integer state = userService.incrUserIntegral(id);
 		if(state != 1){
