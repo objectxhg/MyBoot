@@ -34,7 +34,7 @@ public class SwaggerConfig {
 	            "API TERMS URL",
 	            "联系人邮箱",
 	            "license",
-	            "license url");										
+	            "http://localhost:9000/boot/docs.html");
 	    return apiInfo;
 	}
 	

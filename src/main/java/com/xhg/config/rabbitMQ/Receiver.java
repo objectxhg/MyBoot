@@ -52,7 +52,8 @@ public class Receiver {
                 // 手动签收消息已消费
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             }else{
-                logger.error("【ququDemo正常队列】-----> 消费失败");
+                logger.error("【ququDemo正常队列】-----> 用户id:" + user.getId() + " 消费失败 正常队列开始丢弃....");
+                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             }
 
         }catch (Exception e){

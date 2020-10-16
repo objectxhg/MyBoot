@@ -4,6 +4,7 @@ import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.OrderService;
+import com.xhg.service.UserService;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.vo.JsonResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,8 @@ public class OrderController {
     @Resource
     private OrderService orderService;
 
+    @Resource
+    private UserService userService;
 
     @Resource
     private AsyncTaskService asyncTaskService;
@@ -32,9 +35,10 @@ public class OrderController {
     @PostMapping("/addOrder")
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
-        if(null == userId){
+        if(null == userId || null == userService.getUserInfo(userId)){
             return JsonResult.fail("用户不存在");
         }
+
         if(null == orderDescribe){
             return JsonResult.fail("请填写订单描述");
         }

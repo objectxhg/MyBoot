@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Transactional
 @SuppressWarnings("all")
 @RequestMapping("/user")
-@Api(value = "用户模块", tags = "用户模块")
+@Api(value = "用户模块1", tags = "用户模块2")
 public class UserController {
 	
 	@Autowired

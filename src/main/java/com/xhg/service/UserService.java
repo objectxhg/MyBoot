@@ -19,5 +19,6 @@ public PageInfo findAll(Integer pageNum, Integer pageSize);
 	 Integer addUser (sysUser user);
 
 	 Integer incrUserIntegral(Integer userId);
-	
+
+	 sysUser getUserInfo(Integer userId);
 }

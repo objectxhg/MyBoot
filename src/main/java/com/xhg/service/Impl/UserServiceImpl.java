@@ -80,4 +80,10 @@ public class UserServiceImpl implements UserService{
 
 		return sysUserMapper.incrUserIntegral(userId);
 	}
+
+	@Override
+	public sysUser getUserInfo(Integer userId) {
+
+		return sysUserMapper.getUserInfo(userId);
+	}
 }

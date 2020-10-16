@@ -1,6 +1,7 @@
 package com.xhg.service.Impl;
 
 import com.xhg.mapper.OrderMapper;
+import com.xhg.mapper.SysUserMapper;
 import com.xhg.pojo.Order;
 import com.xhg.service.OrderService;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,15 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private OrderMapper orderMapper;
 
+    @Resource
+    private SysUserMapper sysUserMapper;
+
+
     @Override
     public Integer addOrder(Order order) {
+        if(null == sysUserMapper.getUserInfo(order.getUserId())){
+                return  0;
+        }
         order.setOrderUpdateTime(new Date());
         return orderMapper.createOrder(order);
     }

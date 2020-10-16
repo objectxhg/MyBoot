@@ -32,8 +32,10 @@ public class DeadReceiver {
         Integer state = userService.incrUserIntegral(user.getId());
         if(state == 1){
             logger.info("【DeadQueue死信队列】-----> 重新消费成功 购物积分已增加");
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }else{
-            logger.error("【DeadQueue死信队列】-----> 消费失败");
+            logger.error("【DeadQueue死信队列】-----> 用户id:" + user.getId() + " 消费失败 死信队列开始丢弃....");
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }
 
     }

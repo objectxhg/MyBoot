@@ -27,6 +27,10 @@
    		select * from sys_user
    	</select>
 
+	<select id="getUserInfo"  resultMap="UserResultMap">
+   		select * from sys_user where id = #{userId}
+   	</select>
+
    	<insert id="addUser" parameterType="com.xhg.pojo.sysUser">
    			insert into sys_user (
    			username,pwd,mobile,birthday,address

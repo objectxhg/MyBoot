@@ -28,6 +28,9 @@ public interface SysUserMapper {
 	@Delete("delete from sys_user where id=#{id}")
 	void delete(@Param("id") Integer id);
 
+
+	sysUser getUserInfo(Integer userId);
+
 	Integer addUser (sysUser user);
 
 	sysUser selectUserById(Integer id);
