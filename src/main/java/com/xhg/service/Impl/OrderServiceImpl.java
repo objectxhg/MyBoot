@@ -4,6 +4,7 @@ import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
 import com.xhg.pojo.Order;
 import com.xhg.service.OrderService;
+import com.xhg.utils.demo.SnowflakeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,9 +28,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer addOrder(Order order) {
+
         if(null == sysUserMapper.getUserInfo(order.getUserId())){
                 return  0;
         }
+        order.setOrderId(SnowflakeUtil.getSnowflakeID());
         order.setOrderUpdateTime(new Date());
         return orderMapper.createOrder(order);
     }

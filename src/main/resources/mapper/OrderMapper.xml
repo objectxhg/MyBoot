@@ -15,10 +15,10 @@
 
 	<insert id="createOrder" parameterType="com.xhg.pojo.Order">
    			insert into orders (
-   			user_id, order_describe, order_updateTime
+   			id, user_id, order_describe, order_updateTime
    			)
    			 values
-   			 (#{userId},#{orderDescribe},#{orderUpdateTime})
+   			 (#{orderId}, #{userId}, #{orderDescribe}, #{orderUpdateTime})
    	</insert>
 
 	<select id="selectOrder" resultMap="OrderResultMap">

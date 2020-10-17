@@ -12,7 +12,7 @@ public class SnowflakeUtil {
     private static Snowflake snowflake = IdUtil.getSnowflake(1, 1);
 
 
-    public static Long getID(){
+    public static Long getSnowflakeID(){
 
         return snowflake.nextId();
     }
