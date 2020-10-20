@@ -1,6 +1,6 @@
 package com.xhg;
 
-import com.xhg.utils.demo.SnowflakeUtil;
+import com.xhg.utils.SnowflakeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

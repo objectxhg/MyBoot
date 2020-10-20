@@ -1,4 +1,4 @@
-package com.xhg.utils.demo;
+package com.xhg.utils;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;

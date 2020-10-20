@@ -4,7 +4,6 @@ import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
 import com.xhg.pojo.Order;
 import com.xhg.service.OrderService;
-import com.xhg.utils.demo.SnowflakeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,7 +31,14 @@ public class OrderServiceImpl implements OrderService {
         if(null == sysUserMapper.getUserInfo(order.getUserId())){
                 return  0;
         }
-        order.setOrderId(SnowflakeUtil.getSnowflakeID());
+        /**
+         * 时间戳唯一工具类ID ：order.setOrderId(SnowflakeUtil.getSnowflakeID()); 缺点：18位字符太长了，浪费而且也不好看
+         *
+         * 利用redis得单线程原子性存一个数值每次插入incr 来生成序列
+         *
+         * 数据库序列 mycat配置（当前使用，建议）
+         */
+
         order.setOrderUpdateTime(new Date());
         return orderMapper.createOrder(order);
     }

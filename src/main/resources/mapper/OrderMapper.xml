@@ -18,7 +18,7 @@
    			id, user_id, order_describe, order_updateTime
    			)
    			 values
-   			 (#{orderId}, #{userId}, #{orderDescribe}, #{orderUpdateTime})
+   			 (next value for MYCATSEQ_ORDERS, #{userId}, #{orderDescribe}, #{orderUpdateTime})
    	</insert>
 
 	<select id="selectOrder" resultMap="OrderResultMap">
