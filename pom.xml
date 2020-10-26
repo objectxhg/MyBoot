@@ -166,7 +166,12 @@
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
-
+		<!-- 分布式ID 雪花算法 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8</version>
+		</dependency>
 		<!-- 小程序订阅 -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
