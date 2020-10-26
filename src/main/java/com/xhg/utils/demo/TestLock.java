@@ -45,6 +45,8 @@ class Ticket implements Runnable {
                     } catch (Exception e) {
                     }
                     System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + (--ticket));
+                }else{
+                    System.out.println(Thread.currentThread().getName() + "售票失败，余票已经为0了");
                 }
             }finally {
                 lock.unlock();//释放锁
