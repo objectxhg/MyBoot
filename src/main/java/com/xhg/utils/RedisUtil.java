@@ -27,8 +27,8 @@ public class RedisUtil {
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
 			//保证数据的准确性
 			Thread.sleep((long)testTime);
-		}catch (Exception e){
-			throw new Exception("redis-watch-fail");
+		}catch (InterruptedException e){
+			throw new InterruptedException("redis-watch-multi-fail");
 		}finally {
 			List<Object> execList = redisTemplate.exec();
 			if(execList.size() <= 0){
@@ -48,7 +48,7 @@ public class RedisUtil {
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
 //			Thread.sleep(5000);
 		}catch (Exception e){
-			throw new Exception("redis-watch-fail");
+			throw new Exception("redis-watch-multi-fail");
 		}finally {
 			List<Object> execList = redisTemplate.exec();
 			if(execList.size() <= 0) {
@@ -67,7 +67,7 @@ public class RedisUtil {
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
 //			Thread.sleep(5000);
 		}catch (Exception e){
-			throw new Exception("redis-watch-fail");
+			throw new Exception("redis-watch-multi-fail");
 		}finally {
 			List<Object> execList = redisTemplate.exec();
 			if(execList.size() <= 0) {
@@ -87,7 +87,7 @@ public class RedisUtil {
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
 //			Thread.sleep(5000);
 		}catch (Exception e){
-			throw new Exception("redis-watch-fail");
+			throw new Exception("redis-watch-multi-fail");
 		}finally {
 			List<Object> execList = redisTemplate.exec();
 			if(execList.size() <= 0) {

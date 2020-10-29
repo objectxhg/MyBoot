@@ -107,7 +107,7 @@ public class RabbitConfig {
      */
     @Bean
     public Queue directQueue1() {
-        return new Queue(DIRECT_QUEUE1);
+        return new Queue(DIRECT_QUEUE1,true);
     }
  
     @Bean
