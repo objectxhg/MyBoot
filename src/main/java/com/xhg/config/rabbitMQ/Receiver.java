@@ -42,6 +42,8 @@ public class Receiver {
         // 获取消息Id，用消息ID做业务判断
         String messageId = message.getMessageProperties().getMessageId();
         String content = new String(message.getBody(), "UTF-8");
+        System.out.println("message" + message.getBody());
+        System.out.println("content" + content);
         try {
 
             //模拟处理消息产生异常后进入死信队列进行消费
@@ -53,11 +55,11 @@ public class Receiver {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             }else{
                 logger.error("【ququDemo正常队列】-----> 用户id:" + user.getId() + " 消费失败 正常队列开始丢弃....");
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(),false, false);
             }
 
         }catch (Exception e){
-            logger.info("【ququDemo正常队列】-----> 消费失败：拒收消息");
+            logger.info("【ququDemo正常队列】-----> 捕获到异常，消费失败：拒收消息");
             //拒收消息
             channel.basicNack(message.getMessageProperties().getDeliveryTag(),false, false);
 

@@ -6,6 +6,7 @@ import com.xhg.service.Impl.RedisServiceImpl;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.utils.RedisUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class RedisController {
     @Resource
     private RedisServiceImpl redisServiceImpl;
 
-    @Resource
+    @Autowired
     private AsyncTaskService asyncTaskService;
 
     @PostMapping("/redis/setNum/{key}/{num}")

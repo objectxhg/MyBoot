@@ -7,6 +7,7 @@ import com.xhg.service.OrderService;
 import com.xhg.service.UserService;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.vo.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class OrderController {
     @Resource
     private UserService userService;
 
-    @Resource
+    @Autowired
     private AsyncTaskService asyncTaskService;
 
     @PostMapping("/addOrder")

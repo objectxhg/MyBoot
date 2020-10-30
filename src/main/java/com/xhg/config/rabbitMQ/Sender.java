@@ -23,7 +23,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
         /**
          * 发送
          */
-        this.amqpTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
+        this.rabbitTemplate.convertAndSend("exchangeDemo", "Routingkey-xhg", user);
         /**
          * 回调监听
          */

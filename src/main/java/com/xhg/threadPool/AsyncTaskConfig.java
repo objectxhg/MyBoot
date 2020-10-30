@@ -9,14 +9,16 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@Configuration
 @EnableAsync
+@Configuration
+@SuppressWarnings("all")
 public class AsyncTaskConfig implements AsyncConfigurer{
 	
 	@Override
     @Bean("taskExecutor")
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
+
         //设置核心线程数
         threadPool.setCorePoolSize(10);
         //设置最大线程数
@@ -31,6 +33,7 @@ public class AsyncTaskConfig implements AsyncConfigurer{
         threadPool.setThreadNamePrefix("Derry-Async-");
         // 初始化线程
         threadPool.initialize();
+
         return threadPool;
     }
 
