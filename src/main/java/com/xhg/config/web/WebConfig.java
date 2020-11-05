@@ -15,8 +15,9 @@ public class WebConfig implements WebMvcConfigurer { // 单独使用 继承 WebM
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	     
-	      registry.addResourceHandler("/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
+	      registry.addResourceHandler("/boot/upload/picture/**").addResourceLocations("file:///" + localUrl + "picture");
 	      registry.addResourceHandler("/upload/video/**").addResourceLocations("file:///" + localUrl + "video");
+	      registry.addResourceHandler("/upload/hexo/**").addResourceLocations("file:///" + localUrl + "hexo");
 	      
 	      /**
 	       * 只有使用swagger2原生的UI 才需要如下配置
