@@ -14,6 +14,7 @@ public class JsonResult<T> {
 	private static final Boolean SUCCESS = Boolean.TRUE; 
 	
 	private static final Integer EXCEPTION_STATE = 500;
+	private static final Integer SUCCESS_STATE = 200;
 	
 	private Boolean state;
 	private Integer code;

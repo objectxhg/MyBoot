@@ -1,6 +1,8 @@
 package com.xhg.utils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,4 +201,38 @@ public class RedisUtil {
 							}
 			return redisTemplate.opsForHash().get(key, item);
 		}
+
+
+		//List存储
+		public void setList(String key,List<Object> value2){
+			redisTemplate.opsForList().leftPush(key,value2);
+		}
+		//List存储(设置失效时间)
+		public void setList(String key,List<Object> value2,Integer expise){
+			redisTemplate.opsForList().leftPush(key,value2);
+			redisTemplate.expire(key, expise, TimeUnit.SECONDS);
+		}
+		//List获取
+		@SuppressWarnings("unchecked")
+		public List<Object> getList(String key){
+			return (List<Object>)redisTemplate.opsForList().leftPop(key);
+		}
+
+
+
+		//Map存储
+		public void setMap(String key, Map<Object,Object> value3){
+			redisTemplate.opsForHash().putAll(key,value3);
+		}
+		//Map存储(设置失效)
+		public void setMapAndTimeOut(String key,Map<Object,Object> value3,Integer expise){
+			redisTemplate.opsForHash().putAll(key,value3);
+			redisTemplate.expire(key, expise, TimeUnit.SECONDS);
+		}
+		//Map获取
+		public Map<Object,Object> getMap(String key){
+			return redisTemplate.opsForHash().entries(key);
+		}
+
+
 }

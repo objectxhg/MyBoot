@@ -6,6 +6,7 @@ import com.xhg.pojo.sysUser;
 import com.xhg.service.OrderService;
 import com.xhg.service.UserService;
 import com.xhg.threadPool.service.AsyncTaskService;
+import com.xhg.utils.RedisUtil;
 import com.xhg.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author xiaoh
@@ -23,6 +27,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Resource
     private OrderService orderService;
@@ -57,14 +64,25 @@ public class OrderController {
         */
         asyncTaskService.sendMQAsyncTask(user);
 
-
         return JsonResult.success("添加成功");
     }
 
+    /**
+     *
+     * 存储list
+     * Collections.singletonList
+     * orderList = Collections.singletonList(orderService.orderList());
+     * 返回的是不可变的集合，但是这个长度的集合只有1，可以减少内存空间。但是返回的值依然是Collections的内部实现类，同样没有add的方法，调用add，set方法会报错
+    */
     @PostMapping("/orderList")
     public JsonResult selectOrderList(){
 
-        List<Order> orderList = orderService.orderList();
+        List<Object> orderList = redisUtil.getList("orderList");
+        System.out.println(orderList);
+        if(null == orderList){
+            orderList = orderService.orderList().stream().collect(Collectors.toList());
+            redisUtil.setList("orderList", orderList.stream().collect(Collectors.toList()), 10);
+        }
 
         return JsonResult.success(orderList);
     }

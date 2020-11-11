@@ -62,6 +62,7 @@ public class MyBootApplicationTests {
 
 	@Test
     public void contextLoads() {
+
     }
 
 	
@@ -171,6 +172,10 @@ public class MyBootApplicationTests {
 
 	}
 
+	/**
+	 * 解析微信返回的手机号密文 解密用户手机号码
+	 *
+	 * */
 	@Test
 	public void getWeiXinTelephone() throws Exception {
 
@@ -298,6 +303,9 @@ public class MyBootApplicationTests {
 
 	}
 
+	/**
+	 * 测试存储过程
+	 */
 	@Test
 	public void addCallsql(){
 		System.out.println(orderMapper.addlog("肖华刚","123466","15573679072"));
