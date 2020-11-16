@@ -1,11 +1,15 @@
 package com.xhg.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSON;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.Impl.RedisServiceImpl;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.utils.RedisUtil;
 
+import com.xhg.vo.JsonResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +37,8 @@ public class RedisController {
     @Autowired
     private AsyncTaskService asyncTaskService;
 
+    private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+
     @PostMapping("/redis/setNum/{key}/{num}")
     public String redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
         System.out.println(keyStr);
@@ -43,19 +49,34 @@ public class RedisController {
     }
 
 
-    @PostMapping("/redis/shoping/{key}")
-    public String redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
+    @RequestMapping("/redis/shoping/{key}")
+    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
+    public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
-        if(redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime) == 1){
-
+        Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
+        if(state == 1){
             sysUser user = new sysUser();
             user.setId(userId);
             asyncTaskService.sendMQAsyncTask(user);
-            return "购买成功";
+            return JsonResult.success("购买成功");
+        }else if(state == 0){
+            return JsonResult.success("当前下单人数过多，请稍后重试");
+        }else{
+            return JsonResult.success("商品已经卖光了, 0.0");
         }
 
-        return "当前下单人数过多，请稍后重试";
     }
 
+    public JsonResult shopingHandleException(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
+
+        logger.info("异常数达到阈值：开始降级");
+        return JsonResult.success("活动火爆，请重试1");
+    }
+
+    public JsonResult shopingFallback(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
+
+        logger.info("QPS达到阈值：开始限流");
+        return JsonResult.success("活动火爆，请重试2");
+    }
 }
 

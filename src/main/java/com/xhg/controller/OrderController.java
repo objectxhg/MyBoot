@@ -1,5 +1,6 @@
 package com.xhg.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
@@ -40,7 +41,11 @@ public class OrderController {
     @Autowired
     private AsyncTaskService asyncTaskService;
 
+    /**
+     * https://blog.csdn.net/u010391342/article/details/86678637
+     */
     @PostMapping("/addOrder")
+    @SentinelResource(value = "order", blockHandler = "orderHandleException", fallback = "orderFallback")
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
         if(null == userId || null == userService.getUserInfo(userId)){
@@ -87,7 +92,17 @@ public class OrderController {
         return JsonResult.success(orderList);
     }
 
+    public JsonResult orderHandleException(Integer userId, String orderDescribe){
 
 
+        return null;
+    }
+
+    public JsonResult orderFallback(Integer userId, String orderDescribe){
+
+
+
+        return null;
+    }
 }
 

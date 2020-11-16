@@ -29,7 +29,9 @@ public class RedisServiceImpl {
          * 下单前去获取库存 如果库存大于0 去购买 库存-1
          */
         Long number = Long.parseLong(JSON.toJSONString(redisUtil.get(key)));
-
+        if(number == 0){
+            return -1;
+        }
         boolean flag = redisUtil.decr(key, testTime);
         if(flag){
             // redis库存 减完创建订单

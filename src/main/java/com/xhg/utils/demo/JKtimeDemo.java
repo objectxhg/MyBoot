@@ -6,6 +6,22 @@ package com.xhg.utils.demo;
  */
 public class JKtimeDemo {
 
+    /**
+     * 使用双层检查，要加上volatile
+     */
+    volatile JKtimeDemo jk = null;
+
+    public JKtimeDemo getJKtimeDemo(){
+        if(jk == null){
+            synchronized (this){
+                if(jk == null){
+                    jk = new JKtimeDemo();
+                }
+            }
+        }
+        return jk;
+    }
+
         public static void main(String[] args) {
 
         int[] arr = {2,15,17,7};

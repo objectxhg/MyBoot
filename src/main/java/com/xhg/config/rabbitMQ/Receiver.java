@@ -42,8 +42,6 @@ public class Receiver {
         // 获取消息Id，用消息ID做业务判断
         String messageId = message.getMessageProperties().getMessageId();
         String content = new String(message.getBody(), "UTF-8");
-        System.out.println("message" + message.getBody());
-        System.out.println("content" + content);
         try {
 
             //模拟处理消息产生异常后进入死信队列进行消费

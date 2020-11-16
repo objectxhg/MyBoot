@@ -7,12 +7,14 @@ server:
 upload:
   localUrl: "/usr/local/uploadFile/"
 
-spring: 
-    #切换生产环境
-    #profiles:
-      #active: usage_message
+spring:
+    profiles:
+      active: dev
+      #切换生产环境
+      #profiles:
+        #active: usage_message
     application: 
-      name: spirng-boot-rabbitmq
+      name: MyBoot
     rabbitmq:
       host: localhost
       port: 5672
@@ -41,7 +43,6 @@ spring:
           #队列中有 prefetch 条以上未签收的消息，则不进行新的消息消费。
           prefetch: 2
 
-
     redis:
       host: localhost
       prot: 6379
@@ -61,6 +62,14 @@ spring:
           - localhost:26379
           - localhost:26380
           - localhost:26381
+
+    cloud:
+      sentinel:
+        enabled: true
+        eager: true
+        transport:
+          dashboard: 127.0.0.1:8080
+
     datasource:
         tomcat-jdbc: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -73,6 +82,10 @@ spring:
     devtools:
     restart:
       enabled: true  #设置开启热部署
+
+
+
+
 mybatis: 
     ##\u5B9E\u4F53\u7C7B\u8DEF\u5F84
     typeAliasesPackage: com.xhg.pojo

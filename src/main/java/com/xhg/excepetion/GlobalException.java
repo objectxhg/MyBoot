@@ -11,14 +11,14 @@ import com.xhg.vo.JsonResult;
 
 @ControllerAdvice
 public class GlobalException {
-	
+
 	@ExceptionHandler(RuntimeException.class) //@ExceptionHandler，可以处理异常
 											  //配合@ControllerAdvice 便可以处理全局异常
 	@ResponseBody
 	public JsonResult resultException(Exception e){
 		e.printStackTrace();
-		System.out.println("-----> GlobalException");
+		System.out.println("-----> GlobalException： " + e.getMessage());
 		return JsonResult.fail(e.getMessage());
-		
+
 	}
 }
