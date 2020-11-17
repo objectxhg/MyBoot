@@ -1,6 +1,11 @@
 package com.xhg;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xhg.mapper.SysUserMapper;
+import com.xhg.pojo.sysUser;
 import com.xhg.utils.RedisUtil;
 import com.xhg.utils.SnowflakeUtil;
 import org.junit.Test;
@@ -11,9 +16,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author xiaoh
@@ -24,9 +32,12 @@ import javax.annotation.Resource;
 public class DemoTest {
 
     @Resource
-    private RedisUtil redisUtil;
+    private SysUserMapper userMapper;
 
     @Resource
+    private RedisUtil redisUtil;
+
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     @Test
@@ -38,15 +49,37 @@ public class DemoTest {
     @Test
     public void volatileTestDemo(){
 
-        String valueStr = "idea";
-        redisTemplate.executePipelined(new RedisCallback<String>() {
+        List<sysUser> list = userMapper.findAll();
+        redisTemplate.executePipelined(new RedisCallback<List<sysUser>>() {
             @Override
-            public String doInRedis(RedisConnection connection) throws DataAccessException {
-                connection.sAdd("good".getBytes(), "idea".toString().getBytes());
+            public List<sysUser> doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.openPipeline();
+                connection.set("userList".getBytes(), JSON.toJSONString(list).getBytes());
+                connection.set("test".getBytes(), "asdsdf".getBytes());
                 return null;
             }
         });
+
     }
 
+
+    @Test
+    public void userList() {
+
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+
+//        String s = (String) redisTemplate.boundValueOps("userList").get();
+        String s = (String) redisUtil.get("userList");
+        List<sysUser> list = JSON.parseArray(s, sysUser.class);
+        for(sysUser user : list){
+            System.out.println(user.getUsername());
+        }
+
+//        List<sysUser> list = userMapper.findAll();
+//        System.out.println(JSON.toJSONString(list));
+
+
+    }
 }
 

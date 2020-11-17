@@ -15,8 +15,8 @@ import org.springframework.util.CollectionUtils;
 @Component
 @SuppressWarnings("all")
 public class RedisUtil {
-	
-	
+
+
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
