@@ -16,11 +16,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,14 +45,20 @@ public class DemoTest {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private DefaultRedisScript<Integer> DefaultRedisScript;
+
     @Test
-    public void SnowflakeTest(){
+    public void SnowflakeTest() {
         System.out.println("SnowflakeID: " + SnowflakeUtil.getSnowflakeID());
 
     }
 
     @Test
-    public void volatileTestDemo(){
+    public void volatileTestDemo() {
 
         List<sysUser> list = userMapper.findAll();
         redisTemplate.executePipelined(new RedisCallback<List<sysUser>>() {
@@ -69,17 +80,27 @@ public class DemoTest {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
 
-//        String s = (String) redisTemplate.boundValueOps("userList").get();
-        String s = (String) redisUtil.get("userList");
-        List<sysUser> list = JSON.parseArray(s, sysUser.class);
-        for(sysUser user : list){
-            System.out.println(user.getUsername());
+        String s = (String) redisTemplate.boundValueOps("userList").get();
+        //String s = (String) redisUtil.get("userList");
+        if (null != s) {
+            List<sysUser> list = JSON.parseArray(s, sysUser.class);
+            for (sysUser user : list) {
+                System.out.println(user.getUsername());
+            }
+        } else {
+            System.out.println("null");
         }
-
-//        List<sysUser> list = userMapper.findAll();
-//        System.out.println(JSON.toJSONString(list));
-
-
     }
-}
 
+    @Test
+    public void redisScriptDemoTest() {
+
+        List<String> keys = new ArrayList<>();
+        keys.add("number");
+
+        Integer number = redisTemplate.execute(DefaultRedisScript, keys,0);
+
+        System.out.println("number : " + number);
+    }
+
+}

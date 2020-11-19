@@ -20,6 +20,13 @@ public class RedisUtil {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
+	public boolean LuaScriptDecr(){
+		boolean flag = true;
+
+
+		return flag;
+	}
+
 	public boolean decr(String key, Integer testTime){
 		boolean flag = true;
 		try {
