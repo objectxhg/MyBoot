@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -20,11 +21,18 @@ public class RedisUtil {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	public boolean LuaScriptDecr(){
-		boolean flag = true;
+	@Autowired
+	private DefaultRedisScript<Integer> DefaultRedisScript;
 
+	public boolean decrLuaScript(List<String> keys, Object... parames){
+		Integer state = 0;
+		try {
+			state = redisTemplate.execute(DefaultRedisScript, keys,0);
+		}catch (IllegalStateException e){
+			throw new IllegalStateException("LuaScript-IllegalStateException");
+		}
 
-		return flag;
+		return state == 0 ? false : true ;
 	}
 
 	public boolean decr(String key, Integer testTime){
@@ -34,7 +42,6 @@ public class RedisUtil {
 			redisTemplate.multi();
 			Long decrement = redisTemplate.opsForValue().decrement(key);
 			//模拟网络延迟 睡眠的时候在另一台机器上去redis修改个值 从而测试当前事务是否会提交
-			//保证数据的准确性
 			if(null != testTime){
 				Thread.sleep((long)testTime);
 			}

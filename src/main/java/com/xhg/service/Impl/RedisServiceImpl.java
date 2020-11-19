@@ -29,27 +29,25 @@ public class RedisServiceImpl {
     private OrderService orderService;
 
     @Autowired
-    private DefaultRedisScript<Integer> DefaultRedisScript;
-
-    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    /**
+     * 下单前使用lua脚本去redis获取库存 如果库存大于0 库存-1 返回 1， 如果等于0 返回 0
+     */
     public Integer redisIncrBy(String key, Integer userId, String orderDescribe, Integer testTime){
-        /**
-         * 下单前去获取库存 如果库存大于0 去购买 库存-1
-         */
 
-        List<String> keys = new ArrayList<>();
         /**
          * 需要秒杀的库存 key
+         * 调用redis脚本（lua脚本） 多行reids命令 进行原子操作
          */
+        List<String> keys = new ArrayList<>();
         keys.add(key);
 
-        Integer number = redisTemplate.execute(DefaultRedisScript, keys,0);
+        boolean state = redisUtil.decrLuaScript(keys, 0);
 
 //        Long number = Long.parseLong(JSON.toJSONString(redisUtil.get(key)));
 
-        if(number == 0){
+        if(state){
             return -1;
         }
         boolean flag = redisUtil.decr(key, testTime);

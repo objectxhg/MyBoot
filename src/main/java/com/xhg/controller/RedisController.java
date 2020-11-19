@@ -50,7 +50,7 @@ public class RedisController {
 
 
     @RequestMapping("/redis/shoping/{key}")
-    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
+    //@SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
     public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
