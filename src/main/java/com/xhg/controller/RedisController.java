@@ -50,20 +50,19 @@ public class RedisController {
 
 
     @RequestMapping("/redis/shoping/{key}")
-    //@SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
+    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
     public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
         if(state == 1){
             sysUser user = new sysUser();
             user.setId(userId);
+            
             asyncTaskService.sendMQAsyncTask(user);
             return JsonResult.success("购买成功");
-        }else if(state == 0){
-            return JsonResult.success("当前下单人数过多，请稍后重试");
-        }else{
-            return JsonResult.success("商品已经卖光了, 0.0");
         }
+        return JsonResult.success("商品已经卖光了, 0.0");
+
 
     }
 

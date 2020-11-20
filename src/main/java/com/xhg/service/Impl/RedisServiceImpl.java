@@ -28,8 +28,6 @@ public class RedisServiceImpl {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 下单前使用lua脚本去redis获取库存 如果库存大于0 库存-1 返回 1， 如果等于0 返回 0
@@ -37,6 +35,7 @@ public class RedisServiceImpl {
     public Integer redisIncrBy(String key, Integer userId, String orderDescribe, Integer testTime){
 
         /**
+         * Long keyValue = Long.parseLong(JSON.toJSONString(redisUtil.get(key))) ;
          * 需要秒杀的库存 key
          * 调用redis脚本（lua脚本） 多行reids命令 进行原子操作
          */
@@ -45,18 +44,13 @@ public class RedisServiceImpl {
 
         boolean state = redisUtil.decrLuaScript(keys, 0);
 
-//        Long number = Long.parseLong(JSON.toJSONString(redisUtil.get(key)));
-
         if(state){
-            return -1;
-        }
-        boolean flag = redisUtil.decr(key, testTime);
-        if(flag){
             // redis库存 减完创建订单
             return  orderService.addOrder(new Order(userId, orderDescribe));
-        }else{
-            return 0;
         }
+
+        return 0;
+
 
     }
 }

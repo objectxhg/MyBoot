@@ -82,7 +82,7 @@
 		<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.51</version>
+            <version>1.2.16</version>
         </dependency>
         <!--  AMQP 模块就可以很好的支持 RabbitMQ -->
         <dependency>
@@ -202,8 +202,14 @@
 			<artifactId>hutool-all</artifactId>
 			<version>5.4.4</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.2.10.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<dependencyManagement>
 		<dependencies>

@@ -24,10 +24,14 @@ public class RedisUtil {
 	@Autowired
 	private DefaultRedisScript<Integer> DefaultRedisScript;
 
+	/**
+	 * Redis保证了脚本执行的原子性，所以在当前脚本没执行完之前，别的命令和脚本都是等待状态，所以一定要控制好脚本中的内容，防止出现需要消耗大量时间的内容(逻辑相对简单)。
+	 */
 	public boolean decrLuaScript(List<String> keys, Object... parames){
 		Integer state = 0;
 		try {
 			state = redisTemplate.execute(DefaultRedisScript, keys,0);
+
 		}catch (IllegalStateException e){
 			throw new IllegalStateException("LuaScript-IllegalStateException");
 		}

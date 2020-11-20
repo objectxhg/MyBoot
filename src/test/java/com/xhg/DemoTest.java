@@ -92,6 +92,9 @@ public class DemoTest {
         }
     }
 
+    /**
+     * redis脚本 lua测试
+     */
     @Test
     public void redisScriptDemoTest() {
 
@@ -101,6 +104,7 @@ public class DemoTest {
         Integer number = redisTemplate.execute(DefaultRedisScript, keys,0);
 
         System.out.println("number : " + number);
+
     }
 
 }
