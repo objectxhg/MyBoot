@@ -82,7 +82,7 @@
 		<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.16</version>
+            <version>1.2.25.sec10</version>
         </dependency>
         <!--  AMQP 模块就可以很好的支持 RabbitMQ -->
         <dependency>
