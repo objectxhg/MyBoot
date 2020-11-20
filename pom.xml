@@ -36,7 +36,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -70,14 +69,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<!-- md5 -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.6</version>
         </dependency>
-        
 		<!-- fastjson -->
 		<dependency>
             <groupId>com.alibaba</groupId>
@@ -94,7 +91,6 @@
 			<artifactId>spring-rabbit-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<!-- 热部署 -->
 		<!-- https://blog.csdn.net/yzh_1346983557/article/details/88963097 -->
 		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
@@ -103,7 +99,7 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.10</version>
         </dependency>
-        
+        <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -114,7 +110,6 @@
             <artifactId>commons-pool2</artifactId>
             <version>2.4.2</version>
         </dependency>
-        
         <!-- Swagger2 -->
         <dependency>
 		    <groupId>io.springfox</groupId>
@@ -138,7 +133,6 @@
 		    <artifactId>jlayer</artifactId>
 		    <version>1.0.1</version>
 		</dependency>
-		
 		<!-- get set 模板 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -178,7 +172,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.8</version>
 		</dependency>
-
 		<!-- sentinel -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
@@ -189,14 +182,12 @@
 			<artifactId>sentinel-datasource-nacos</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-
 		<!-- 小程序订阅 -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.6</version>
 		</dependency>
-
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
@@ -208,7 +199,6 @@
             <version>5.2.10.RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
 	<dependencyManagement>
@@ -230,8 +220,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<!--  -->
+	
 	<build>
 		<plugins>
 			<plugin>
