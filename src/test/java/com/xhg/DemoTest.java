@@ -100,10 +100,15 @@ public class DemoTest {
 
         List<String> keys = new ArrayList<>();
         keys.add("number");
+        /**
+         * DefaultRedisScript： 为注入需要执行的lua脚本Bean
+         * keys: 需要操作的key
+         * 0：传入的参数
+         * 我们点进去 execute 源码能看到 第三个参数为 Object... args 说明可以传多个参数
+         */
+        Integer state = redisTemplate.execute(DefaultRedisScript, keys,0);
 
-        Integer number = redisTemplate.execute(DefaultRedisScript, keys,0);
-
-        System.out.println("number : " + number);
+        System.out.println("state : " + state);
 
     }
 

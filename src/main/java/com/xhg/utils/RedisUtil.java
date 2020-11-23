@@ -30,7 +30,7 @@ public class RedisUtil {
 	public boolean decrLuaScript(List<String> keys, Object... parames){
 		Integer state = 0;
 		try {
-			state = redisTemplate.execute(DefaultRedisScript, keys,0);
+			state = redisTemplate.execute(DefaultRedisScript, keys, parames);
 
 		}catch (IllegalStateException e){
 			throw new IllegalStateException("LuaScript-IllegalStateException");
