@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
+
 @Component
 @SuppressWarnings("all")
 public class RedisUtil {
@@ -24,6 +26,41 @@ public class RedisUtil {
 	@Autowired
 	private DefaultRedisScript<Integer> DefaultRedisScript;
 
+	@Resource
+	private DefaultRedisScript<Integer> LockScript;
+
+	@Resource
+	private DefaultRedisScript<Integer> LockDelScript;
+
+	/**
+	 * 分布式锁 解锁
+	 */
+	public boolean LuaLockDelScript(List<String> keys, Object... parames){
+		Integer state = 0;
+		try {
+			state = redisTemplate.execute(LockDelScript, keys, parames);
+
+		}catch (IllegalStateException e){
+			throw new IllegalStateException("LuaLockScript");
+		}
+
+		return state == 1 ? true : false ;
+	}
+	/**
+	 * 分布式锁 加锁
+	 */
+	public boolean LuaLockScript(List<String> keys, Object... parames){
+		Integer state = 0;
+		try {
+			state = redisTemplate.execute(LockScript, keys, parames);
+
+		}catch (IllegalStateException e){
+			throw new IllegalStateException("LuaLockScript");
+		}
+
+		return state == 1 ? true : false ;
+	}
+
 	/**
 	 * Redis保证了脚本执行的原子性，所以在当前脚本没执行完之前，别的命令和脚本都是等待状态，所以一定要控制好脚本中的内容，防止出现需要消耗大量时间的内容(逻辑相对简单)。
 	 */
@@ -33,10 +70,10 @@ public class RedisUtil {
 			state = redisTemplate.execute(DefaultRedisScript, keys, parames);
 
 		}catch (IllegalStateException e){
-			throw new IllegalStateException("LuaScript-IllegalStateException");
+			throw new IllegalStateException("decrLuaScript");
 		}
 
-		return state == 0 ? false : true ;
+		return state == 1 ? true : false ;
 	}
 
 	public boolean decr(String key, Integer testTime){
@@ -217,7 +254,7 @@ public class RedisUtil {
 		 */
 		public Object hget(String key, String item,long time) {
 			if (time > 0) {
-								expire(key, time);
+				expire(key, time);
 							}
 			return redisTemplate.opsForHash().get(key, item);
 		}

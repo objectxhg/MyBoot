@@ -77,5 +77,16 @@ public class RedisController {
         logger.info("QPS达到阈值：开始限流");
         return JsonResult.success("活动火爆，请重试2");
     }
+
+    /**
+     * 分布式锁 lock
+     */
+
+    public JsonResult LockController(Integer userId){
+
+
+
+        return JsonResult.success("lock test");
+    }
 }
 
