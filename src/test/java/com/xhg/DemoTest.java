@@ -111,6 +111,7 @@ public class DemoTest {
     }
 
     /**
+     * 高并发，秒杀场景解决方案一：
      * redis脚本 lua测试
      */
     @Test
@@ -131,7 +132,8 @@ public class DemoTest {
     }
 
     /**
-     * redis分布式锁 模拟
+     * 高并发，秒杀场景解决方案二：
+     * 利用redis使用分布式锁
      */
 
     @Test
