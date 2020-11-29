@@ -1,10 +1,12 @@
 # MyBoot
-SpringBoot2.0 + redis5.0 + rabbitMQ
+SpringBoot2.0 + redis5.0 + rabbitMQ  + Sentinel
 
-# redis
+# Redis
 使用SpringBoot 集成redis进行缓存热点数据 主要有redis主从复制、哨兵模式进行读写分离和高可用 在一台服务器上起了三个redis服务 1主2从（服务器redis主从，哨兵配置没贴出来）以及开启reids事务<br/>
 
-# rabbitMQ
+使用lua脚本，来保证一些业务逻辑和分布式事物
+
+# RabbitMQ
 使用SpringBoot 集成rabbitMQ 的一个小的demo 还不是很完整。目前包含 消息发送到mq的回调判断，消息是否被mq成功接收防止数据还没到mq就丢失、 死信队列、为了确保消息被正常消费，多加一层防护<br/>
 
 &emsp;&emsp;模拟用户下单后 添加完订单 直接返回成功后 给队列发送一条消息 （使用的是fanout广播模式），然后监听队列进行消费信息 <br/>
@@ -35,8 +37,11 @@ SpringBoot2.0 + redis5.0 + rabbitMQ
    &emsp;&emsp;注意：正常队列不设置这两个参数 业务队列拒收后，死信队列是收不到消息的<br/>
    
    &emsp;&emsp;准备工作的做完了 接下来我们就启动试一下模拟正常队列报错后在catch里面拒收消息 死信队列能否消费到消息<br/>
-   
+ 
+# Sentinel
+    使用Sentinel对指定接口进行流控和服务降级
+    
    原文链接：<a href="https://paogg.cn" target="_blank"> https://paogg.cn  </a>
-   一个初坑的小白程序员希望能帮到大家,有错误的地方欢迎大家来指导0.0 , 微信号：wxid_8rpo91orc80k22
+   希望能帮到大家,有不对的地方欢迎大家来指导 0.0 , 邮箱：xiaohuagang@outlook.com
 
   
