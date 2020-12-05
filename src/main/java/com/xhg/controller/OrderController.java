@@ -1,6 +1,7 @@
 package com.xhg.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.github.pagehelper.PageInfo;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
@@ -49,11 +50,11 @@ public class OrderController {
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
         if(null == userId || null == userService.getUserInfo(userId)){
-            return JsonResult.fail("用户不存在");
+            return JsonResult.fail(400, "用户不存在");
         }
 
         if(null == orderDescribe){
-            return JsonResult.fail("请填写订单描述");
+            return JsonResult.fail(400, "请填写订单描述");
         }
         Integer state = orderService.addOrder(new Order(userId, orderDescribe));
         if(state != 1){
@@ -80,16 +81,20 @@ public class OrderController {
      * 返回的是不可变的集合，但是这个长度的集合只有1，可以减少内存空间。但是返回的值依然是Collections的内部实现类，同样没有add的方法，调用add，set方法会报错
     */
     @PostMapping("/orderList")
-    public JsonResult selectOrderList(){
+    public JsonResult selectOrderList(Integer pageNum, Integer pageSize){
 
         List<Object> orderList = redisUtil.getList("orderList");
         System.out.println(orderList);
         if(null == orderList){
-            orderList = orderService.orderList().stream().collect(Collectors.toList());
+            orderList = orderService.orderList(pageNum, pageSize).stream().collect(Collectors.toList());
+            if(null == orderList) JsonResult.fail("没有更多数据了");
+            /**
+             *  redis setList (key value exPiSe)
+             */
             redisUtil.setList("orderList", orderList.stream().collect(Collectors.toList()), 10);
         }
 
-        return JsonResult.success(orderList);
+        return JsonResult.success(PageInfo.of(orderList));
     }
 
     public JsonResult orderHandleException(Integer userId, String orderDescribe){

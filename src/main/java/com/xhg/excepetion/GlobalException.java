@@ -1,5 +1,7 @@
 package com.xhg.excepetion;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,13 +14,25 @@ import com.xhg.vo.JsonResult;
 @ControllerAdvice
 public class GlobalException {
 
-	@ExceptionHandler(RuntimeException.class) //@ExceptionHandler，可以处理异常
-											  //配合@ControllerAdvice 便可以处理全局异常
+	private static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
+	/**
+	 * @ExceptionHandler，可以处理异常
+	 * 配合@ControllerAdvice 便可以处理全局异常
+	 */
+	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public JsonResult resultException(Exception e){
-		e.printStackTrace();
-		System.out.println("-----> GlobalException： " + e.getMessage());
+		//e.printStackTrace();
+		logger.info("-----> Global-Exception： " + e);
 		return JsonResult.fail(e.getMessage());
-
 	}
+
+	@ExceptionHandler(BaseException.class)
+	@ResponseBody
+	public JsonResult resultException(BaseException e){
+		//e.printStackTrace();
+		logger.info("-----> Global-BaseException： " + e);
+		return JsonResult.fail(e.getCode(), e.getMessage());
+	}
+
 }

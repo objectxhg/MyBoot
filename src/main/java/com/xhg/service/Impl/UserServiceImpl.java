@@ -14,10 +14,12 @@ import com.xhg.pojo.sysUser;
 import com.xhg.service.UserService;
 import com.xhg.utils.RedisUtil;
 
+import javax.annotation.Resource;
+
 @Service
 public class UserServiceImpl implements UserService{
 	
-	@Autowired
+	@Resource
 	private SysUserMapper sysUserMapper;
 	
 	@Autowired
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
+
 		PageHelper.startPage(pageNum, pageSize);
 		List<sysUser> list = sysUserMapper.findAll();
 		System.out.println(list);

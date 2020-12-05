@@ -12,6 +12,6 @@ public interface OrderService {
 
     Integer addOrder(Order order);
 
-    List<Order> orderList ();
+    List<Order> orderList (Integer pageNum, Integer pageSize);
 
 }

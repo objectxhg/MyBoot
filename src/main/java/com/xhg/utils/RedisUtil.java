@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 @SuppressWarnings("all")
 public class RedisUtil {
 
+	private static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
@@ -37,12 +40,7 @@ public class RedisUtil {
 	 */
 	public boolean LuaLockDelScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		try {
-			state = redisTemplate.execute(LockDelScript, keys, parames);
-
-		}catch (IllegalStateException e){
-			throw new IllegalStateException("LuaLockScript");
-		}
+		state = redisTemplate.execute(LockDelScript, keys, parames);
 
 		return state == 1 ? true : false ;
 	}
@@ -51,12 +49,7 @@ public class RedisUtil {
 	 */
 	public boolean LuaLockScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		try {
-			state = redisTemplate.execute(LockScript, keys, parames);
-
-		}catch (IllegalStateException e){
-			throw new IllegalStateException("LuaLockScript");
-		}
+		state = redisTemplate.execute(LockScript, keys, parames);
 
 		return state == 1 ? true : false ;
 	}
@@ -66,12 +59,7 @@ public class RedisUtil {
 	 */
 	public boolean decrLuaScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		try {
-			state = redisTemplate.execute(DefaultRedisScript, keys, parames);
-
-		}catch (IllegalStateException e){
-			throw new IllegalStateException("decrLuaScript");
-		}
+		state = redisTemplate.execute(DefaultRedisScript, keys, parames);
 
 		return state == 1 ? true : false ;
 	}

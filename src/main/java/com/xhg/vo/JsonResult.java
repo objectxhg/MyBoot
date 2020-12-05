@@ -13,8 +13,11 @@ public class JsonResult<T> {
 	private static final Boolean ERROR = Boolean.FALSE; 
 	private static final Boolean SUCCESS = Boolean.TRUE; 
 	
-	private static final Integer EXCEPTION_STATE = 500;
-	private static final Integer SUCCESS_STATE = 200;
+	private static final Integer EXCEPTION_CODE = 500;
+	private static final Integer SUCCESS_CODE = 200;
+
+	private static final String SUCCESS_MESSAGE = "请求成功";
+
 	
 	private Boolean state;
 	private Integer code;
@@ -26,44 +29,54 @@ public class JsonResult<T> {
     }
     
     public JsonResult(Exception e) {
-    	this.state = ERROR;
-    	this.code = EXCEPTION_STATE;
+    	this.code = EXCEPTION_CODE;
     	this.message = e.getMessage();
     }
-    
-    public JsonResult(Boolean state,String message,T data) {
-    	this.state = state;
-    	this.message = message;
-    	this.data = data;
-    }
-    
-    public JsonResult(Boolean state,String message) {
-    	this.state = state;
+
+    public JsonResult(Integer code, String message) {
+    	this.code = code;
     	this.message = message;
     }
+
+
+	public JsonResult(Integer code, T data, String message) {
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+
     
-    public JsonResult(Boolean state,T data) {
-    	this.state = state;
-    	this.data = data;
+	public static JsonResult success(Object data, String message) {
+		
+    	return new JsonResult(SUCCESS_CODE, data, message);
     }
-    
-    
+
 	public static JsonResult success(Object data) {
-		
-    	return new JsonResult(SUCCESS, data);
-    }
-	
+
+		return new JsonResult(SUCCESS_CODE, data, SUCCESS_MESSAGE);
+	}
+
 	public static JsonResult success(String message) {
-		
-    	return new JsonResult(SUCCESS, message);
+
+    	return new JsonResult(SUCCESS_CODE, message);
     }
-	
+
+	public static JsonResult success(Integer code, String message) {
+
+		return new JsonResult(code, message);
+	}
+
 	public static JsonResult fail(String message) {
-		
-    	return new JsonResult(ERROR, message);
-    }
-	
-    
+
+		return new JsonResult(EXCEPTION_CODE, message);
+	}
+
+	public static JsonResult fail(Integer code, String message) {
+
+		return new JsonResult(code, message);
+	}
+
+
 	public Boolean getState() {
 		return state;
 	}

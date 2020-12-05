@@ -1,5 +1,7 @@
 package com.xhg.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
 import com.xhg.pojo.Order;
@@ -49,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> orderList() {
+    public List<Order> orderList(Integer pageNum, Integer pageSize) {
         return orderMapper.selectOrder();
     }
 }

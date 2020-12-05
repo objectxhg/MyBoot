@@ -6,7 +6,7 @@ import com.xhg.pojo.sysUser;
 
 public interface UserService {
 	
-public PageInfo findAll(Integer pageNum, Integer pageSize);
+	 PageInfo findAll(Integer pageNum, Integer pageSize);
 	
 	 sysUser get(Integer id);
 	

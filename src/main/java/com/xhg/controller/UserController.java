@@ -1,5 +1,6 @@
 package com.xhg.controller;
 
+import com.xhg.excepetion.BaseException;
 import com.xhg.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +34,26 @@ public class UserController {
 		@ApiImplicitParam(value = "条数", name = "pageSize", required = false, dataType = "int", paramType = "query", defaultValue = "10")
 	})
 	@PostMapping("/showAll")
-	public PageInfo findAll(@RequestParam(defaultValue = "0") Integer pageNum,
+	public JsonResult findAll(@RequestParam(defaultValue = "0") Integer pageNum,
 							@RequestParam(defaultValue = "10") Integer pageSize){
-		return userService.findAll(pageNum,pageSize);
+
+		PageInfo pageInfo = userService.findAll(pageNum,pageSize);
+		if(pageInfo.getList() == null){
+			JsonResult.fail("暂无数据");
+		}
+		return JsonResult.success(pageInfo);
 	}
 	
 	@ApiOperation(value = "获取用户信息", notes = "根据id获取单条用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "页数", name = "id", required = true, dataType = "int"),
 	})
-	@GetMapping("/get")//@PathVariable("id") 获取路径参数。即url/{id}这种形式。
-	public sysUser findAll(Integer id){
-		
-		return userService.get(id);
+	@GetMapping("/get")
+	public JsonResult findAll(Integer id){
+		if(null == id){
+			throw new BaseException(404, "parame id is null");
+		}
+		return JsonResult.success(userService.get(id));
 	}
 
 	@ApiOperation(value = "用户注册", notes = "新增用户信息")

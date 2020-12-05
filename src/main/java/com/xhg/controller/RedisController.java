@@ -40,17 +40,17 @@ public class RedisController {
     private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
     @PostMapping("/redis/setNum/{key}/{num}")
-    public String redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
+    public JsonResult redisSet(@PathVariable("key") String keyStr, @PathVariable("num") String num){
         System.out.println(keyStr);
         if(redisUtil.set(keyStr, Integer.parseInt(num))){
-            return "进货成功";
+            return JsonResult.success("进货成功");
         }
-        return "进货失败";
+        return JsonResult.fail("进货失败");
     }
 
 
     @RequestMapping("/redis/shoping/{key}")
-    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
+//    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
     public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
@@ -61,7 +61,7 @@ public class RedisController {
             asyncTaskService.sendMQAsyncTask(user);
             return JsonResult.success("购买成功");
         }
-        return JsonResult.success("商品已经卖光了, 0.0");
+        return JsonResult.success(400, "商品已经卖光了, 0.0");
 
 
     }
