@@ -1,0 +1,83 @@
+2020-12-05 14:50:27,808:INFO main (StartupInfoLogger.java:55) - Starting MyBootApplication on PC-20170403TTLI with PID 2812 (D:\mywork\MyBoot\MyBoot\target\classes started by Administrator in D:\mywork\MyBoot\MyBoot)
+2020-12-05 14:50:27,831:INFO main (SpringApplication.java:655) - The following profiles are active: dev
+2020-12-05 14:50:30,000:INFO main (RepositoryConfigurationDelegate.java:249) - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-05 14:50:30,005:INFO main (RepositoryConfigurationDelegate.java:127) - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-05 14:50:30,063:INFO main (RepositoryConfigurationDelegate.java:187) - Finished Spring Data repository scanning in 32ms. Found 0 Redis repository interfaces.
+2020-12-05 14:50:31,197:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'asyncTaskConfig' of type [com.xhg.threadPool.AsyncTaskConfig$$EnhancerBySpringCGLIB$$b912a67e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:50:31,379:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:50:32,089:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:50:32,333:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:50:32,847:INFO main (TomcatWebServer.java:92) - Tomcat initialized with port(s): 9000 (http)
+2020-12-05 14:50:32,866:INFO main (DirectJDKLog.java:173) - Initializing ProtocolHandler ["http-nio-9000"]
+2020-12-05 14:50:32,867:INFO main (DirectJDKLog.java:173) - Starting service [Tomcat]
+2020-12-05 14:50:32,868:INFO main (DirectJDKLog.java:173) - Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-12-05 14:50:33,172:INFO main (DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext
+2020-12-05 14:50:33,173:INFO main (ServletWebServerApplicationContext.java:284) - Root WebApplicationContext: initialization completed in 5186 ms
+2020-12-05 14:54:57,863:INFO main (StartupInfoLogger.java:55) - Starting MyBootApplication on PC-20170403TTLI with PID 5132 (D:\mywork\MyBoot\MyBoot\target\classes started by Administrator in D:\mywork\MyBoot\MyBoot)
+2020-12-05 14:54:57,880:INFO main (SpringApplication.java:655) - The following profiles are active: dev
+2020-12-05 14:54:59,827:INFO main (RepositoryConfigurationDelegate.java:249) - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-05 14:54:59,831:INFO main (RepositoryConfigurationDelegate.java:127) - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-05 14:54:59,882:INFO main (RepositoryConfigurationDelegate.java:187) - Finished Spring Data repository scanning in 31ms. Found 0 Redis repository interfaces.
+2020-12-05 14:55:00,744:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'asyncTaskConfig' of type [com.xhg.threadPool.AsyncTaskConfig$$EnhancerBySpringCGLIB$$3dd3e267] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:55:00,906:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:55:01,461:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:55:01,724:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:55:02,220:INFO main (TomcatWebServer.java:92) - Tomcat initialized with port(s): 9000 (http)
+2020-12-05 14:55:02,239:INFO main (DirectJDKLog.java:173) - Initializing ProtocolHandler ["http-nio-9000"]
+2020-12-05 14:55:02,241:INFO main (DirectJDKLog.java:173) - Starting service [Tomcat]
+2020-12-05 14:55:02,243:INFO main (DirectJDKLog.java:173) - Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-12-05 14:55:02,452:INFO main (DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext
+2020-12-05 14:55:02,452:INFO main (ServletWebServerApplicationContext.java:284) - Root WebApplicationContext: initialization completed in 4459 ms
+2020-12-05 14:55:04,330:INFO main (SentinelWebAutoConfiguration.java:80) - [Sentinel Starter] register SentinelWebInterceptor with urlPatterns: [/**].
+2020-12-05 14:55:04,539:INFO main (PropertySourcedRequestMappingHandlerMapping.java:69) - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-05 14:55:04,567:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService
+2020-12-05 14:55:04,569:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskExecutor'
+2020-12-05 14:55:05,304:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskScheduler'
+2020-12-05 14:55:06,240:INFO main (DocumentationPluginsBootstrapper.java:160) - Context refreshed
+2020-12-05 14:55:06,268:INFO main (DocumentationPluginsBootstrapper.java:163) - Found 1 custom documentation plugin(s)
+2020-12-05 14:55:06,307:INFO main (ApiListingReferenceScanner.java:41) - Scanning for api listing references
+2020-12-05 14:55:06,674:INFO main (AbstractConnectionFactory.java:524) - Attempting to connect to: [121.43.158.136:5672]
+2020-12-05 14:55:06,855:INFO main (AbstractConnectionFactory.java:497) - Created new connection: rabbitConnectionFactory#52c46334:0/SimpleConnection@50bb1c1f [delegate=amqp://userMQ@121.43.158.136:5672/hostDemo, localPort= 61706]
+2020-12-05 14:55:07,855:INFO main (DirectJDKLog.java:173) - Starting ProtocolHandler ["http-nio-9000"]
+2020-12-05 14:55:07,956:INFO main (TomcatWebServer.java:204) - Tomcat started on port(s): 9000 (http) with context path '/boot'
+2020-12-05 14:55:09,895:INFO main (StartupInfoLogger.java:61) - Started MyBootApplication in 13.649 seconds (JVM running for 16.846)
+2020-12-05 14:55:46,689:INFO http-nio-9000-exec-3 (DirectJDKLog.java:173) - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-05 14:55:46,690:INFO http-nio-9000-exec-3 (FrameworkServlet.java:525) - Initializing Servlet 'dispatcherServlet'
+2020-12-05 14:55:46,711:INFO http-nio-9000-exec-3 (FrameworkServlet.java:547) - Completed initialization in 21 ms
+2020-12-05 14:55:47,082:INFO http-nio-9000-exec-3 (EpollProvider.java:68) - Starting without optional epoll library
+2020-12-05 14:55:47,086:INFO http-nio-9000-exec-3 (KqueueProvider.java:70) - Starting without optional kqueue library
+2020-12-05 14:55:48,369:INFO http-nio-9000-exec-3 (GlobalException.java:26) - -----> Global-Exception： java.lang.RuntimeException: Default-lua
+2020-12-05 14:56:29,942:INFO main (StartupInfoLogger.java:55) - Starting MyBootApplication on PC-20170403TTLI with PID 8400 (D:\mywork\MyBoot\MyBoot\target\classes started by Administrator in D:\mywork\MyBoot\MyBoot)
+2020-12-05 14:56:29,960:INFO main (SpringApplication.java:655) - The following profiles are active: dev
+2020-12-05 14:56:31,835:INFO main (RepositoryConfigurationDelegate.java:249) - Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-05 14:56:31,839:INFO main (RepositoryConfigurationDelegate.java:127) - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-05 14:56:31,890:INFO main (RepositoryConfigurationDelegate.java:187) - Finished Spring Data repository scanning in 27ms. Found 0 Redis repository interfaces.
+2020-12-05 14:56:32,586:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'asyncTaskConfig' of type [com.xhg.threadPool.AsyncTaskConfig$$EnhancerBySpringCGLIB$$c64d4ce3] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:56:32,745:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:56:33,276:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'spring.cloud.sentinel-com.alibaba.cloud.sentinel.SentinelProperties' of type [com.alibaba.cloud.sentinel.SentinelProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:56:33,502:INFO main (PostProcessorRegistrationDelegate.java:330) - Bean 'com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration' of type [com.alibaba.cloud.sentinel.custom.SentinelAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-12-05 14:56:33,948:INFO main (TomcatWebServer.java:92) - Tomcat initialized with port(s): 9000 (http)
+2020-12-05 14:56:33,967:INFO main (DirectJDKLog.java:173) - Initializing ProtocolHandler ["http-nio-9000"]
+2020-12-05 14:56:33,969:INFO main (DirectJDKLog.java:173) - Starting service [Tomcat]
+2020-12-05 14:56:33,970:INFO main (DirectJDKLog.java:173) - Starting Servlet engine: [Apache Tomcat/9.0.29]
+2020-12-05 14:56:34,153:INFO main (DirectJDKLog.java:173) - Initializing Spring embedded WebApplicationContext
+2020-12-05 14:56:34,154:INFO main (ServletWebServerApplicationContext.java:284) - Root WebApplicationContext: initialization completed in 4112 ms
+2020-12-05 14:56:35,879:INFO main (SentinelWebAutoConfiguration.java:80) - [Sentinel Starter] register SentinelWebInterceptor with urlPatterns: [/**].
+2020-12-05 14:56:36,068:INFO main (PropertySourcedRequestMappingHandlerMapping.java:69) - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-12-05 14:56:36,092:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService
+2020-12-05 14:56:36,093:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskExecutor'
+2020-12-05 14:56:36,758:INFO main (ExecutorConfigurationSupport.java:171) - Initializing ExecutorService 'taskScheduler'
+2020-12-05 14:56:37,476:INFO main (DocumentationPluginsBootstrapper.java:160) - Context refreshed
+2020-12-05 14:56:37,506:INFO main (DocumentationPluginsBootstrapper.java:163) - Found 1 custom documentation plugin(s)
+2020-12-05 14:56:37,549:INFO main (ApiListingReferenceScanner.java:41) - Scanning for api listing references
+2020-12-05 14:56:37,944:INFO main (AbstractConnectionFactory.java:524) - Attempting to connect to: [121.43.158.136:5672]
+2020-12-05 14:56:38,123:INFO main (AbstractConnectionFactory.java:497) - Created new connection: rabbitConnectionFactory#1682e6a:0/SimpleConnection@2e6b379c [delegate=amqp://userMQ@121.43.158.136:5672/hostDemo, localPort= 61799]
+2020-12-05 14:56:38,846:INFO main (DirectJDKLog.java:173) - Starting ProtocolHandler ["http-nio-9000"]
+2020-12-05 14:56:38,891:INFO main (TomcatWebServer.java:204) - Tomcat started on port(s): 9000 (http) with context path '/boot'
+2020-12-05 14:56:39,478:INFO main (StartupInfoLogger.java:61) - Started MyBootApplication in 11.335 seconds (JVM running for 13.642)
+2020-12-05 14:56:41,995:INFO http-nio-9000-exec-3 (DirectJDKLog.java:173) - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-05 14:56:41,996:INFO http-nio-9000-exec-3 (FrameworkServlet.java:525) - Initializing Servlet 'dispatcherServlet'
+2020-12-05 14:56:42,017:INFO http-nio-9000-exec-3 (FrameworkServlet.java:547) - Completed initialization in 21 ms
+2020-12-05 14:56:42,408:INFO http-nio-9000-exec-3 (EpollProvider.java:68) - Starting without optional epoll library
+2020-12-05 14:56:42,412:INFO http-nio-9000-exec-3 (KqueueProvider.java:70) - Starting without optional kqueue library
+2020-12-05 14:56:43,920:INFO http-nio-9000-exec-3 (GlobalException.java:34) - -----> Global-BaseException： BaseException(code=400, message=Default-lua)

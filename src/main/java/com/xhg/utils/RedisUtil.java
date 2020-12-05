@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.xhg.excepetion.BaseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,11 @@ public class RedisUtil {
 	 */
 	public boolean LuaLockDelScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		state = redisTemplate.execute(LockDelScript, keys, parames);
+		try {
+			state = redisTemplate.execute(LockDelScript, keys, parames);
+		}catch (Exception e){
+			throw new RuntimeException("unLock-lua");
+		}
 
 		return state == 1 ? true : false ;
 	}
@@ -49,7 +54,11 @@ public class RedisUtil {
 	 */
 	public boolean LuaLockScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		state = redisTemplate.execute(LockScript, keys, parames);
+		try {
+			state = redisTemplate.execute(LockScript, keys, parames);
+		}catch (Exception e){
+			throw new RuntimeException("Lock-lua");
+		}
 
 		return state == 1 ? true : false ;
 	}
@@ -59,8 +68,11 @@ public class RedisUtil {
 	 */
 	public boolean decrLuaScript(List<String> keys, Object... parames){
 		Integer state = 0;
-		state = redisTemplate.execute(DefaultRedisScript, keys, parames);
-
+		try {
+			state = redisTemplate.execute(DefaultRedisScript, keys, parames);
+		}catch (Exception e){
+			throw new BaseException(400, "Default-lua");
+		}
 		return state == 1 ? true : false ;
 	}
 
