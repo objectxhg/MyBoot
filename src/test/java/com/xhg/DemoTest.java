@@ -4,8 +4,12 @@ package com.xhg;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xhg.mapper.OrderDetailMapper;
 import com.xhg.mapper.SysUserMapper;
+import com.xhg.pojo.Order;
+import com.xhg.pojo.OrderDetail;
 import com.xhg.pojo.sysUser;
+import com.xhg.service.OrderService;
 import com.xhg.utils.RedisUtil;
 import com.xhg.utils.SnowflakeIdWorker;
 import com.xhg.utils.SnowflakeUtil;
@@ -61,12 +65,18 @@ public class DemoTest {
     @Resource
     private DefaultRedisScript LockDelScript;
 
+    @Resource
+    private OrderService orderService;
+
     public DemoTest() {
     }
 
     @Test
     public void SnowflakeTest() {
-        System.out.println("SnowflakeID: " + SnowflakeUtil.getSnowflakeID());
+
+
+        System.out.println(orderService.addOrder(new Order(6, "分表订单")));
+
 
     }
 

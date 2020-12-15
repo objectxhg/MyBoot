@@ -1,8 +1,8 @@
 package com.xhg.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.github.pagehelper.PageInfo;
-import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.OrderService;
@@ -10,25 +10,31 @@ import com.xhg.service.UserService;
 import com.xhg.threadPool.service.AsyncTaskService;
 import com.xhg.utils.RedisUtil;
 import com.xhg.vo.JsonResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 /**
  * @Author xiaoh
  * @create 2020/8/24 16:00
  */
 @RestController
+//@Transactional
 @RequestMapping("/order")
 public class OrderController {
+
+    private static Logger logger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
     @Autowired
     private RedisUtil redisUtil;
@@ -66,11 +72,23 @@ public class OrderController {
         sysUser user = new sysUser();
         user.setId(userId);
         /**
-         * 线程任务：给mq发送消息
+         * 线程任务：给mq发送消息 去增加用户积分
         */
         asyncTaskService.sendMQAsyncTask(user);
 
         return JsonResult.success("添加成功");
+    }
+
+    public JsonResult orderHandleException(Integer userId, String orderDescribe, BlockException e){
+
+        logger.info("用户id：" + userId + " 异常：" + e);
+        return JsonResult.success("异常");
+    }
+
+    public JsonResult orderFallback(Integer userId, String orderDescribe){
+
+
+        return JsonResult.success("限流");
     }
 
     /**
@@ -97,17 +115,6 @@ public class OrderController {
         return JsonResult.success(PageInfo.of(orderList));
     }
 
-    public JsonResult orderHandleException(Integer userId, String orderDescribe){
 
-
-        return null;
-    }
-
-    public JsonResult orderFallback(Integer userId, String orderDescribe){
-
-
-
-        return null;
-    }
 }
 

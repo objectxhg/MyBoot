@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhg.mapper.OrderDetailMapper" >
+
+	<resultMap id="OrderDetailResultMap" type="com.xhg.pojo.OrderDetail">
+		<id column="id" property="id"/>
+		<result column="orderId" property="orderId"/>
+		<result column="detail" property="detail"/>
+
+	</resultMap>
+
+	<sql id="orderDetailColumn">
+    	id, orderId, detail
+	</sql>
+
+	<insert id="insert" parameterType="com.xhg.pojo.OrderDetail">
+   			insert into order_detail(id, orderId, detail) values (next value for MYCATSEQ_ORDERS, #{orderId}, #{detail})
+   	</insert>
+
+	<!--<select id="selectOrderDetail" resultMap="OrderDetailResultMap">-->
+		<!--select <include refid="orderDetailColumn"/> from order_detail-->
+	<!--</select>-->
+
+
+</mapper>

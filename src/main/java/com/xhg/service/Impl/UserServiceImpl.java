@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService{
 			
 			if(StringUtils.isEmpty(redisJson)) {
 				user = sysUserMapper.selectUserById(id);
-				redisUtil.set("id"+id, objectMapper.writeValueAsString(user), 30l);
+				redisUtil.set("id"+id, objectMapper.writeValueAsString(user), 30L);
 			}else {
 				user = objectMapper.readValue(redisJson, sysUser.class);
 			}
