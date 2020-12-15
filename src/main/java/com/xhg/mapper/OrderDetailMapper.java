@@ -2,6 +2,7 @@ package com.xhg.mapper;
 
 import com.xhg.pojo.OrderDetail;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface OrderDetailMapper {
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
     Integer insert(OrderDetail detail);
 }
 

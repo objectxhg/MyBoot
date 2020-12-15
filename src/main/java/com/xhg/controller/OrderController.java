@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @create 2020/8/24 16:00
  */
 @RestController
-//@Transactional
+@Transactional
 @RequestMapping("/order")
 public class OrderController {
 
@@ -52,7 +52,7 @@ public class OrderController {
      * https://blog.csdn.net/u010391342/article/details/86678637
      */
     @PostMapping("/addOrder")
-    @SentinelResource(value = "order", blockHandler = "orderHandleException", fallback = "orderFallback")
+    //@SentinelResource(value = "order", blockHandler = "orderHandleException", fallback = "orderFallback")
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
         if(null == userId || null == userService.getUserInfo(userId)){
