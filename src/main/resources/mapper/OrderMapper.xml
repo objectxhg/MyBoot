@@ -25,7 +25,11 @@
 		select <include refid="orderColumn"/> from orders
 	</select>
 
-	<insert id="addlog" parameterType="map" statementType="CALLABLE">
+    <select id="selectOrderById" resultType="com.xhg.pojo.Order">
+		select <include refid="orderColumn"/> from orders where id = #{id}
+	</select>
+
+    <insert id="addlog" parameterType="map" statementType="CALLABLE">
 
 		{call adduserFun(#{username,mode=IN}, #{pwd,mode=IN}, #{mobile,mode=IN})}
 

@@ -24,6 +24,7 @@ import java.util.List;
  * @create 2020/8/24 15:56
  */
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Resource
@@ -62,17 +63,17 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderId(orderId);
         order.setOrderUpdateTime(new Date());
 
-        Integer state = orderMapper.createOrder(order);
         /**
-         * mycat 父子表
-         *
-         * 注意 由于开启了事务， 整个事务还未完成 刚插入的订单数据 没有commit
-         *
-         * 需要给下面这条sql 指定（READ_UNCOMMITTED）读取未提交数据事务 不然子表插入时是查询不到父表的id的
+         * mycat 父子表 ER分片插入异常
+         * https://blog.csdn.net/weixin_34347651/article/details/91914864
+         * 当父表和子表数据在一个事务中提交时，如果字表的parentId不是父表的分片字段，
+         * 例如基本配置中的parentId为父表的ID字段，但是父表的分片字段为user_code不是ID。同时提交报错如下：
+         * [Err] 1064 - can't find (root) parent sharding node for sql:。 ER分片需要查询父表所在的分片，如果是ER关系的表是在一个事务中插入数据是不可以的，只能分开提交。 或者使用冗余字段放弃使用ER分片。
          */
-        if (state == 1) return orderDetailMapper.insert(new OrderDetail(orderId, "分表-子表详情"));
 
-        return 0;
+//        if (state == 1) return orderDetailMapper.insert(new OrderDetail(orderId, "分表-子表详情"));
+
+        return orderMapper.createOrder(order);
     }
 
     @Override

@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
  * @create 2020/8/24 16:00
  */
 @RestController
-@Transactional
 @RequestMapping("/order")
 public class OrderController {
 

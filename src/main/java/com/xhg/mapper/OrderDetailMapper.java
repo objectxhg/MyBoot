@@ -10,9 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @create 2020/12/15 10:26
  */
 
+
 public interface OrderDetailMapper {
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     Integer insert(OrderDetail detail);
 }
 

@@ -1,5 +1,6 @@
 package com.xhg.config.swaagger;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -12,6 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 @SuppressWarnings("all")
 public class SwaggerConfig {
 	

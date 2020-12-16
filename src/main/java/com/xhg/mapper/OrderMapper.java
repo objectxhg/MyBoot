@@ -16,6 +16,8 @@ public interface OrderMapper {
 
     List<Order> selectOrder();
 
+    Order selectOrderById(Long id);
+
     Integer addlog(@Param("username") String username, @Param("pwd") String pwd, @Param("mobile") String mobile);
 }
 

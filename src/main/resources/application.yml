@@ -93,7 +93,6 @@ mybatis:
     mapperLocations: classpath:mapper/*.xml
 
 logging:
-
     level:
       com.xhg.mapper: debug
     config: classpath:logging-log4j2.yml
@@ -103,3 +102,7 @@ pagehelper:
   reasonable: false #关闭查询超出页数时返回数据问题
   supportMethodsArguments: true
   params: count=countSql
+
+
+swagger:
+  enable: true
