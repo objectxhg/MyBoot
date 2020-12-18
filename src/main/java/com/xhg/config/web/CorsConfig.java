@@ -12,6 +12,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * 跨域解决方案CORS
  */
 @Configuration
+@SuppressWarnings("all")
 public class CorsConfig {
 
     @Bean
