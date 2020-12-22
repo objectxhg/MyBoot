@@ -25,9 +25,8 @@ public class RabbitConfig {
     public static final String TOPIC_EXCHANGE = "topic.exchange";
  
     //fanout
-    //Queue 1和2
     public static final String FANOUT_QUEUE1 = "ququDemo";
-//    public static final String FANOUT_QUEUE2 = "fanout.queue2";
+
     //Exchange
     public static final String FANOUT_EXCHANGE = "exchangeDemo";
  
@@ -78,15 +77,12 @@ public class RabbitConfig {
         //交换机标识符
         args.put("x-dead-letter-exchange", "DeadExchange");
         //绑定键标识符
-            args.put("x-dead-letter-routing-key", "DirectRouting");
+        args.put("x-dead-letter-routing-key", "DirectRouting");
         Queue queue = new Queue(FANOUT_QUEUE1, true, false, false, args);
         return queue;
-        //return new Queue(FANOUT_QUEUE1);
     }
 
-//    @Bean
-//    public Queue fanoutQueue2() { return new Queue(FANOUT_QUEUE2); }
- 
+
     @Bean
     public FanoutExchange fanoutExchange() {
         return new FanoutExchange(FANOUT_EXCHANGE);
@@ -94,9 +90,6 @@ public class RabbitConfig {
  
     @Bean
     public Binding fanoutBinding1() { return BindingBuilder.bind(fanoutQueue1()).to(fanoutExchange()); }
-
-//    @Bean
-//    public Binding fanoutBinding2() { return BindingBuilder.bind(fanoutQueue2()).to(fanoutExchange()); }
 
 
 

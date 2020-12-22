@@ -22,9 +22,9 @@ spring:
       password: mq85444
       virtual-host: hostDemo #虚拟主机名称
       connection-timeout: 15000   #超时时间
-      #打开发送到mq的回调 确认是否成功发送到mq
+      # 打开发送到mq的回调 实现ConfirmCallback接口重写回调方法 确认是否成功发送到mq
       publisher-confirm-type: correlated
-      # 打开消息返回
+      # 打开消息返回 实现ReturnCallback接口重写回调方法 重写发送消息
       publisher-returns: true
       template:
         mandatory: true
@@ -39,7 +39,7 @@ spring:
           acknowledge-mode: MANUAL
         #消息确认机制 --- 是否开启手ack动确认模式
         simple:
-          acknowledge-mode: manual
+          acknowledge-mode: MANUAL
           #队列中有 prefetch 条以上未签收的消息，则不进行新的消息消费。
           prefetch: 2
 
@@ -71,6 +71,7 @@ spring:
           dashboard: 127.0.0.1:8080
           #java -Dserver.port=8080 --spring.cloud.sentinel.eager=true -jar sentinel-dashboard-1.7.0.jar
           # 也可以启动时主动加入 需要监控的节点
+          # -Dcsp.sentinel.dashboard.server=consoleIp:port
           # java -Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard-1.7.0.jar
 
     datasource:
