@@ -19,7 +19,13 @@
 		</collection>
 	</resultMap>
 
-   	<select id="selectUserById"  resultMap="UserResultMap">
+	<select id="selectUserRole" resultType="com.xhg.pojo.Role">
+
+		select role.* from sys_user_role join sys_role role on sys_user_role.roleId = role.id where sys_user_role.userId = #{userId}
+
+	</select>
+
+   	<select id="selectUserById"  resultMap="UserRole">
    		select * from sys_user where id = #{id}
    	</select>
 
