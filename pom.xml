@@ -182,7 +182,15 @@
 			<artifactId>sentinel-datasource-nacos</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-		<!-- 小程序订阅 -->
+		<!-- 微信开源框架全家桶使用 : https://github.com/Wechat-Group/weixin-java-tools -->
+		<!-- 微信公众号框架参考     : weixin-java-mp -->
+		<!-- 本项目微信公众号框架   : weixin-java-mp3.0.0 -->
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!-- 微信小程序订阅 -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
