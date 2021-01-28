@@ -8,6 +8,13 @@ upload:
   localUrl: "/usr/local/uploadFile/"
 
 spring:
+    servlet:
+      multipart:
+        #单个文件最大长度
+        max-file-size: 10MB
+        #最大请求文件的大小
+        max-request-size: 10MB
+
     profiles:
       active: dev
       #切换生产环境
@@ -77,12 +84,12 @@ spring:
     datasource:
         tomcat-jdbc: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        #url: jdbc:mysql://localhost:3306/boot?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false
-        url: jdbc:mysql://localhost:8066/BOOTDB?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
-        #username: root
-        #password: aaa85444
-        username: mycat
-        password: 123456
+        url: jdbc:mysql://localhost:3306/boot?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&useSSL=false
+        #url: jdbc:mysql://localhost:8066/BOOTDB?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: aaa85444
+        #username: mycat
+        #password: 123456
     devtools:
     restart:
       enabled: true  #设置开启热部署

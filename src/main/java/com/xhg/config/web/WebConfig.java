@@ -22,8 +22,8 @@ public class WebConfig implements WebMvcConfigurer { // 单独使用 继承 WebM
 	      /**
 	       * 只有使用swagger2原生的UI 才需要如下配置
 	       */
-	      //registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-	      //registry.addResourceHandler("/docs.html").addResourceLocations("classpath:/META-INF/resources/");
+	      registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+	      registry.addResourceHandler("/docs.html").addResourceLocations("classpath:/META-INF/resources/");
     	
     }
     
