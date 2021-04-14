@@ -36,12 +36,12 @@ class Ticket implements Runnable {
 
     @Override
     public void run() {
-//        while (true) {
+
             lock.lock();//上锁
             try {
                 if (ticket > 0) {
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
                     }
                     System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + (--ticket));
@@ -52,6 +52,5 @@ class Ticket implements Runnable {
                 lock.unlock();//释放锁
             }
 
-//        }
     }
 }

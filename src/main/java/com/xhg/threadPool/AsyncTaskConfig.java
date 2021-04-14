@@ -1,5 +1,6 @@
 package com.xhg.threadPool;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -40,8 +41,20 @@ public class AsyncTaskConfig implements AsyncConfigurer{
         return threadPool;
     }
 
+    /**
+     * 异步方法执行的过程中抛出的异常捕获
+     *
+     * 支持springboot使用@Async的注解，@Async的注解是另外启一个线程去执行方法，无法被@RestControllerAdvice该注解获取异常，异常处理需要自己手动处理。
+     */
+    /*异步任务中异常处理*/
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return null;
+        return (Throwable ex, Method method, Object... params)->{
+            //todo 异步方法异常处理
+            System.out.println("class#method: " + method.getDeclaringClass().getName() + "#" + method.getName());
+            System.out.println("type        : " + ex.getClass().getName());
+            System.out.println("exception   : " + ex.getMessage());
+        };
     }
+
 }

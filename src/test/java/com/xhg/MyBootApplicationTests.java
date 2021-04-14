@@ -8,6 +8,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.Security;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,12 +96,25 @@ public class MyBootApplicationTests {
 	//RabbitMQ测试demo
 	@Test
 	public void test2() {
-		
-		sysUser user = new sysUser();
-		user.setId(1);
-		user.setAddress("长沙");
-		user.setUsername("钢铁侠");
-//		sender.send(user);
+
+		AtomicReference<Integer> num = new AtomicReference<>(10);
+
+		List<Integer> list = new ArrayList<>();
+		list.add(1);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		list.add(5);
+
+		list.forEach( i ->{
+			if(i == 2){
+				return;
+			}
+			num.updateAndGet(v -> v + 1);
+
+		});
+
+		System.out.println("num:" + num);
 	}
 
 	// fastjson测试demo
@@ -134,7 +149,7 @@ public class MyBootApplicationTests {
 
 		String number = JSON.toJSONString(redisUtil.get("number"));
 		System.out.println("-------> number:" + number);
-		System.out.println("-------> incrbyKey:" + redisUtil.incr("number"));
+//		System.out.println("-------> incrbyKey:" + redisUtil.incr("number"));
     }
 
     @Test

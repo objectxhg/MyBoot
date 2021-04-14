@@ -43,18 +43,19 @@ class ThreadDemo implements Runnable{
 
     @Override
     public void run() {
-        lock.lock();//上锁
+//        lock.lock();//上锁
         try {
             Thread.sleep(200);
-            a++;
+//            a++;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
-            lock.unlock();
+//            lock.unlock();
         }
 
-        System.out.println(a);
-//        System.out.println(getI());
+//        System.out.println(a);
+ 
+        System.out.println(getI());
     }
 }
 

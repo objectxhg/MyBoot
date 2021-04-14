@@ -33,7 +33,7 @@ class CallableDemo implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         int sum = 0;
-        for (int i = 0;i<=100;i++){
+        for (int i = 0; i <= 10; i++){
             sum += i;
         }
         Thread.sleep(3000);
