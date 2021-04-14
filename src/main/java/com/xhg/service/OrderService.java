@@ -1,5 +1,6 @@
 package com.xhg.service;
 
+import com.github.pagehelper.PageInfo;
 import com.xhg.pojo.Order;
 import java.util.List;
 

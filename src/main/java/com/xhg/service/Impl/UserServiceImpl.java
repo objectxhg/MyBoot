@@ -1,8 +1,11 @@
 package com.xhg.service.Impl;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -13,6 +16,7 @@ import com.xhg.mapper.SysUserMapper;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.UserService;
 import com.xhg.utils.RedisUtil;
+
 
 import javax.annotation.Resource;
 
@@ -27,33 +31,37 @@ public class UserServiceImpl implements UserService{
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 
+	/**
+	 *
+	 * @param pageNum
+	 * @param pageSize
+	 *
+	 * key 和 keyGenerator 不能同时存在 一个是自定义key 一个是根据方法路径配置好key
+	 *
+	 * unless 返回值条件判断 不缓存的
+	 *
+	 * condition 参数列表条件判断 缓存符合条件的
+	 *
+	 * @return
+	 */
+	@Cacheable(cacheNames="userList", keyGenerator = "keyGenerator", unless = "#result.list.size() == 0")
 	@Override
 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
 
 		PageHelper.startPage(pageNum, pageSize);
+
 		List<sysUser> list = sysUserMapper.findAll();
-		System.out.println(list);
+
 		PageInfo<sysUser> pagelist = PageInfo.of(list);
+
 		return pagelist;
 	}
 
 	@Override
+	@Cacheable(cacheNames="getUser", key = "'id-' + #id", condition = "#id > 2")
 	public sysUser get(Integer id) {
-		sysUser user = null;
-		String redisJson = (String) redisUtil.get("id"+id);
-		
-		try {
-			
-			if(StringUtils.isEmpty(redisJson)) {
-				user = sysUserMapper.selectUserById(id);
-				redisUtil.set("id"+id, objectMapper.writeValueAsString(user), 30L);
-			}else {
-				user = objectMapper.readValue(redisJson, sysUser.class);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		sysUser user =  user = sysUserMapper.selectUserById(id);
 		
 		return user;
 	}
@@ -74,6 +82,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@CacheEvict
 	public Integer addUser(sysUser user) {
 		return sysUserMapper.addUser(user);
 	}

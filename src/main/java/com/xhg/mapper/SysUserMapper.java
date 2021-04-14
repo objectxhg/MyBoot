@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.xhg.pojo.sysUser;
+import org.springframework.cache.annotation.Cacheable;
 
 
 public interface SysUserMapper {
