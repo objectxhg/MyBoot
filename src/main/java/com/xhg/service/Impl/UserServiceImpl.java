@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	@CacheEvict
+	@CacheEvict(cacheNames="userList")
 	public Integer addUser(sysUser user) {
 		return sysUserMapper.addUser(user);
 	}

@@ -53,14 +53,23 @@ public class RedisController {
 //    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
     public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
-        Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
-        if(state == 1){
-            sysUser user = new sysUser();
-            user.setId(userId);
-            
-            asyncTaskService.sendMQAsyncTask(user);
-            return JsonResult.success("购买成功");
+        /**
+         * 双重检查
+         */
+        if(Integer.parseInt(redisUtil.get(keyStr).toString()) > 0){
+            /**
+             * lua 脚本里面再检查一次
+             */
+            Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
+            if(state == 1){
+                sysUser user = new sysUser();
+                user.setId(userId);
+
+                asyncTaskService.sendMQAsyncTask(user);
+                return JsonResult.success("购买成功");
+            }
         }
+
         return JsonResult.success(400, "商品已经卖光了, 0.0");
 
 
