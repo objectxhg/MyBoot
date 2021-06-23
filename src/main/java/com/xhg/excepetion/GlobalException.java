@@ -24,7 +24,7 @@ public class GlobalException {
 	public JsonResult resultException(Exception e){
 		//e.printStackTrace();
 		logger.info("-----> Global-Exception： " + e);
-		return JsonResult.fail(e.getMessage());
+		return JsonResult.fail("系统内部异常");
 	}
 
 	@ExceptionHandler(BaseException.class)
@@ -32,7 +32,7 @@ public class GlobalException {
 	public JsonResult resultException(BaseException e){
 		//e.printStackTrace();
 		logger.info("-----> Global-BaseException： " + e);
-		return JsonResult.fail(e.getCode(), e.getMessage());
+		return JsonResult.fail("系统内部异常");
 	}
 
 }

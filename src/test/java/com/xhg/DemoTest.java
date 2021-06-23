@@ -15,6 +15,7 @@ import com.xhg.utils.SnowflakeIdWorker;
 import com.xhg.utils.SnowflakeUtil;
 import net.bytebuddy.implementation.bytecode.Throw;
 import org.junit.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,7 +77,6 @@ public class DemoTest {
 
 
         System.out.println(orderService.addOrder(new Order(6, "分表订单")));
-
 
     }
 
@@ -167,9 +167,14 @@ public class DemoTest {
                             /**
                              * 模拟 number为商品库存
                              */
-                            if(Integer.parseInt(JSON.toJSONString(redisUtil.get("number"))) > 0){
+                            String numberValue = (String) redisUtil.get("number");
+
+                            System.out.println(numberValue);
+
+                            if(!StringUtils.isBlank(numberValue) && Integer.parseInt(numberValue) > 0){
 
                                 System.out.println("【线程】---------> " + Thread.currentThread().getName() + " : " + redisUtil.decr("number", null));
+
                             }
                             Thread.sleep(0);
                         } catch (InterruptedException e) {
@@ -178,7 +183,7 @@ public class DemoTest {
                             /**
                              * 逻辑结束 开始解锁
                              */
-                            Integer state = (Integer) redisTemplate.execute(LockDelScript, keys,parame);
+                            Integer state = (Integer) redisTemplate.execute(LockDelScript, keys, parame);
                             if(state == 1) System.out.println("解锁成功");
 
                             else System.out.println("解锁失败");

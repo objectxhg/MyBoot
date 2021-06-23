@@ -1,5 +1,10 @@
 package com.xhg.config.redis;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -8,10 +13,12 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -26,45 +33,46 @@ import java.time.Duration;
 public class redisConfig extends CachingConfigurerSupport {
 
     /**
-     * springboot2.x 使用LettuceConnectionFactory 代替 RedisConnectionFactory
-     * application.yml配置基本信息后,springboot2.x  RedisAutoConfiguration能够自动装配
-     * LettuceConnectionFactory 和 RedisConnectionFactory 及其 RedisTemplate
-     * @param redisConnectionFactory
-     * @return
+     * Redis配置value的序列化方式
      */
     @Bean
-    @SuppressWarnings("all")
-    public RedisTemplate<String, Object> RedisTemplate(LettuceConnectionFactory redisConnectionFactory) {
-
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
-        //开启事务 单节点
-        redisTemplate.setEnableTransactionSupport(true);
-        //key的序列化
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        //value的序列化
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        //key的hash序列化
-        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        //value的hash序列化
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
-
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        return redisTemplate;
+    public RedisTemplate<String, Object> RedisTemplate(RedisConnectionFactory factory) {
+        // 创建redis模板
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        // 配置连接工厂
+        template.setConnectionFactory(factory);
+        //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值（默认使用JDK的序列化方式）
+        Jackson2JsonRedisSerializer jackson = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
+        // 指定要序列化的域以及修饰符范围
+        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        // 指定要序列化的输入类型
+        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY);
+        jackson.setObjectMapper(om);
+        // 使用StringRedisSerializer来序列化和反序列化redis的key值
+        template.setKeySerializer(new StringRedisSerializer());
+        // 使用jackson来序列化和反序列化redis的value值
+        template.setValueSerializer(jackson);
+        template.afterPropertiesSet();
+        return template;
     }
 
-
-
     @Bean
-    public KeyGenerator keyGenerator() {
+    public KeyGenerator MykeyGenerator() {
         return new KeyGenerator() {
             @Override
             public Object generate(Object target, java.lang.reflect.Method method, Object... params) {
+
                 StringBuffer sb = new StringBuffer();
                 sb.append(target.getClass().getName());
                 sb.append(method.getName());
-                for (Object obj : params) {
-                    sb.append("-" + obj.toString());
-                }
+
+//                for (Object obj : params) {
+//                    sb.append(obj.toString());
+//                }
+
+                sb.append((Integer) params[0]);
+
                 return sb.toString();
             }
         };
@@ -98,5 +106,26 @@ public class redisConfig extends CachingConfigurerSupport {
 
         return redisCacheManager;
     }
+
+//    @Bean
+//    @SuppressWarnings("all")
+//    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
+//
+//        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+//        //开启事务 单节点
+//        redisTemplate.setEnableTransactionSupport(true);
+//        //key的序列化
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        //value的序列化
+//        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+//        //key的hash序列化
+//        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//        //value的hash序列化
+//        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+//
+//        redisTemplate.setConnectionFactory(redisConnectionFactory);
+//        return redisTemplate;
+//    }
+
 
 }
