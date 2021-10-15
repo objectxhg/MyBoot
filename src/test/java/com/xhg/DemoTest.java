@@ -76,7 +76,21 @@ public class DemoTest {
     public void SnowflakeTest() {
 
 
-        System.out.println(orderService.addOrder(new Order(6, "分表订单")));
+//        System.out.println(orderService.addOrder(new Order(6, "分表订单")));
+
+//        if(redisUtil.hasKey("number")) redisUtil.incr("number");
+//
+//        System.out.println(redisUtil.get("number"));
+
+        sysUser user = new sysUser();
+        user.setId(1);
+        user.setIntegral(null);
+
+        if(null != user.getIntegral() && 0 != user.getIntegral()){
+            System.out.println("null");
+        }else{
+            System.out.println("notnull");
+        }
 
     }
 

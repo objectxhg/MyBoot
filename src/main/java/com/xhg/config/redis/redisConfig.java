@@ -54,6 +54,7 @@ public class redisConfig extends CachingConfigurerSupport {
         // 使用jackson来序列化和反序列化redis的value值
         template.setValueSerializer(jackson);
         template.afterPropertiesSet();
+        template.setEnableTransactionSupport(true);
         return template;
     }
 

@@ -33,9 +33,9 @@ class ThreadDemo implements Runnable{
 
     private Lock lock = new ReentrantLock();
 
-    AtomicInteger i = new AtomicInteger(10);
+    AtomicInteger i = new AtomicInteger(5);
 
-    volatile int a = 0;
+     int a = 5;
 
     public int getI(){
         return i.getAndIncrement();
@@ -46,16 +46,17 @@ class ThreadDemo implements Runnable{
 //        lock.lock();//上锁
         try {
             Thread.sleep(200);
-//            a++;
+//            if(i.get() >0) {
+                i.getAndDecrement();
+                System.out.println(i.get());
+//            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
 //            lock.unlock();
         }
 
-//        System.out.println(a);
- 
-        System.out.println(getI());
     }
 }
 

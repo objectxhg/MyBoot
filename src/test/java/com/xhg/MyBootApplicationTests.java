@@ -325,5 +325,33 @@ public class MyBootApplicationTests {
 	public void addCallsql(){
 		System.out.println(orderMapper.addlog("肖华刚","123466","15573679072"));
 	}
+
+
+	@Test
+	public void testAPI(){
+		{
+
+			RestTemplate restTemplate = new RestTemplate();
+
+			String url = "http://172.26.9.102:8090/fins-pre-gateway/gateway/unifiedService/cxqyshxydm";
+
+			JSONObject jsonObject = new JSONObject();
+
+			jsonObject.put("apiId", "10106");
+			jsonObject.put("bizParams", "4D6ABAC988D9D60AF278F500AD8EF45F0831B870F6BE992ED2BF93A31039734B");
+			jsonObject.put("method", "cxqyshxydm");
+			jsonObject.put("sid", "6423a1ef-a163-4769-aca8-a5fcd238342f");
+			jsonObject.put("sign", "GH1JmGAN1WzRlAMbgPfbx2YayKeRAKqaMBfmseg3W+gZrMBlIFVfkqdkOqn0mRk4Xt9bHXEhiWHacSe/WdTDTNeILybsUkJdUoQnqLCrRVxQM6LHG+L0SqsUJ3DXSuWJWhAVeogvek1k81atfVwZemSzoIoCvD5giXVY1t0WWlU=");
+			jsonObject.put("signType", "RSA");
+			jsonObject.put("timestamp", "1620466042781");
+			jsonObject.put("version", "1.0");
+
+			ResponseEntity<Map> responseEntity =  restTemplate.postForEntity(url, jsonObject, Map.class);
+
+			System.out.println(responseEntity.getBody());
+
+		}
+	}
+
 }
 

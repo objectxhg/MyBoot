@@ -23,7 +23,7 @@ public class apiTest {
 
 
     @Test
-    public void testdemo() throws Exception {
+    public void RSAencrypt() throws Exception {
 
         String appSecrt = "43c01Ia5BQK6i68i";
 
@@ -32,9 +32,9 @@ public class apiTest {
         String appPrivateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALxaMLYStjmaRg3m3ZLQqvJYC/CxZyB7w9XuHqwHQiR7Yn1ftXfQeaYME/e1/syUt2fTB3Yh60mP0LPWFZdlU6DVVyFmQ8agPe0ooMtCn/Otuocp4Y2HxB/pYpY70iCKUMYMGOAaW57ichFuIDj9CR9PaLEcLxDFgizZU6WMK5JxAgMBAAECgYABlt08XBIPkF6w9Va/S2V14ApRwJ13J7QyVO0LVJBZUHU3S5xzY13zabytZWq9/S9DAAPbGlQq7by8F71c5qz69bqKpGMzx5sWMeEwFHx8fZFUgDax36THxl/SkrLIiWAown29PYOTxjyBVJ2sU/VMSX9xBES8Fw54SzdA703llQJBAOysrNPwVzxnEkfX4V4/vch+MR+/jwSJ9W7sC9WjN4RnxJAxbcR/rXcU8RFc087HjTu0gtm4sWdubUuOALLRqjMCQQDLu2l+ffJ85jlUzY/Fj3CpmdDtVzDQslV1jqMn/FeW8qom9P7y4HBZLhutT7BYjk2obgpJDvkoHjvDrm2Ai/TLAkBu0CaXkRd3S5culjCKLXQRlKwxfkJbULDev5yG6cXLs74/+TS45UL115NLmtf9IEfLZahCgoxlrjl0P8ep8isrAkBaKEOVEJNgplk0qAs5uDJ5O3JztaQKlwCul0KojUkNqbGWr9CrFpthO8BPv/YgGklPgfLXReMI1+hGvkgDHOxlAkEA1f5PqmQMGmdrRh4klk2ThLOpentoA9iYwo82h8oRJ/Eu1MggH7iG+pf5Zkcx1EDEk+QPrXIWjFPwPurc1K8YdA==";
 
         ApiRequest apiRequest =new ApiRequest();
-        apiRequest.setApiId(10084+"");
+        apiRequest.setApiId(10080+"");
         apiRequest.setSid("6423a1ef-a163-4769-aca8-a5fcd238342f");
-        apiRequest.setMethod("qysbxxcx");
+        apiRequest.setMethod("dfqf");
         apiRequest.setVersion("1.0");
         String timestamp = System.currentTimeMillis()+"";
         apiRequest.setTimestamp(timestamp);
@@ -44,12 +44,10 @@ public class apiTest {
         map.put("uniscid", "911000001000013428");
         map.put("authBookUrl","http://172.26.9.102:8090/group1/M00/00/00/oYYBAGDRh0qAf_npAAD2xqf2_m0212.pdf");
 
-        apiRequest.setBizParams(JSON.toJSONString(map));
-
-        System.out.println("【参数】:" + JSON.toJSONString(apiRequest));
+        String bizParams = JSON.toJSONString(map);
 
         //入参加密
-        String newBizParams =  AESUtil.parseByte2HexStr(AESUtil.encrypt(apiRequest.getBizParams(), appSecrt));
+        String newBizParams =  AESUtil.parseByte2HexStr(AESUtil.encrypt(bizParams, appSecrt));
 
         apiRequest.setBizParams(newBizParams);
 
@@ -74,7 +72,7 @@ public class apiTest {
     }
 
     @Test
-    public void testDemo2() throws Exception {
+    public void RSAdecrypt() throws Exception {
 
         String str = "{\n" +
                 "  \"errCode\": \"-1\",\n" +
@@ -112,6 +110,19 @@ public class apiTest {
         apiResponse.setData(retParamesMap);
 
         System.out.println(apiResponse);
+
+    }
+
+    @Test
+    public void testdemo4(){
+
+        String str = "3";
+
+        if(str != null && (str.equals("1") ||  str.equals("2"))){
+            System.out.println("ok");
+        }else {
+            System.out.println("no");
+        }
 
     }
 
