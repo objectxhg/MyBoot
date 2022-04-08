@@ -56,7 +56,7 @@ public class AsyncTaskService {
      *
      * fixedRate: 每次执行后x秒后再执行
      */
-    @Scheduled(initialDelay=10000, fixedDelay = 10000)
+    //@Scheduled(initialDelay=10000, fixedDelay = 10000)
     public void sendGateway() {
 
         logger.info("开始执行定时任务--------> {}", new Date(System.currentTimeMillis()));

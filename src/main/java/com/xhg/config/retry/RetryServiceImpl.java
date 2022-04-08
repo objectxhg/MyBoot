@@ -41,7 +41,7 @@ public class RetryServiceImpl implements RetryServie{
      *                  multiplier：每次延迟的倍数，首次直接执行，第二次延迟 2000， 第三次 4000毫秒
      *              }
      */
-    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
+    //@Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
     @Override
     public void sendApi(String message) throws Exception {
 

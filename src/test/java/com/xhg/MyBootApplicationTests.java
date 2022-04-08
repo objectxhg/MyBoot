@@ -1,32 +1,40 @@
 package com.xhg;
 
-import java.io.BufferedInputStream;
+import java.io.*;
 
-import java.io.InputStreamReader;
-
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.Security;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
+import com.xhg.utils.MapPoint;
+import com.xhg.utils.ShowHttpResponseHeaders;
 import com.xhg.vo.AccessToken;
 import com.xhg.utils.RedisUtil;
 import com.xhg.vo.TemplateDataVo;
+import org.apache.http.client.utils.DateUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.alibaba.fastjson.JSON;
@@ -36,6 +44,7 @@ import com.xhg.pojo.sysUser;
 import com.xhg.threadPool.service.AsyncTaskService;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -49,13 +58,13 @@ public class MyBootApplicationTests {
 	@Autowired
 	private Sender sender;
 
-	@Autowired
+	@Autowired(required = false)
 	private SysUserMapper sysUserMapper;
 
 	@Autowired
     private AsyncTaskService asyncTaskService;
 
-	@Autowired
+	@Autowired(required = false)
 	private OrderMapper orderMapper;
 
 	@Autowired
@@ -143,24 +152,52 @@ public class MyBootApplicationTests {
 		
 		System.out.println(userJson);
 	}
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
+
 
 	@Test
-    public void  redisTest(){
+    public void  redisTest() throws InterruptedException {
 
-		String number = JSON.toJSONString(redisUtil.get("number"));
-		System.out.println("-------> number:" + number);
-//		System.out.println("-------> incrbyKey:" + redisUtil.incr("number"));
+//		String number = JSON.toJSONString(redisUtil.get("qwdas"));
+//
+//		System.out.println("-------> number:" + number);
+//		if(null == number){
+//			System.out.println("true");
+//		}
+//		if("null".equals(number)){
+//			System.out.println("false");
+//		}
+//
+//		System.out.println("number:length:" + number.length());
+
+//
+//		System.out.println("number incr:" + redisTemplate.opsForValue().increment("number", 1L));
+//
+//		System.out.println("iflybank:" + redisTemplate.opsForValue().increment("iflybank", 1L));
+//
+//		System.out.println("iflybank:" + redisTemplate.opsForValue().increment("iflybank"));
+		//获取key的过期时间
+//		System.out.println("getExpire:" + redisTemplate.opsForValue().getOperations().getExpire("xhg"));
+
+//		1648800315292-1648799986446
+//		1648800336897-1648799986446
+
     }
 
-    @Test
+	/**
+	 * 获取用户的微信id
+	 * @throws Exception
+	 */
+	@Test
 	@SuppressWarnings("all")
 	public void getWeiXinInfo() throws Exception {
 
 		String appid = "wx82f903cd9b8967c6";
 		String secret = "5f14bdd482966d1bd0ae6292abda9133";
 
+		//微信前端获取
 		String js_code = "053Fay0w3uiCTU2oTe1w387kko1Fay0B";
-
 
 		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + js_code + "&grant_type=authorization_code";
 		URL reqURL = new URL(url); //创建URL对象
@@ -323,7 +360,22 @@ public class MyBootApplicationTests {
 	 */
 	@Test
 	public void addCallsql(){
-		System.out.println(orderMapper.addlog("肖华刚","123466","15573679072"));
+//		System.out.println(orderMapper.addlog("肖华刚","123466","15573679072"));
+
+		float num = (float) 0.35123;
+
+		String str = Float.toString(num);
+
+		if(str.contains(".")){
+			String[] arr = str.split("\\.");
+			str = arr[0] + "." + arr[1].substring(0, 2);
+			Float foat = Float.valueOf(str);
+			System.out.println(foat);
+		}
+
+
+
+
 	}
 
 
@@ -351,6 +403,151 @@ public class MyBootApplicationTests {
 			System.out.println(responseEntity.getBody());
 
 		}
+	}
+
+	@Test
+	public void aaa() throws ParseException {
+
+		String endDate = "2022-03-08 10:25:00";
+
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date end = simpleDateFormat.parse(endDate);
+
+		System.out.println(end.compareTo(new Date()));
+
+	}
+	@Test
+	public void times() throws ParseException{
+		long now = System.currentTimeMillis();
+		SimpleDateFormat sdfOne = new SimpleDateFormat("yyyy-MM-dd");
+		long overTime = (now - (sdfOne.parse(sdfOne.format(now)).getTime()))/1000;
+		//当前毫秒数
+		System.out.println(now);
+		//当前时间  距离当天凌晨  秒数 也就是今天过了多少秒
+		System.out.println(overTime);
+		//当前时间  距离当天晚上23:59:59  秒数 也就是今天还剩多少秒
+		long TimeNext = 24*60*60 - overTime;
+		System.out.println("当前时间距离凌晨12点还剩：{} 秒"+TimeNext);
+		//当天凌晨毫秒数
+		System.out.println(sdfOne.parse(sdfOne.format(now)).getTime());
+		//当天凌晨日期
+		SimpleDateFormat sdfTwo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.print(sdfTwo.format(sdfOne.parse(sdfOne.format(now)).getTime()));
+	}
+
+	@Autowired
+	MapPoint mapPoint;
+
+	/**
+	 * txt文件按行读取
+	 */
+	public void readTxt(String txt){
+
+		if(org.apache.commons.lang3.StringUtils.isEmpty(txt)) txt = "E:\\testFile\\test3.txt";
+
+		File file = new File(txt);
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempStr;
+			List<String> list = new ArrayList<>();
+			while ((tempStr = reader.readLine()) != null) {
+				list.add(tempStr);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * 网格坐标匹配
+	 */
+	@Test
+	public void mapPointCheck(){
+
+		String str = "";
+
+//		RestTemplate restTemplate = new RestTemplate();
+//
+//		String url = "https://restapi.amap.com/v3/geocode/geo?" +
+//				"address=湖南省长沙市岳麓区观沙岭街道滨江路188号湘江基金小镇13%23栋3层" +
+//				"&output=JOSN" +
+//				"&key=b3fca3378dc818dad0d4e55320ec5558";
+//
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("output","JOSN");
+//		map.put("key","b3fca3378dc818dad0d4e55320ec5558");
+//		map.put("address","湖南省长沙市岳麓区观沙岭街道滨江路188号湘江基金小镇");
+//
+//		ResponseEntity<JSONObject> res = restTemplate.getForEntity(url, JSONObject.class);
+//		ShowHttpResponseHeaders.showHeaders(res.getHeaders());
+//		Gson gson = new Gson();
+//
+//		Map<String, Object> valaueMap = gson.fromJson(String.valueOf(res.getBody()), Map.class);
+//		if("1".equals(valaueMap.get("status"))){
+//			ArrayList list = (ArrayList) valaueMap.get("geocodes");
+//			Map<String, Object> geocodesMap = (Map<String, Object>) list.get(0);
+//			System.out.println("目标经纬度:" + geocodesMap.get("location"));
+//			str = geocodesMap.get("location").toString();
+//		}
+
+		str = "112.987981,28.197388";
+
+		if(StringUtils.isNotBlank(str)){
+			//目标经度
+			double targetY = Double.parseDouble(str.split(",")[0]);
+			//目标纬度
+			double targetX = Double.parseDouble(str.split(",")[1]);
+
+			//多边形经度集合
+			ArrayList<Double> listY = new ArrayList<>();
+			listY.add(112.9833984375);
+			listY.add(112.994384765625);
+			listY.add(112.9833984375);
+			listY.add(112.994384765625);
+			//多边形纬度集合
+			ArrayList<Double> listX = new ArrayList<>();
+			listX.add(28.1964111328125);
+			listX.add(28.1964111328125);
+			listX.add(28.201904296875);
+			listX.add(28.201904296875);
+
+			boolean flag =  mapPoint.isPointInPolygon(targetY, targetX, listY, listX);
+
+			System.out.println("目标是否在区域内：" + flag);
+		}
+	}
+
+	@Autowired
+	private RestTemplate restTemplateUtil;
+
+	@Test
+	public void restTemplateTest(){
+
+//		long start = System.currentTimeMillis();
+//		try {
+//			String str = restTemplateUtil.getForObject("http://10.4.190.69:8081/fins-console/system/loglist", String.class);
+//			System.out.println(str);
+//		}catch (Exception e){
+//
+//		}
+//		long end = System.currentTimeMillis();
+//
+//		System.out.println((end-start)/1000);
+
+		System.out.println(UUID.randomUUID().toString());
+
 	}
 
 }

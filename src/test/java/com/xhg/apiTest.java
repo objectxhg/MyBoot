@@ -21,7 +21,10 @@ import java.util.Map;
 @SpringBootTest(classes = {MyBootApplication.class})
 public class apiTest {
 
-
+    /**
+     * 加密
+     * @throws Exception
+     */
     @Test
     public void RSAencrypt() throws Exception {
 
@@ -71,6 +74,10 @@ public class apiTest {
         System.out.println("flag:" + flag);
     }
 
+    /**
+     * 解密
+     * @throws Exception
+     */
     @Test
     public void RSAdecrypt() throws Exception {
 

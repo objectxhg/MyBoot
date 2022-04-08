@@ -50,7 +50,7 @@ public class RedisUtil {
 		return state == 1 ? true : false ;
 	}
 	/**
-	 * 分布式锁 加锁
+	 * 分布式锁 加锁 详见:DemoTest.RedisLockTest()
 	 */
 	public boolean LuaLockScript(List<String> keys, Object... parames){
 		Integer state = 0;
@@ -64,7 +64,7 @@ public class RedisUtil {
 	}
 
 	/**
-	 * Redis保证了脚本执行的原子性，所以在当前脚本没执行完之前，别的命令和脚本都是等待状态，所以一定要控制好脚本中的内容，防止出现需要消耗大量时间的内容(逻辑相对简单)。
+	 * redis lua脚本命令具有原子性，所以在当前脚本没执行完之前，别的命令和脚本都是等待状态，所以一定要控制好脚本中的逻辑复杂性内容，防止出现需要消耗大量时间的逻辑代码。(尽量逻辑简单)。
 	 */
 	public boolean decrLuaScript(List<String> keys, Object... parames){
 		Integer state = 0;
@@ -232,19 +232,39 @@ public class RedisUtil {
 		 * TimeUnit.MILLISECONDS  毫秒
 		 */
 		public boolean set(String key, Object value, long time) {
-					try {
-						if (time > 0) {
-							redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
-						} else {
-							set(key, value);
-						}
-						return true;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return false;
-					}
+			try {
+				if (time > 0) {
+					redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+				} else {
+					set(key, value);
 				}
-	        
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+	/**
+	 * TimeUnit.DAYS          天
+	 * TimeUnit.HOURS         小时
+	 * TimeUnit.MINUTES       分钟
+	 * TimeUnit.SECONDS       秒
+	 * TimeUnit.MILLISECONDS  毫秒
+	 */
+	public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
+		try {
+			if (time > 0) {
+				redisTemplate.opsForValue().set(key, value, time, timeUnit);
+			} else {
+				set(key, value);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	     // ================================Map=================================
 		/**
 		 * HashGet

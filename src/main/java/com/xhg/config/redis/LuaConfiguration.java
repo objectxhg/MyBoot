@@ -30,6 +30,22 @@ public class LuaConfiguration {
         return redisScript;
     }
 
+    /**
+     * redis
+     * @return
+     */
+    @Bean
+    public DefaultRedisScript<Integer> DecrScript() {
+        DefaultRedisScript<Integer> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/script/LuaRedis-decr.lua")));
+        redisScript.setResultType(Integer.class);
+        return redisScript;
+    }
+
+    /**
+     * redis 分布式锁 加锁
+     * @return
+     */
     @Bean
     public DefaultRedisScript<Integer> LockScript() {
         DefaultRedisScript<Integer> redisScript = new DefaultRedisScript<>();
@@ -38,6 +54,21 @@ public class LuaConfiguration {
         return redisScript;
     }
 
+    /**
+     * redis 分布式锁 加锁 加强版
+     * @return
+     */
+    @Bean
+    public DefaultRedisScript<Integer> LockScriptNew() {
+        DefaultRedisScript<Integer> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/script/LuaRedis-lock-new.lua")));
+        redisScript.setResultType(Integer.class);
+        return redisScript;
+    }
+    /**
+     * redis 分布式锁 解锁
+     * @return
+     */
     @Bean
     public DefaultRedisScript<Integer> LockDelScript() {
         DefaultRedisScript<Integer> redisScript = new DefaultRedisScript<>();

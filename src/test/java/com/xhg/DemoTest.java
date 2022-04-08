@@ -2,6 +2,7 @@ package com.xhg;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xhg.mapper.OrderDetailMapper;
@@ -35,6 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,8 +65,15 @@ public class DemoTest {
     @Resource
     private DefaultRedisScript LockScript;
 
+    //加强版
+    @Resource
+    private DefaultRedisScript LockScriptNew;
+
     @Resource
     private DefaultRedisScript LockDelScript;
+
+    @Resource
+    private DefaultRedisScript DecrScript;
 
     @Resource
     private OrderService orderService;
@@ -168,30 +177,27 @@ public class DemoTest {
         /**
          * 过期时间： 这里的时间单位是秒
          */
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 50; i++){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    //生成雪花uid
                     long parame = SnowflakeIdWorker.generateId();
-                    Integer lock = (Integer) redisTemplate.execute(LockScript, keys,parame, 15);
-                    System.out.println("lock: " + lock);
+                    Integer lock = (Integer) redisTemplate.execute(LockScriptNew, keys,parame, 15);
                     if(lock == 1){
                         System.out.println("加锁成功");
                         try {
                             /**
                              * 模拟 number为商品库存
                              */
-                            String numberValue = (String) redisUtil.get("number");
-
-                            System.out.println(numberValue);
+                            String numberValue =redisUtil.get("number").toString();
+                            System.out.println("当前值：" + numberValue);
 
                             if(!StringUtils.isBlank(numberValue) && Integer.parseInt(numberValue) > 0){
-
                                 System.out.println("【线程】---------> " + Thread.currentThread().getName() + " : " + redisUtil.decr("number", null));
-
                             }
-                            Thread.sleep(0);
-                        } catch (InterruptedException e) {
+                            //Thread.sleep(0);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }finally {
                             /**
@@ -208,6 +214,38 @@ public class DemoTest {
                     }
                 }
             }).run();
+        }
+    }
+
+    @Test
+    public void sendCheck(){
+
+        List<String> keys = new ArrayList<>();
+        keys.add("orgCode");
+
+        Integer orgCode = (Integer) redisTemplate.execute(DecrScript, keys, 500, 500);
+
+        System.out.println(orgCode);
+    }
+
+    @Test
+    public void sendCheck2(){
+
+        String str = "{\"data\":[{}]}";
+
+        JSONObject jsonObj = JSONObject.parseObject(str);
+
+        String dataStr = jsonObj.getString("data");
+        System.out.println("dataStr" + jsonObj.get("data"));
+
+        JSONArray jsonArr =  JSONObject.parseArray(dataStr);
+
+        System.out.println(jsonArr.get(0));
+
+        if("[{}]".equals(dataStr)){
+            System.out.println(true);
+        }else{
+            System.out.println(false);
         }
     }
 

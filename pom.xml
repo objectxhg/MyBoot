@@ -191,6 +191,7 @@
 			<version>3.0.0</version>
 		</dependency>
 		<!-- 微信小程序订阅 -->
+		<!-- GoJSON Google -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -227,8 +228,12 @@
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 
 
