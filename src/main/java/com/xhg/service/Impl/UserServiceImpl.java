@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService{
 	 *
 	 * @return
 	 */
-	@Cacheable(cacheNames="userList", keyGenerator = "keyGenerator", unless = "#result.list.size() == 0")
+	//@Cacheable(cacheNames="userList", keyGenerator = "keyGenerator", unless = "#result.list.size() == 0")
 	@Override
 	public PageInfo findAll(Integer pageNum,Integer pageSize) {
 

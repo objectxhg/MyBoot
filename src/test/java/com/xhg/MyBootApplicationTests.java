@@ -12,16 +12,21 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
+import com.xhg.pojo.PointGeo;
 import com.xhg.utils.MapPoint;
 import com.xhg.utils.ShowHttpResponseHeaders;
 import com.xhg.vo.AccessToken;
@@ -292,8 +297,9 @@ public class MyBootApplicationTests {
 		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + appsecret;
 		String json = restTemplate.getForObject(url, String.class);
 		//System.out.println("【微信返回的JSON】:------------" + json);
-		AccessToken accessToken = new Gson().fromJson(json, AccessToken.class);
-		System.out.println("【Access_token】:" + accessToken.getAccess_token());
+//		AccessToken accessToken = new Gson().fromJson(json, AccessToken.class);
+		Map<String, Object> map = new Gson().fromJson(json, Map.class);
+		System.out.println("【Access_token】:" + map.get("access_token"));
 
 	}
 
@@ -477,7 +483,7 @@ public class MyBootApplicationTests {
 	public void mapPointCheck(){
 
 		String str = "";
-
+//
 //		RestTemplate restTemplate = new RestTemplate();
 //
 //		String url = "https://restapi.amap.com/v3/geocode/geo?" +
@@ -502,7 +508,7 @@ public class MyBootApplicationTests {
 //			str = geocodesMap.get("location").toString();
 //		}
 
-		str = "112.987981,28.197388";
+		str = "113.013541,28.194162";
 
 		if(StringUtils.isNotBlank(str)){
 			//目标经度
@@ -510,20 +516,15 @@ public class MyBootApplicationTests {
 			//目标纬度
 			double targetX = Double.parseDouble(str.split(",")[1]);
 
-			//多边形经度集合
-			ArrayList<Double> listY = new ArrayList<>();
-			listY.add(112.9833984375);
-			listY.add(112.994384765625);
-			listY.add(112.9833984375);
-			listY.add(112.994384765625);
-			//多边形纬度集合
-			ArrayList<Double> listX = new ArrayList<>();
-			listX.add(28.1964111328125);
-			listX.add(28.1964111328125);
-			listX.add(28.201904296875);
-			listX.add(28.201904296875);
+			PointGeo pointGeo = new PointGeo(targetY, targetX);
 
-			boolean flag =  mapPoint.isPointInPolygon(targetY, targetX, listY, listX);
+			List<PointGeo> pointGeoList = new ArrayList<>();
+			pointGeoList.add(new PointGeo(112.9833984375, 28.1964111328125));
+			pointGeoList.add(new PointGeo(112.994384765625, 28.1964111328125));
+			pointGeoList.add(new PointGeo(112.9833984375, 28.201904296875));
+			pointGeoList.add(new PointGeo(112.994384765625,28.201904296875));
+
+			boolean flag =  mapPoint.isPnpoly(pointGeo, pointGeoList);
 
 			System.out.println("目标是否在区域内：" + flag);
 		}
@@ -535,18 +536,42 @@ public class MyBootApplicationTests {
 	@Test
 	public void restTemplateTest(){
 
-//		long start = System.currentTimeMillis();
-//		try {
-//			String str = restTemplateUtil.getForObject("http://10.4.190.69:8081/fins-console/system/loglist", String.class);
-//			System.out.println(str);
-//		}catch (Exception e){
-//
-//		}
-//		long end = System.currentTimeMillis();
-//
-//		System.out.println((end-start)/1000);
+		String result = "{\"words_result\":{\"姓名\":{\"location\":{\"top\":277,\"left\":618,\"width\":372,\"height\":164},\"words\":\"张三\"},\"民族\":{\"location\":{\"top\":568,\"left\":1262,\"width\":101,\"height\":126},\"words\":\"汉\"},\"住址\":{\"location\":{\"top\":1082,\"left\":552,\"width\":1392,\"height\":486},\"words\":\"住址住址住址\"},\"公民身份号码\":{\"location\":{\"top\":1733,\"left\":1105,\"width\":1749,\"height\":157},\"words\":\"***************\"},\"出生\":{\"location\":{\"top\":814,\"left\":561,\"width\":969,\"height\":132},\"words\":\"********\"},\"性别\":{\"location\":{\"top\":561,\"left\":580,\"width\":110,\"height\":129},\"words\":\"男\"}},\"idcard_number_type\":1,\"words_result_num\":6,\"image_status\":\"normal\",\"log_id\":1453528763137919643}";
 
-		System.out.println(UUID.randomUUID().toString());
+		JsonParser jp = new JsonParser();
+		//将json字符串转化成json对象
+		JsonObject jo = jp.parse(result).getAsJsonObject();
+		//获取姓名对应的值
+		String height = jo.get("words_result").getAsJsonObject()
+				.get("姓名").getAsJsonObject()
+				.get("location").getAsJsonObject()
+				.get("height").getAsString();
+
+		System.out.println(height);
+	}
+
+	@Test
+	public void regexDemo(){
+
+		long startTime = System.currentTimeMillis();
+		System.out.println(hasChinese("nsiubwuid"));
+		long endTime = System.currentTimeMillis();
+
+		System.out.println(endTime-startTime);
+	}
+
+	/**
+	 * 根据正则表达式判断字符是否为汉字
+	 * 字符串中包含汉字时返回true
+	 */
+	public static boolean hasChinese(String value) {
+
+		// 汉字的Unicode取值范围
+		String regex = "[\u4e00-\u9fa5]";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher match = pattern.matcher(value);
+
+		return match.find();
 
 	}
 
