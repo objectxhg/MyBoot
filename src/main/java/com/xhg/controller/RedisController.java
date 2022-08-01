@@ -50,22 +50,24 @@ public class RedisController {
 
 
     @RequestMapping("/redis/shoping/{key}")
-//    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
+    @SentinelResource(value = "shoping", blockHandler = "shopingHandleException", fallback = "shopingFallback")
     public JsonResult redisSeckill(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         /**
          * 双重检查
          */
+        System.out.println("检查redis 订单库存状态");
         if(Integer.parseInt(redisUtil.get(keyStr).toString()) > 0){
             /**
              * lua 脚本里面再检查一次
              */
             Integer state = redisServiceImpl.redisIncrBy(keyStr, userId, orderDescribe, testTime);
+            System.out.println("检查redis 订单库存状态" + state);
             if(state == 1){
                 sysUser user = new sysUser();
                 user.setId(userId);
-
-                asyncTaskService.sendMQAsyncTask(user);
+                //为了流控测试可以注释掉 mq发送消息
+                asyncTaskService.sendMQAsyncTask(JSON.toJSONString(user));
                 return JsonResult.success("购买成功");
             }
         }
@@ -81,6 +83,7 @@ public class RedisController {
         return JsonResult.success("活动火爆，请重试1");
     }
 
+    //流控返回报文
     public JsonResult shopingFallback(@PathVariable("key") String keyStr, Integer userId, String orderDescribe, Integer testTime){
 
         logger.info("QPS达到阈值：开始限流");

@@ -2,7 +2,9 @@ package com.xhg.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.Order;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.OrderService;
@@ -47,35 +49,25 @@ public class OrderController {
     @Autowired
     private AsyncTaskService asyncTaskService;
 
+    @Resource
+    private Sender sender;
+
     /**
      * https://blog.csdn.net/u010391342/article/details/86678637
      */
     @PostMapping("/addOrder")
-    /**
-     * @SentinelResource(value = "order", blockHandler = "orderHandleException", fallback = "orderFallback")
-     */
     public JsonResult addOrder(Integer userId, String orderDescribe){
 
-        if(null == userId || null == userService.getUserInfo(userId)){
-            return JsonResult.fail(400, "用户不存在");
-        }
 
-        if(null == orderDescribe){
-            return JsonResult.fail(400, "请填写订单描述");
-        }
-        Integer state = orderService.addOrder(new Order(userId, orderDescribe));
-        if(state != 1){
-            return JsonResult.fail("订单添加失败");
-        }
+        orderService.addOrder(new Order(userId, orderDescribe));
         /**
          * 模拟订单添加成功后 使用mq去消费订单消息 调用用户卡券积分系统增加购物积分或卡券
          */
         sysUser user = new sysUser();
         user.setId(userId);
-        /**
-         * 线程任务：给mq发送消息 去增加用户积分
-        */
-        asyncTaskService.sendMQAsyncTask(user);
+
+        //mq发送消息给生产者
+        sender.send(JSON.toJSONString(user));
 
         return JsonResult.success("添加成功");
     }
@@ -115,7 +107,6 @@ public class OrderController {
 
         return JsonResult.success(PageInfo.of(orderList));
     }
-
 
 }
 

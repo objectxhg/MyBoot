@@ -1,5 +1,6 @@
 package com.xhg.config.rabbitMQ;
 
+import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.Channel;
 import com.xhg.pojo.sysUser;
 import com.xhg.service.UserService;
@@ -26,9 +27,12 @@ public class DeadReceiver {
 
     @RabbitHandler
     @RabbitListener(queues = "DeadQueue")
-    public void receiveTopic1(sysUser user, Channel channel, Message message) throws Exception {
+    public void receiveTopic1(String jsonStr, Channel channel, Message message) throws Exception {
 
         logger.info("【DeadQueue死信队列 监听到消息】-----> 开始重新消费....");
+
+        sysUser user = JSON.parseObject(jsonStr, sysUser.class);
+
         Integer state = userService.incrUserIntegral(user.getId());
         if(state == 1){
             logger.info("【DeadQueue死信队列】-----> 重新消费成功 购物积分已增加");
@@ -40,6 +44,14 @@ public class DeadReceiver {
 
     }
 
+    @RabbitHandler
+    @RabbitListener(queues = "consumptionQueue")
+    public void consumptionQueue(String jsonStr, Channel channel, Message message) throws Exception {
+
+        logger.info("【consumptionQueue 死信队列 监听到消息】-----> 开始消费....");
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        logger.info("【consumptionQueue 死信队列】-----> 消费成功");
+    }
 
 }
 

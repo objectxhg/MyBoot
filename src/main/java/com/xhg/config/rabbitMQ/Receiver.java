@@ -1,5 +1,6 @@
 package com.xhg.config.rabbitMQ;
 
+import com.alibaba.fastjson.JSON;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
@@ -26,22 +27,21 @@ public class Receiver {
 
     private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
 
-    /**
-     * 队列名称
-     * @param user
-     */
     @Resource
     private UserService userService;
 
 
     @RabbitHandler
     @RabbitListener(queues = "ququDemo")
-    public void receiveTopic1(sysUser user, Channel channel, Message message) throws Exception {
-        logger.info("【ququDemo正常队列 监听到消息,开始消费......】-----> " + user);
+    public void receiveTopic1(String jsonStr, Channel channel, Message message) throws Exception {
+        logger.info("【ququDemo正常队列 监听到消息,开始消费......】-----> " + jsonStr);
+
+        sysUser user = JSON.parseObject(jsonStr, sysUser.class);
 
         // 获取消息Id，用消息ID做业务判断
         String messageId = message.getMessageProperties().getMessageId();
         String content = new String(message.getBody(), "UTF-8");
+        logger.info("messageId：{}, content：{}", messageId, content);
         try {
 
             //模拟处理消息产生异常后进入死信队列进行消费
@@ -65,4 +65,13 @@ public class Receiver {
 
     }
 
+
+
+    @RabbitHandler
+    @RabbitListener(queues = "delayQueue")
+    public void receiveDelay(String jsonStr, Channel channel, Message message) throws Exception {
+
+        logger.info("【延时队列】 监听到消息,开始消费......】-----> " + jsonStr);
+
+    }
 }

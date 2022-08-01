@@ -39,13 +39,13 @@ public class AsyncTaskService {
 
     /**
      * mq线程任务：给mq发送消息
-     * @param user
+     * @param jsonStr
      */
 	@Async
-    public void sendMQAsyncTask(sysUser user) {
+    public void sendMQAsyncTask(String jsonStr) {
 
-        logger.info("线程" + Thread.currentThread().getName() + " 执行异步任务：" + user.getId());
-        sender.send(user);
+        logger.info("线程" + Thread.currentThread().getName() + " 执行异步任务：" + jsonStr);
+        sender.send(jsonStr);
     }
 
 

@@ -30,7 +30,7 @@ public class RedisServiceImpl {
 
 
     /**
-     * 下单前使用lua脚本去redis获取库存 如果库存大于0 库存-1 返回 1， 如果等于0 返回 0
+     * 下单前使用lua脚本去redis获取库存 如果库存大于0 返回 1 可以进行下单， 如果等于0 返回 0 表示商品已经卖光了
      */
     public Integer redisIncrBy(String key, Integer userId, String orderDescribe, Integer testTime){
 
@@ -46,7 +46,7 @@ public class RedisServiceImpl {
 
         if(state){
             // redis库存 减完创建订单
-            return  orderService.addOrder(new Order(userId, orderDescribe));
+            return orderService.addOrder(new Order(userId, orderDescribe));
         }
 
         return 0;

@@ -71,6 +71,7 @@ public class RedisUtil {
 		try {
 			state = redisTemplate.execute(DefaultRedisScript, keys, parames);
 		}catch (Exception e){
+			e.printStackTrace();
 			throw new BaseException(400, "Default-lua");
 		}
 		return state == 1 ? true : false ;
