@@ -33,7 +33,7 @@
    &emsp;&emsp;然后我们再创建正常的业务队列，业务队列交换机一样的正常创建方式，<br/>
    &emsp;&emsp;业务队列这里要注意了： 业务队列比正常创建要多设置2个参数，也就是配置消费失败的消息的去除 转发给另一个交换机去给到队列消费<br/>
    &emsp;&emsp;x-dead-letter-exchange:	DeadExchange（这里填上面死信队列的名称)<br/>
-   &emsp;&emsp;x-dead-letter-routing-key:	DirectRouting（这里填上面死信队列和交换机绑定的路由键）<br/>
+   &emsp;&emsp;x-dead-letter-routing-key:	DeadRoutingKey（这里填上面死信队列和交换机绑定的路由键）<br/>
    &emsp;&emsp;注意：正常队列不设置这两个参数 业务队列拒收后，死信队列是收不到消息的<br/>
    
    &emsp;&emsp;准备工作的做完了 接下来我们就启动试一下模拟正常队列报错后在catch里面拒收消息 死信队列能否消费到消息<br/>

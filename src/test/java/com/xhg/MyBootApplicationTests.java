@@ -26,9 +26,11 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import com.xhg.mapper.OrderMapper;
 import com.xhg.mapper.SysUserMapper;
+import com.xhg.pojo.ApiRequest;
 import com.xhg.pojo.PointGeo;
 import com.xhg.utils.MapPoint;
 import com.xhg.utils.ShowHttpResponseHeaders;
+import com.xhg.utils.code.HexByteUtil;
 import com.xhg.vo.AccessToken;
 import com.xhg.utils.RedisUtil;
 import com.xhg.vo.TemplateDataVo;
@@ -47,6 +49,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xhg.config.rabbitMQ.Sender;
 import com.xhg.pojo.sysUser;
 import com.xhg.threadPool.service.AsyncTaskService;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -191,6 +195,7 @@ public class MyBootApplicationTests {
     }
 
 	/**
+	 * 获取微信用户手机号 第一步
 	 * 获取用户的微信id
 	 * @throws Exception
 	 */
@@ -204,7 +209,7 @@ public class MyBootApplicationTests {
 		//微信前端获取
 		String js_code = "053Fay0w3uiCTU2oTe1w387kko1Fay0B";
 
-		String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + js_code + "&grant_type=authorization_code";
+		String url = "https://api.weixin.qq.com/sns/jscode2sessionjscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + js_code + "&grant_type=authorization_code";
 		URL reqURL = new URL(url); //创建URL对象
 		HttpsURLConnection httpsConn = (HttpsURLConnection) reqURL.openConnection();
 
@@ -230,9 +235,11 @@ public class MyBootApplicationTests {
 	}
 
 	/**
+	 *
+	 * 获取微信用户手机号 第二步
 	 * 解析微信返回的手机号密文 解密用户手机号码
 	 *
-	 * */
+	 */
 	@Test
 	public void getWeiXinTelephone() throws Exception {
 
@@ -391,18 +398,11 @@ public class MyBootApplicationTests {
 
 			RestTemplate restTemplate = new RestTemplate();
 
-			String url = "http://172.26.9.102:8090/fins-pre-gateway/gateway/unifiedService/cxqyshxydm";
+			String url = "https://fintech.changsha.gov.cn/fins-pre-gateway/gateway/unifiedService/qthf";
 
 			JSONObject jsonObject = new JSONObject();
 
-			jsonObject.put("apiId", "10106");
-			jsonObject.put("bizParams", "4D6ABAC988D9D60AF278F500AD8EF45F0831B870F6BE992ED2BF93A31039734B");
-			jsonObject.put("method", "cxqyshxydm");
-			jsonObject.put("sid", "6423a1ef-a163-4769-aca8-a5fcd238342f");
-			jsonObject.put("sign", "GH1JmGAN1WzRlAMbgPfbx2YayKeRAKqaMBfmseg3W+gZrMBlIFVfkqdkOqn0mRk4Xt9bHXEhiWHacSe/WdTDTNeILybsUkJdUoQnqLCrRVxQM6LHG+L0SqsUJ3DXSuWJWhAVeogvek1k81atfVwZemSzoIoCvD5giXVY1t0WWlU=");
-			jsonObject.put("signType", "RSA");
-			jsonObject.put("timestamp", "1620466042781");
-			jsonObject.put("version", "1.0");
+
 
 			ResponseEntity<Map> responseEntity =  restTemplate.postForEntity(url, jsonObject, Map.class);
 
@@ -410,6 +410,8 @@ public class MyBootApplicationTests {
 
 		}
 	}
+
+
 
 	@Test
 	public void aaa() throws ParseException {
@@ -533,6 +535,9 @@ public class MyBootApplicationTests {
 	@Autowired
 	private RestTemplate restTemplateUtil;
 
+	/**
+	 * gson
+	 */
 	@Test
 	public void restTemplateTest(){
 
@@ -558,6 +563,16 @@ public class MyBootApplicationTests {
 		long endTime = System.currentTimeMillis();
 
 		System.out.println(endTime-startTime);
+
+		String str = "e527b13d1dbcc6ecf1e620e9ffd354cd35a44d59b7c6db87aed87f087e4c1b97b285af2421fdb18d29b4c7e7c8402860b72566e82363b1fea7d24ca5626b1de9";
+
+		byte[] bytes = HexByteUtil.hexToByte(str);
+
+		System.out.println("bytes:" + Arrays.toString(bytes));
+
+		System.out.println("str:" + HexByteUtil.byteToHex(bytes));
+
+
 	}
 
 	/**

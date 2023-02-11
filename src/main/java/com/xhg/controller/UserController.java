@@ -3,6 +3,7 @@ package com.xhg.controller;
 import com.xhg.excepetion.BaseException;
 import com.xhg.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,10 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@Value("${workName}")
+	String workName;
+
 	@ApiOperation(value = "用户列表", notes = "分页查询用户列表")
 	@ApiImplicitParams({																		//paramType：表示参数放在哪个地方		
 		@ApiImplicitParam(value = "页数", name = "pageNum", required = false,  dataType = "int", paramType = "query", defaultValue = "0"),
@@ -50,6 +54,7 @@ public class UserController {
 	})
 	@GetMapping("/get")
 	public JsonResult findAll(Integer id){
+		System.out.println("workName" + workName);
 		if(null == id){
 			throw new BaseException(404, "parame id is null");
 		}

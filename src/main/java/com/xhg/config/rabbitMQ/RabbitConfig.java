@@ -28,6 +28,11 @@ public class RabbitConfig {
     public static final String FANOUT_QUEUE1 = "ququDemo";
     public static final String FANOUT_EXCHANGE = "exchangeDemo";
 
+    //死信队列
+    public static final String Dead_Queue = "DeadQueue";
+    public static final String Dead_Exchange = "DeadExchange";
+    public static final String Dead_Routing = "DirectRouting";
+
     //延时队列
     public static final String FANOUT_DELAYQUEUE = "delayQueue";
     public static final String FANOUT_DELAYEXCHANGE = "delayExchange";
@@ -50,9 +55,9 @@ public class RabbitConfig {
     public Queue fanoutQueue1() {
         Map<String, Object> args = new HashMap<>();
         //声明当前队列绑定的死信交换机
-        args.put("x-dead-letter-exchange", "DeadExchange");
+        args.put("x-dead-letter-exchange", Dead_Exchange);
         //声明当前队列绑定死信的路由键
-        args.put("x-dead-letter-routing-key", "DirectRouting");
+        args.put("x-dead-letter-routing-key", Dead_Routing);
         Queue queue = new Queue(FANOUT_QUEUE1, true, false, false, args);
         return queue;
     }
@@ -82,16 +87,16 @@ public class RabbitConfig {
      * @return
      */
     @Bean
-    public Queue DeadQueue() { return new Queue("DeadQueue", true); }
+    public Queue DeadQueue() { return new Queue(Dead_Queue, true); }
 
     @Bean
-    public DirectExchange DeadExchange() { return new DirectExchange("DeadExchange"); }
+    public DirectExchange DeadExchange() { return new DirectExchange(Dead_Exchange); }
 
     @Bean
-    public Binding bindingDead() { return BindingBuilder.bind(DeadQueue()).to(DeadExchange()).with("DirectRouting"); }
+    public Binding bindingDead() { return BindingBuilder.bind(DeadQueue()).to(DeadExchange()).with(Dead_Routing); }
 
 
-    //延时队列
+    //延时队列 插件
     @Bean
     public Queue DelayQueue() {
         Map<String, Object> args = new HashMap<>();
@@ -106,7 +111,7 @@ public class RabbitConfig {
          *
          * 不需要此场景可以注释 (过期时间暂未实现成功)
          */
-        args.put("x-message-ttl", 60000);
+        args.put("x-message-ttl", 10000);
         Queue queue = new Queue(FANOUT_DELAYQUEUE, true, false, false, args);
         return queue;
     }

@@ -2,6 +2,7 @@ package com.xhg;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xhg.excepetion.BaseException;
 import com.xhg.pojo.ApiRequest;
 import com.xhg.pojo.ApiResponse;
@@ -25,27 +26,30 @@ public class apiTest {
      * 加密
      * @throws Exception
      */
-    @Test
-    public void RSAencrypt() throws Exception {
 
-        String appSecrt = "43c01Ia5BQK6i68i";
+    public void RSAencrypt(String cerno, String authBookUid) throws Exception {
 
-        String appPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8WjC2ErY5mkYN5t2S0KryWAvwsWcge8PV7h6sB0Ike2J9X7V30HmmDBP3tf7MlLdn0wd2IetJj9Cz1hWXZVOg1VchZkPGoD3tKKDLQp/zrbqHKeGNh8Qf6WKWO9IgilDGDBjgGlue4nIRbiA4/QkfT2ixHC8QxYIs2VOljCuScQIDAQAB";
+        String appSecrt = "Ng130i56fWq9jth2";
 
-        String appPrivateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALxaMLYStjmaRg3m3ZLQqvJYC/CxZyB7w9XuHqwHQiR7Yn1ftXfQeaYME/e1/syUt2fTB3Yh60mP0LPWFZdlU6DVVyFmQ8agPe0ooMtCn/Otuocp4Y2HxB/pYpY70iCKUMYMGOAaW57ichFuIDj9CR9PaLEcLxDFgizZU6WMK5JxAgMBAAECgYABlt08XBIPkF6w9Va/S2V14ApRwJ13J7QyVO0LVJBZUHU3S5xzY13zabytZWq9/S9DAAPbGlQq7by8F71c5qz69bqKpGMzx5sWMeEwFHx8fZFUgDax36THxl/SkrLIiWAown29PYOTxjyBVJ2sU/VMSX9xBES8Fw54SzdA703llQJBAOysrNPwVzxnEkfX4V4/vch+MR+/jwSJ9W7sC9WjN4RnxJAxbcR/rXcU8RFc087HjTu0gtm4sWdubUuOALLRqjMCQQDLu2l+ffJ85jlUzY/Fj3CpmdDtVzDQslV1jqMn/FeW8qom9P7y4HBZLhutT7BYjk2obgpJDvkoHjvDrm2Ai/TLAkBu0CaXkRd3S5culjCKLXQRlKwxfkJbULDev5yG6cXLs74/+TS45UL115NLmtf9IEfLZahCgoxlrjl0P8ep8isrAkBaKEOVEJNgplk0qAs5uDJ5O3JztaQKlwCul0KojUkNqbGWr9CrFpthO8BPv/YgGklPgfLXReMI1+hGvkgDHOxlAkEA1f5PqmQMGmdrRh4klk2ThLOpentoA9iYwo82h8oRJ/Eu1MggH7iG+pf5Zkcx1EDEk+QPrXIWjFPwPurc1K8YdA==";
+        String appPublicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC2HNuUd6auepKZx2vVbXVBRO9o0Nd0iuXpPmZxVsC4tZ5eVbFgtpbsoPhd2Hf70bKyvKUV8BZSnuZSSTwNxFBpf/1ta0608r0NVExqfzcYHqj24AsBW+ZxtXp86aI1AzMzFD2q517Zf1A4UqkKV5vw4/tZg2+kcHgP5/Kcp4F6yQIDAQAB";
+
+        String appPrivateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIeYPczo3EPiA34PMq1AmRHA5ILSAO8XdiqjvtapBLDqMP11DsTGbkBu7MZzgIqrpNCfdiBVNlpFNSmI33nFcC0tSvEj615x9TKWiq7SPEWGHQErcB4Rg7QAZ6Pxc6uxnAv58jrcY2/ZS/lTMPS2QiJilO1IEFxeT6uuYkWgSJmBAgMBAAECgYBiryFjTaJpYUerakI2p4n/ysRElbSKTif5Nn1A23gHjhojjRs3iTdae6ClehB2XB+ymiutsnbBUhcz6GLEzDYsB47eJWzOduwIabxVr7qbWflkl/OBKgEccyOEXZq0CRtivPdNQ5+haKXBH8Qzp2wEA8InAe/pXstYVFilzyf1wQJBAN53797XASzcfxchLVL8brlsqLsg83vuYNpPFLYRsOfG8ER+5m/oZe+jDJnY4Pf4NL893PWTik/5cLnEuby6VHkCQQCcCDuzfR9JEMhgnc09JSs/4wDoiMhjbjpCe7oPyjO/DYYbRu5S2k0dN2jLiuLjOOwvS28rz9bFHmvc/TM5O9tJAkEAxj+XULvE3ld4IgJ8w3EUssSz8F5C3HPnd2P1jvJg9YsA3elALQWqoUxplEgC4rcbOjlEyMs7/FzLKaC37AkX8QJAPanTTj/omUuUpPo4Hi4ORZVEyqEj8IejZprXEV5rzNlfYnBJx1yWlTFMrQQaXookbRx2tu3Qht5a6l72W2wYYQJBAJ94uhXEZ2uX4Hnioaacc1pCPkNFYxsYBEPfGr/stQgqGcBUQMHwecThOzvIkGghAEWiWO0hV9mj66DhdmdzisM=";
 
         ApiRequest apiRequest =new ApiRequest();
-        apiRequest.setApiId(10080+"");
-        apiRequest.setSid("6423a1ef-a163-4769-aca8-a5fcd238342f");
-        apiRequest.setMethod("dfqf");
+        apiRequest.setApiId(10029+"");
+        apiRequest.setSid("efa7c878-8431-4339-a70e-d7d5995c7f27");
+        apiRequest.setMethod("qthf");
         apiRequest.setVersion("1.0");
         String timestamp = System.currentTimeMillis()+"";
         apiRequest.setTimestamp(timestamp);
         apiRequest.setSignType("RSA");
 
         Map<String, String> map = new HashMap<>();
-        map.put("uniscid", "911000001000013428");
-        map.put("authBookUrl","http://172.26.9.102:8090/group1/M00/00/00/oYYBAGDRh0qAf_npAAD2xqf2_m0212.pdf");
+        map.put("cerno", cerno);
+        map.put("applyCode", "applyCode");
+        map.put("memberType", "1");
+        map.put("groupCode", "gtgsh");
+        map.put("authBookUid", authBookUid);
 
         String bizParams = JSON.toJSONString(map);
 
@@ -74,6 +78,32 @@ public class apiTest {
         System.out.println("flag:" + flag);
     }
 
+
+
+//    public  void proSignXJXQ() throws Exception {
+//        String appsecrt="Ng130i56fWq9jth2";
+//        String appPrivateKey = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAIeYPczo3EPiA34PMq1AmRHA5ILSAO8XdiqjvtapBLDqMP11DsTGbkBu7MZzgIqrpNCfdiBVNlpFNSmI33nFcC0tSvEj615x9TKWiq7SPEWGHQErcB4Rg7QAZ6Pxc6uxnAv58jrcY2/ZS/lTMPS2QiJilO1IEFxeT6uuYkWgSJmBAgMBAAECgYBiryFjTaJpYUerakI2p4n/ysRElbSKTif5Nn1A23gHjhojjRs3iTdae6ClehB2XB+ymiutsnbBUhcz6GLEzDYsB47eJWzOduwIabxVr7qbWflkl/OBKgEccyOEXZq0CRtivPdNQ5+haKXBH8Qzp2wEA8InAe/pXstYVFilzyf1wQJBAN53797XASzcfxchLVL8brlsqLsg83vuYNpPFLYRsOfG8ER+5m/oZe+jDJnY4Pf4NL893PWTik/5cLnEuby6VHkCQQCcCDuzfR9JEMhgnc09JSs/4wDoiMhjbjpCe7oPyjO/DYYbRu5S2k0dN2jLiuLjOOwvS28rz9bFHmvc/TM5O9tJAkEAxj+XULvE3ld4IgJ8w3EUssSz8F5C3HPnd2P1jvJg9YsA3elALQWqoUxplEgC4rcbOjlEyMs7/FzLKaC37AkX8QJAPanTTj/omUuUpPo4Hi4ORZVEyqEj8IejZprXEV5rzNlfYnBJx1yWlTFMrQQaXookbRx2tu3Qht5a6l72W2wYYQJBAJ94uhXEZ2uX4Hnioaacc1pCPkNFYxsYBEPfGr/stQgqGcBUQMHwecThOzvIkGghAEWiWO0hV9mj66DhdmdzisM=";
+//        String jsonStr="{\n" +
+//                "    \"apiId\": \"10129\", \n" +
+//                "    \"bizParams\": \"{" +
+////                "                       \\\"uniscid\\\":\\\"430122197608266217\\\"," +
+//                "                       \\\"cerno\\\":\\\"430122198205306995\\\"," +
+//                "                       \\\"applyCode\\\":\\\"54122\\\"," +
+//                "                       \\\"memberType\\\":\\\"1\\\"," +
+//                "                       \\\"groupCode\\\":\\\"gtgsh\\\"," +
+//                "                       \\\"authBookUid\\\":\\\"0a760983-1206-4f85-a94e-4ee764a34c6e\\\"" +
+//                "                      }\", \n" +
+//                "    \"method\": \"hjmx\", \n" +
+//                "    \"signType\": \"RSA\", \n" +
+//                "    \"timestamp\": \"1647506972260\", \n" +
+//                "    \"version\": \"1.0\", \n" +
+//                "    \"sid\": \"efa7c878-8431-4339-a70e-d7d5995c7f27\"\n" +
+//                "}";
+//        ApiRequest apiRequest = JSONObject.parseObject(jsonStr, ApiRequest.class);
+//        String requestStr = ApiClient.sign2Encrypt(apiRequest,appsecrt,appPrivateKey);
+//        System.out.println("加签参数"+requestStr);
+//
+//    }
     /**
      * 解密
      * @throws Exception

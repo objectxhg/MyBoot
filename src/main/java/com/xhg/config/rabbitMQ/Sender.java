@@ -24,7 +24,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
 
     /**
      * 死信队列
-     * 模拟秒杀场景,使用队列进行平滑消费，消息发送失败重试机制。以及消费失败的消息，通过绑定死信队列重新进行消费，保证消息的可靠性可网站性
+     * 模拟秒杀场景,使用队列进行平滑消费，消息发送失败重试机制。以及消费失败的消息，通过绑定死信队列重新进行消费，保证消息的可靠性和完整性
      */
 
     public void send(String jsonStr) {
