@@ -203,8 +203,8 @@ public class MyBootApplicationTests {
 	@SuppressWarnings("all")
 	public void getWeiXinInfo() throws Exception {
 
-		String appid = "wx82f903cd9b8967c6";
-		String secret = "5f14bdd482966d1bd0ae6292abda9133";
+		String appid = "";
+		String secret = "";
 
 		//微信前端获取
 		String js_code = "053Fay0w3uiCTU2oTe1w387kko1Fay0B";
@@ -298,8 +298,8 @@ public class MyBootApplicationTests {
 	public void getAccess_token(){
 		RestTemplate restTemplate = new RestTemplate();
 		//获取access_token
-		String appid = "wx82f903cd9b8967c6";
-		String appsecret = "5f14bdd482966d1bd0ae6292abda9133";
+		String appid = "";
+		String appsecret = "";
 
 		String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + appsecret;
 		String json = restTemplate.getForObject(url, String.class);
@@ -321,8 +321,8 @@ public class MyBootApplicationTests {
 	public void sendMessage(){
 		RestTemplate restTemplate = new RestTemplate();
 		//获取access_token
-		String appid = "wx82f903cd9b8967c6";
-		String appsecret = "5f14bdd482966d1bd0ae6292abda9133";
+		String appid = "";
+		String appsecret = "";
 
 		String access_token = "37_sYifrzGNdiQt9XvjPNkqHPmBsNvNy3xlZMD8ZlE8IivLUKps5F-Wph81wrY0R2WKqH0_WCKQzsOQtwax33kmjcH4qi2c0VVmir_kxe0tpbDtwNAdCIKl-nc4SVwHZRkfoMmjD3tHpDY3j1rWFKXgAEAUZM";
 		String openid = "oPuv_47TCRS-5852kQtp7fn4ZTaA";
