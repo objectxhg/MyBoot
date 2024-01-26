@@ -1,6 +1,7 @@
 package com.xhg;
 
 
+import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xhg.excepetion.BaseException;
@@ -15,6 +16,10 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -153,14 +158,32 @@ public class apiTest {
     @Test
     public void testdemo4(){
 
-        String str = "3";
+        System.out.println(decrypt("4DlwQ/NZeA482RXBa7S93Q=="));
+    }
 
-        if(str != null && (str.equals("1") ||  str.equals("2"))){
-            System.out.println("ok");
-        }else {
-            System.out.println("no");
+    public static String decrypt(String data) {
+        String KEY = "ahhfkxjf";
+        String DES = "DES/CBC/PKCS5Padding";
+        String decryptStr = null;
+        try {
+            Base64 base64 = new Base64();
+            byte[] src = base64.decode(data);
+            Cipher cipher = Cipher.getInstance(DES);
+            System.out.println("11");
+            cipher.init(Cipher.DECRYPT_MODE, SecretKeyFactory.getInstance("DES").generateSecret(new DESKeySpec(KEY.getBytes("UTF-8"))), new IvParameterSpec(KEY.getBytes("UTF-8")));
+            decryptStr = new String(cipher.doFinal(src),"UTF-8");
+            System.out.println("22");
+            return decryptStr;
+        } catch (Exception e) {
+            System.out.println("Exception");
+        } finally{
+            System.out.println("finally");
+            if(decryptStr != null){
+                decryptStr = null;
+            }
         }
-
+        System.out.println("return");
+        return null;
     }
 
 }

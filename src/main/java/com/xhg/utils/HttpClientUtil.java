@@ -56,10 +56,10 @@ public class HttpClientUtil {
     private static final String TLS = "TLS";
 
     // 设置请求超时，默认30秒
-    private static final int SO_TIMEOUT = 30000;
+    private static final int SO_TIMEOUT = 10000;
 
     // 设置连接超时时间，单位毫秒，默认30秒
-    private static final int CONNECTION_TIMEOUT = 30000;
+    private static final int CONNECTION_TIMEOUT = 10000;
 
     // 设置从connect Manager获取Connection 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的
     private static final int CONNECTION_REQUEST_TIMEOUT = 30000;
@@ -68,10 +68,10 @@ public class HttpClientUtil {
     private static final int FILEUPLOAD_CONNECTION_TIMEOUT = 120000;
 
     // 设置从connect Manager获取Connection 超时时间，单位毫秒。
-    private static final int FILEUPLOAD_CONNECTION_REQUEST_TIMEOUT = 120000;
+    private static final int FILEUPLOAD_CONNECTION_REQUEST_TIMEOUT = 10000;
 
     // 客户端链接默认超时时间，单位毫秒。
-    private static final Long HOST_KEEPALIVE_STRATEGY_TIMEOUT = 30000L;
+    private static final Long HOST_KEEPALIVE_STRATEGY_TIMEOUT = 10000L;
 
     private static PoolingHttpClientConnectionManager connManager = null;
     private static CloseableHttpClient httpclient = null;
